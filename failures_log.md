@@ -213,4 +213,32 @@ Every case documented below was caught by automated unit tests or mathematical i
 
 ---
 
+### Case FAIL-09: QPE Bit-Endianness Inversion in Shor's Order Finding (Track I)
+* **Track Affected**: Track I (Quantum Algorithms & QML / QPE & Shor's Algorithm)
+* **Initial Prompt**: "Implement Quantum Phase Estimation and apply it to modular exponentiation in Shor's algorithm for factoring N = 15."
+* **Flawed Code Excerpt**:
+  ```python
+  # In QuantumPhaseEstimation:
+  for j in range(self.m):
+      counting_qubit = j
+      angle = 2.0 * np.pi * self.theta * (2**j)  # FLAW: assumed qubit j is LSB (2^j)
+      qc.cphase(counting_qubit, self.target_qubit, angle)
+  ```
+* **Failure Description & Invariant Violated**:
+  In our vectorized statevector simulator, qubit indexing is big-endian where qubit 0 is the most significant bit (MSB, binary place value $2^{m-1}$) and qubit $m-1$ is the least significant bit (LSB, place value $2^0$). The initial QPE loop applied controlled phase rotations $U^{2^j}$ to qubit $j$, mistakenly associating qubit $j$ with weight $2^j$. When the subsequent inverse QFT ($QFT^\dagger$) operated on the register, the phases across the computational basis states were bit-reversed and reflected ($1 - \theta$). Consequently, for a true phase of $\theta = 0.25$ (integer peak 4 out of 16), QPE produced peak 14 ($\theta \approx 0.875$). This phase distortion caused continued fractions to fail to recover the denominator $r = 4$, resulting in Shor's algorithm completely failing to find the non-trivial factors of 15.
+* **How It Was Detected**:
+  Running `ShorsAlgorithmDemo(15, 7, m_counting=4).run()` returned `Factors: [] Found r: None` with peak indices `[0, 15, 1, 14]` instead of `[0, 4, 8, 12]`.
+* **Corrective Fix**:
+  Corrected the controlled phase exponent to match each qubit's binary place value in big-endian representation:
+  ```python
+  weight = 2**(self.m - 1 - j)
+  angle = 2.0 * np.pi * self.theta * weight
+  qc.cphase(counting_qubit, self.target_qubit, angle)
+  ```
+  Immediately afterward, QPE estimated phases $\theta \in \{0, 0.25, 0.5, 0.75\}$ with probability 1.0, accurately yielding peaks at $\{0, 4, 8, 12\}$ and recovering non-trivial factors $[3, 5]$ of 15.
+* **Lesson Learned & Takeaway for Viva**:
+  Quantum algorithms (especially Fourier-based methods like QPE and Shor's algorithm) require strict consistency between qubit endianness, binary place values, and inverse Fourier basis conventions. Inverting bit-endianness reflects phase values across the unit circle.
+
+---
+
 *(Additional failure incidents will be appended dynamically as each track's test suite executes)*.

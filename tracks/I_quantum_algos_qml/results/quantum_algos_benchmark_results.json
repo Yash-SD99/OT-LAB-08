@@ -1,0 +1,431 @@
+{
+  "metadata": {
+    "track": "Track I: Quantum Algorithms & QML Advantage",
+    "student": "Yash Deshmukh",
+    "roll_no": "241070018",
+    "institution": "VJTI Mumbai",
+    "disclaimer": "noise-model simulation, not real hardware",
+    "timestamp": "2026-11-01T23:24:53"
+  },
+  "deutsch_jozsa": [
+    {
+      "n_inputs": 2,
+      "quantum_queries": 1,
+      "classical_deterministic_worst": 3,
+      "speedup_queries": 3.0,
+      "const_classified": "CONSTANT",
+      "bal_classified": "BALANCED",
+      "wall_clock_time_sec": 0.0078559999983554
+    },
+    {
+      "n_inputs": 3,
+      "quantum_queries": 1,
+      "classical_deterministic_worst": 5,
+      "speedup_queries": 5.0,
+      "const_classified": "CONSTANT",
+      "bal_classified": "BALANCED",
+      "wall_clock_time_sec": 0.00021500000002561137
+    },
+    {
+      "n_inputs": 4,
+      "quantum_queries": 1,
+      "classical_deterministic_worst": 9,
+      "speedup_queries": 9.0,
+      "const_classified": "CONSTANT",
+      "bal_classified": "BALANCED",
+      "wall_clock_time_sec": 0.00028190000011818483
+    },
+    {
+      "n_inputs": 5,
+      "quantum_queries": 1,
+      "classical_deterministic_worst": 17,
+      "speedup_queries": 17.0,
+      "const_classified": "CONSTANT",
+      "bal_classified": "BALANCED",
+      "wall_clock_time_sec": 0.00029119999999238644
+    },
+    {
+      "n_inputs": 6,
+      "quantum_queries": 1,
+      "classical_deterministic_worst": 33,
+      "speedup_queries": 33.0,
+      "const_classified": "CONSTANT",
+      "bal_classified": "BALANCED",
+      "wall_clock_time_sec": 0.00033460000122431666
+    },
+    {
+      "n_inputs": 7,
+      "quantum_queries": 1,
+      "classical_deterministic_worst": 65,
+      "speedup_queries": 65.0,
+      "const_classified": "CONSTANT",
+      "bal_classified": "BALANCED",
+      "wall_clock_time_sec": 0.0004363000007288065
+    },
+    {
+      "n_inputs": 8,
+      "quantum_queries": 1,
+      "classical_deterministic_worst": 129,
+      "speedup_queries": 129.0,
+      "const_classified": "CONSTANT",
+      "bal_classified": "BALANCED",
+      "wall_clock_time_sec": 0.000526400001035654
+    }
+  ],
+  "bernstein_vazirani": [
+    {
+      "n_bits": 2,
+      "secret": "01",
+      "recovered": "01",
+      "success": true,
+      "quantum_queries": 1,
+      "classical_queries": 2,
+      "wall_clock_time_sec": 9.580000005371403e-05
+    },
+    {
+      "n_bits": 3,
+      "secret": "100",
+      "recovered": "100",
+      "success": true,
+      "quantum_queries": 1,
+      "classical_queries": 3,
+      "wall_clock_time_sec": 0.00011850000009872019
+    },
+    {
+      "n_bits": 4,
+      "secret": "1010",
+      "recovered": "1010",
+      "success": true,
+      "quantum_queries": 1,
+      "classical_queries": 4,
+      "wall_clock_time_sec": 0.00012379999861877877
+    },
+    {
+      "n_bits": 5,
+      "secret": "01111",
+      "recovered": "01111",
+      "success": true,
+      "quantum_queries": 1,
+      "classical_queries": 5,
+      "wall_clock_time_sec": 0.001200500000777538
+    },
+    {
+      "n_bits": 6,
+      "secret": "111010",
+      "recovered": "111010",
+      "success": true,
+      "quantum_queries": 1,
+      "classical_queries": 6,
+      "wall_clock_time_sec": 0.00044100000013713725
+    },
+    {
+      "n_bits": 7,
+      "secret": "1001110",
+      "recovered": "1001110",
+      "success": true,
+      "quantum_queries": 1,
+      "classical_queries": 7,
+      "wall_clock_time_sec": 0.0004914999990432989
+    },
+    {
+      "n_bits": 8,
+      "secret": "11000011",
+      "recovered": "11000011",
+      "success": true,
+      "quantum_queries": 1,
+      "classical_queries": 8,
+      "wall_clock_time_sec": 0.00032139999893843196
+    }
+  ],
+  "grover_scaling": [
+    {
+      "n_qubits": 2,
+      "database_size": 4,
+      "target": 0,
+      "optimal_iterations": 1,
+      "success_probability": 0.9999999999999991,
+      "theoretical_grover_queries": 1,
+      "theoretical_classical_avg_queries": 2.0,
+      "query_speedup": 2.0,
+      "quantum_sim_time_sec": 9.789999967324547e-05,
+      "classical_search_time_sec": 4.399998942972161e-06
+    },
+    {
+      "n_qubits": 3,
+      "database_size": 8,
+      "target": 5,
+      "optimal_iterations": 2,
+      "success_probability": 0.9453124999999978,
+      "theoretical_grover_queries": 2,
+      "theoretical_classical_avg_queries": 4.0,
+      "query_speedup": 2.0,
+      "quantum_sim_time_sec": 0.00015630000052624382,
+      "classical_search_time_sec": 2.7999994927085936e-06
+    },
+    {
+      "n_qubits": 4,
+      "database_size": 16,
+      "target": 9,
+      "optimal_iterations": 3,
+      "success_probability": 0.9613189697265582,
+      "theoretical_grover_queries": 3,
+      "theoretical_classical_avg_queries": 8.0,
+      "query_speedup": 2.6666666666666665,
+      "quantum_sim_time_sec": 0.0002497000004950678,
+      "classical_search_time_sec": 2.3000011424301192e-06
+    },
+    {
+      "n_qubits": 5,
+      "database_size": 32,
+      "target": 1,
+      "optimal_iterations": 4,
+      "success_probability": 0.9991823155432861,
+      "theoretical_grover_queries": 4,
+      "theoretical_classical_avg_queries": 16.0,
+      "query_speedup": 4.0,
+      "quantum_sim_time_sec": 0.0003828000008070376,
+      "classical_search_time_sec": 1.3999997463542968e-06
+    },
+    {
+      "n_qubits": 6,
+      "database_size": 64,
+      "target": 58,
+      "optimal_iterations": 6,
+      "success_probability": 0.9965856807867856,
+      "theoretical_grover_queries": 6,
+      "theoretical_classical_avg_queries": 32.0,
+      "query_speedup": 5.333333333333333,
+      "quantum_sim_time_sec": 0.0006941999999980908,
+      "classical_search_time_sec": 6.599999323952943e-06
+    },
+    {
+      "n_qubits": 7,
+      "database_size": 128,
+      "target": 28,
+      "optimal_iterations": 8,
+      "success_probability": 0.9956198656943019,
+      "theoretical_grover_queries": 8,
+      "theoretical_classical_avg_queries": 64.0,
+      "query_speedup": 8.0,
+      "quantum_sim_time_sec": 0.0010753000005934155,
+      "classical_search_time_sec": 4.0000013541430235e-06
+    },
+    {
+      "n_qubits": 8,
+      "database_size": 256,
+      "target": 65,
+      "optimal_iterations": 12,
+      "success_probability": 0.9999470421032398,
+      "theoretical_grover_queries": 12,
+      "theoretical_classical_avg_queries": 128.0,
+      "query_speedup": 10.666666666666666,
+      "quantum_sim_time_sec": 0.0020083999988855794,
+      "classical_search_time_sec": 7.2999991971300915e-06
+    },
+    {
+      "n_qubits": 9,
+      "database_size": 512,
+      "target": 94,
+      "optimal_iterations": 17,
+      "success_probability": 0.9994480261539563,
+      "theoretical_grover_queries": 17,
+      "theoretical_classical_avg_queries": 256.0,
+      "query_speedup": 15.058823529411764,
+      "quantum_sim_time_sec": 0.0037231999995128717,
+      "classical_search_time_sec": 1.0700001439545304e-05
+    },
+    {
+      "n_qubits": 10,
+      "database_size": 1024,
+      "target": 341,
+      "optimal_iterations": 25,
+      "success_probability": 0.9994612447443202,
+      "theoretical_grover_queries": 25,
+      "theoretical_classical_avg_queries": 512.0,
+      "query_speedup": 20.48,
+      "quantum_sim_time_sec": 0.007487200000468874,
+      "classical_search_time_sec": 5.3899999329587445e-05
+    }
+  ],
+  "qpe_and_shor": {
+    "qpe_trials": [
+      {
+        "m_counting": 3,
+        "true_theta": 0.125,
+        "estimated_theta": 0.125,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999991
+      },
+      {
+        "m_counting": 4,
+        "true_theta": 0.125,
+        "estimated_theta": 0.125,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999989
+      },
+      {
+        "m_counting": 5,
+        "true_theta": 0.125,
+        "estimated_theta": 0.125,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999984
+      },
+      {
+        "m_counting": 3,
+        "true_theta": 0.25,
+        "estimated_theta": 0.25,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999991
+      },
+      {
+        "m_counting": 4,
+        "true_theta": 0.25,
+        "estimated_theta": 0.25,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999987
+      },
+      {
+        "m_counting": 5,
+        "true_theta": 0.25,
+        "estimated_theta": 0.25,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999984
+      },
+      {
+        "m_counting": 3,
+        "true_theta": 0.375,
+        "estimated_theta": 0.375,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999991
+      },
+      {
+        "m_counting": 4,
+        "true_theta": 0.375,
+        "estimated_theta": 0.375,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999989
+      },
+      {
+        "m_counting": 5,
+        "true_theta": 0.375,
+        "estimated_theta": 0.375,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999984
+      },
+      {
+        "m_counting": 3,
+        "true_theta": 0.5,
+        "estimated_theta": 0.5,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999991
+      },
+      {
+        "m_counting": 4,
+        "true_theta": 0.5,
+        "estimated_theta": 0.5,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999987
+      },
+      {
+        "m_counting": 5,
+        "true_theta": 0.5,
+        "estimated_theta": 0.5,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999984
+      },
+      {
+        "m_counting": 3,
+        "true_theta": 0.625,
+        "estimated_theta": 0.625,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999991
+      },
+      {
+        "m_counting": 4,
+        "true_theta": 0.625,
+        "estimated_theta": 0.625,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999989
+      },
+      {
+        "m_counting": 5,
+        "true_theta": 0.625,
+        "estimated_theta": 0.625,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999984
+      },
+      {
+        "m_counting": 3,
+        "true_theta": 0.75,
+        "estimated_theta": 0.75,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999991
+      },
+      {
+        "m_counting": 4,
+        "true_theta": 0.75,
+        "estimated_theta": 0.75,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999987
+      },
+      {
+        "m_counting": 5,
+        "true_theta": 0.75,
+        "estimated_theta": 0.75,
+        "phase_error": 0.0,
+        "probability": 0.9999999999999984
+      }
+    ],
+    "shor_factoring": {
+      "N": 15,
+      "a": 7,
+      "true_order_r": 4,
+      "found_order_r": 2,
+      "factors": [
+        3,
+        5
+      ],
+      "success": true,
+      "peak_indices": [
+        12,
+        8,
+        0,
+        4
+      ],
+      "simulated_counts": [
+        0.24999999999999967,
+        4.7956328790122245e-33,
+        5.308647259944371e-33,
+        9.716680003990292e-33,
+        0.24999999999999967,
+        1.1397691489848373e-32,
+        1.0611098822299676e-32,
+        2.844925948904599e-32,
+        0.24999999999999967,
+        3.181128246076215e-32,
+        2.1216001947010285e-32,
+        5.870494470991591e-32,
+        0.24999999999999967,
+        5.702393322405781e-32,
+        1.5913550384654982e-32,
+        8.157655850728378e-33
+      ]
+    }
+  },
+  "vqc_vs_mlp": {
+    "vqc": {
+      "n_params": 8,
+      "train_acc": 0.9166666666666666,
+      "test_acc": 0.95,
+      "final_loss": 0.435929337083279,
+      "train_time_sec": 17.70024000000012
+    },
+    "mlp": {
+      "n_params": 13,
+      "train_acc": 0.8666666666666667,
+      "test_acc": 0.775,
+      "final_loss": 0.46524160734438524,
+      "train_time_sec": 0.013381900000240421
+    }
+  }
+}
