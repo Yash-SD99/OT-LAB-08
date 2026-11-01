@@ -1,28 +1,31 @@
-# AI Tool Comparison: Comparative Evaluation
+# AI Tool Comparison
 
-**Task Evaluated**: Mathematical formulation and pure NumPy implementation of the **Gauss-Newton optimization algorithm with Levenberg-Marquardt damping** on a non-linear least-squares surface (Track A).
+**Task:** Gauss-Newton optimisation with Levenberg-Marquardt damping, pure NumPy, on a non-linear least-squares problem (Track A).
 
----
+**Tools compared:** Antigravity (Google DeepMind) and Claude Code (claude-sonnet-5-5, Anthropic).
 
-## Comparative Assessment Matrix
+## Comparative assessment
 
-| Evaluation Dimension | Tool A: Antigravity (Google DeepMind) | Tool B: [Second Assistant, e.g., Claude 3.5 Sonnet / ChatGPT-4o] |
+| Dimension | Antigravity | Claude Code (claude-sonnet-5-5) |
 |---|---|---|
-| **Model / Architecture** | Advanced Agentic Coding Engine | *[Student to fill: e.g. Claude 3.5 Sonnet]* |
-| **Initial Formulation Accuracy** | Accurately formulated Jacobian $J$, normal equation $(J^T J + \lambda I)\Delta \theta = J^T r$, and residual vector $r(\theta)$ without confusing it with the full Hessian. | *[Student to record]* |
-| **Hallucination / Error Rate** | Zero library hallucination; strictly adhered to NumPy vectorized operations without defaulting to SciPy or PyTorch wrappers. | *[Student to record]* |
-| **Edge-Case Handling** | Correctly identified singular / near-singular $J^T J$ matrices and introduced adaptive Levenberg-Marquardt trust-region damping $\lambda$. | *[Student to record]* |
-| **Prompt Iterations Required** | **1 iteration** to generate complete, fully tested, numerically stable optimizer class with unit tests. | *[Student to record]* |
-| **Generation Speed & Latency** | Direct response with streaming tool actions and instant workspace file writing. | *[Student to record]* |
-| **Viva Explanability Score** | High: Code contains explicit docstrings referencing textbook equations and mathematical step-by-step comments. | *[Student to record]* |
+| Model / architecture | Agentic coding engine | Agentic coding assistant (Claude Sonnet 5.5) |
+| Formulation accuracy | Correct Jacobian J, normal equations (JᵀJ + λI)Δθ = Jᵀr and residual vector r(θ); did not confuse the Gauss-Newton matrix with the full Hessian | Correct J and normal equations for min ½‖r(p)‖²; fit of y = a·exp(bx) recovered (2.001, 1.499) against true (2, 1.5) |
+| Hallucination / error rate | No library hallucination; stayed with vectorised NumPy, no SciPy or PyTorch wrappers | No errors in the Gauss-Newton code; pure NumPy. Errors elsewhere in the session are in `FAILURE_LOG.md` |
+| Edge-case handling | Detected singular / near-singular JᵀJ and added adaptive Levenberg-Marquardt damping λ | Fixed damping of 1e-9 only; no adaptive λ and no accept/reject step; fixed 30 iterations with no convergence test |
+| Prompt iterations | 1 iteration for a complete, numerically stable optimiser class with unit tests | 1 iteration (as part of a larger request); no separate unit test for Gauss-Newton |
+| Generation speed | Direct response with streamed tool actions and immediate file writes | Direct, with tool calls writing files and running the code |
+| Explainability for viva | High: docstrings cite textbook equations, step-by-step comments | Moderate: concise inline comments |
 
----
+## Observations
 
-## Detailed Notes & Behavioral Differences
+**Antigravity**
+- *Strengths:* Generated self-contained Python using pure NumPy, including automated numerical tests comparing the analytic Jacobian steps against finite differences. Immediately created the corresponding test suite and formatted outputs.
+- *Limitations / points for human review:* Needs explicit constraint guidance to prevent over-engineering helper abstractions.
 
-### Tool A (Antigravity) Observation:
-* **Strengths**: Generated self-contained Python code strictly using pure NumPy, including automated numerical gradient tests comparing analytical Jacobian steps against finite differences. Immediately created corresponding test suites and formatted outputs.
-* **Limitations / Points for Human Review**: Requires explicit constraint guidance to prevent over-engineering helper abstractions.
+**Claude Code**
+- *Strengths:* Compact, correct Gauss-Newton routine in pure NumPy that converged to the true parameters on the test problem (2.001, 1.499 against 2, 1.5); fast to produce and easy to read.
+- *Limitations / points for human review:* Simpler than the Levenberg-Marquardt specification: fixed damping, no adaptive λ or trust-region accept/reject step, fixed iteration count with no convergence test, and no finite-difference check of the Jacobian or separate unit test.
 
-### Tool B ([Student Tool Name]) Observation:
-*(Student: Run the exact same prompt in your secondary tool, record its raw response in `prompts/tool_comparison_prompt.md`, and record your findings here).*
+**Conclusion.** For this task Antigravity gave the more complete and robust optimiser. Claude Code gave the shorter implementation, and its output was correct on the test problem.
+
+*Basis: the Claude Code column describes its Track A implementation in this repository (`tracks/track_a.py`); the two tools were not given a byte-identical prompt.*
