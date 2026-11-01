@@ -1,0 +1,4 @@
+algorithm,% of final population feasible,front points returned (feasible)
+NSGA-II ignoring constraints,100,95
+NSGA-II + penalty,100,97
+C-NSGA-II (Deb),100,95

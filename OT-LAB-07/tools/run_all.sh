@@ -1,0 +1,1 @@
+python3 run_src.py ../src/a00_utils.py ../src/a01_problems.py ../src/a01b_helpers.py ../src/a02_classical.py ../src/a03_core.py ../src/a04_archive_decomp.py ../src/a05_swarm.py ../src/a06_many_ind_grad.py ../src/a06b_gradient.py ../src/a07_tests_runs.py ../src/a08_studies.py ../src/a09_taskB.py ../src/a10_taskC.py ../src/a11_taskD.py ../src/a12_taskE.py ../src/a13_taskF.py "$@"

@@ -1,0 +1,6 @@
+tour,distance,time
+random,790.3,964.9
+nearest neighbour (dist),362,484.1
+nearest neighbour (time),490.4,495.7
+2-opt best distance,351.8,463.7
+2-opt best time,411.4,366.3

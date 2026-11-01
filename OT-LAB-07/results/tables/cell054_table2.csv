@@ -1,0 +1,3 @@
+variant,front points,distinct,largest gap (norm.),smallest x,largest x
+P2 fleet (real),98,98,0.08739,"[1.0, 1.01, 1.024]","[9.874, 9.919, 10.0]"
+P2 fleet (int),10,10,0.5564,"[1.0, 2.0, 3.0]","[8.0, 9.0, 10.0]"

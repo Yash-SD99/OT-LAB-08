@@ -1,0 +1,4 @@
+algorithm,front pts,max,x1-13,,share with x1≈13
+IBEA,92,0.0004038,1
+SMS-EMOA,50,1.776e-15,1
+R-NSGA-II,100,0.001509,1

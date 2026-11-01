@@ -1,0 +1,9 @@
+method,points,points with 0.25<f1<0.75
+Weighted sum (21 w),2,0
+Weight metric p=1,2,0
+Weight metric p=2,13,2
+Weight metric p=inf,21,9
+ε-constraint,21,10
+VEGA,1,0
+MODE,1,0
+NSGA-II,91,50

@@ -1,0 +1,7 @@
+reg scale,method,cls loss start,cls loss end,reg loss start,reg loss end,verdict
+1,equal,0.6922,0.4398,4.103,0.1663,both fall
+1,mgda,0.6922,0.4098,4.103,0.5269,both fall
+1,gradnorm,0.6922,0.3889,4.103,0.5644,both fall
+20,equal,0.6922,0.5701,1143,31.2,both fall
+20,mgda,0.6922,0.4037,1143,230,both fall
+20,gradnorm,0.6922,0.4274,1143,93.48,both fall

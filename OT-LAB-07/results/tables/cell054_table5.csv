@@ -1,0 +1,4 @@
+scheme,front pts,HV,IGD,% feasible in final pop,max,Σw-1,
+repair (w/Σw) + NSGA-II,96,0.9687,0.004788,100,0
+penalty,Σw-1,>1e-3 + NSGA-II,79,0.8759,0.1002,89,0.0009889
+penalty + Deb rules (C-NSGA-II),81,0.7192,0.3256,100,0.0009914

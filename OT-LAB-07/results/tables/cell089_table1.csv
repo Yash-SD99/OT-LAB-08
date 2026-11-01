@@ -1,0 +1,6 @@
+pair,first constrained-dominates second?,reason
+A vs B,True,"rule 1: feasible beats infeasible, although B has better objectives"
+B vs C,False,"rule 2: both infeasible, smaller CV (0.5) wins ⇒ C beats B so this is False"
+A vs D,True,"rule 3: both feasible, A dominates D"
+D vs A,False,neither dominates the other in rule 3 sense ⇒ False
+C vs D,False,"rule 1: D feasible, C is not ⇒ False"

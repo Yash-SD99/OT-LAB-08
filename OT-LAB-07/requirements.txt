@@ -1,0 +1,6 @@
+numpy
+matplotlib
+scikit-learn   # only to load the breast-cancer dataset for P9
+nbformat
+nbclient
+ipykernel

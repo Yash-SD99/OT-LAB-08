@@ -1,0 +1,7 @@
+a,b,winner,Deb rule
+p1,p2,p1,3 (dominance)
+p1,p3,p1,1 (feasible > infeasible)
+p1,p4,p1,1 (feasible > infeasible)
+p2,p3,p2,1 (feasible > infeasible)
+p2,p4,p2,1 (feasible > infeasible)
+p3,p4,p3,2 (smaller violation)

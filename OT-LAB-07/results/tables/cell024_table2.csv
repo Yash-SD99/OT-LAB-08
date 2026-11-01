@@ -1,0 +1,4 @@
+weight shift,TOPSIS ranking,VIKOR (v=.5) ranking
++0.1 cost / -0.1 quality,"['S1', 'S2', 'S3', 'S5', 'S4']","['S2', 'S1', 'S3', 'S5', 'S4']"
+-0.1 cost / +0.1 quality,"['S3', 'S5', 'S1', 'S2', 'S4']","['S1', 'S3', 'S5', 'S2', 'S4']"
++0.1 delivery / -0.1 reliability,"['S3', 'S5', 'S1', 'S2', 'S4']","['S1', 'S2', 'S5', 'S3', 'S4']"
