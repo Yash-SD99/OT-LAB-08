@@ -54,4 +54,4 @@ This checklist tracks the implementation, experimental demonstration, and verifi
 | | Track G: xv6 OS Scheduler Optimization | Track G | `tracks/G_xv6/patches/` & `user/` | Codespaces build & usertests plan | Marked "NOT YET MEASURED on Host" | Verified & Completed |
 | | Track H: SQLite Index Selection (Knapsack/ILP) | Track H | `tracks/H_dbms/index_selection_opt.py` | `test_dbms.py` (query checksum invariance) | Latency, EXPLAIN plan, & storage frontier | Verified & Completed |
 | | Track I: Quantum Algorithms (DJ, BV, Grover, QFT, QPE, Shor) & QML | Track I | `tracks/I_quantum_algos_qml/fundamental_algos.py` & `vqc_qml.py` | `test_quantum_algos.py` (8/8 passed) | Grover crossover, VQC boundary, Shor spectrum | Verified & Completed |
-| | Track J: Software Eng Optimization (>1,000 LOC) | Track J | `tracks/J_software_eng/formulated_optimizer.py` | Regression test suite | Profiler speedup & memory | Planned |
+| | Track J: Software Eng Optimization (>1,000 LOC) | Track J | `tracks/J_software_eng/formulated_optimizer.py` | `test_software_eng.py` (6/6 passed + 49 upstream) | Speedup scaling (8.3x), cProfile & memory | Verified & Completed |

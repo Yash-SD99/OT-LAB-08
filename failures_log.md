@@ -241,4 +241,27 @@ Every case documented below was caught by automated unit tests or mathematical i
 
 ---
 
+### Case FAIL-10: Floating-Point Relaxation Under-Rounding Against Discrete Integer Scoring (Track J)
+* **Track Affected**: Track J (Software Engineering Optimization / fuzzywuzzy Branch-and-Bound)
+* **Initial Prompt**: "Derive and implement admissible upper bounding functions for Branch-and-Bound pruning of candidate strings."
+* **Flawed Code Excerpt**:
+  ```python
+  def char_frequency_upper_bound(counts_q, len_q, counts_c, len_c) -> float:
+      # Computed fractional ratio directly as float:
+      return (2.0 * common / total) * 100.0  # e.g. returns 8.695652...
+  ```
+* **Failure Description & Invariant Violated**:
+  In `fuzzywuzzy`, string similarity scores are returned as rounded integers in the range $[0, 100]$ via `int(round(100 * ratio))`. The mathematical relaxation $U_{\text{char}}$ computed the theoretical fractional upper bound as a float (e.g. $8.69565\%$). When a candidate string achieved an unrounded ratio of $8.69565\%$, fuzzywuzzy's internal integer rounding rounded it up to `9`. However, the floating-point relaxation evaluated to `8.69565`. In the Branch-and-Bound pruning check `if u_char <= best_score:` (where `best_score` was integer `9`), the condition $8.69565 \le 9$ evaluated to `True`, prematurely pruning candidate strings whose integer-rounded score tied or beat the current best score. This violated the fundamental admissibility invariant $U(q, c) \ge \text{score}(q, c)$.
+* **How It Was Detected**:
+  Admissibility property test `test_upper_bound_admissibility` failed with `AssertionError: Char bound violated: U_char=8.695652173913043 < ratio=9 for 'myeiegyzbrg' vs 'fhfn ptnachg'`.
+* **Corrective Fix**:
+  Applied integer rounding `int(round((2.0 * common / total) * 100.0))` to both $U_{\text{len}}$ and $U_{\text{char}}$, ensuring that the bounding relaxation operates in the exact same discrete integer codomain as the underlying `fuzzywuzzy.fuzz.ratio` scoring function:
+  ```python
+  return int(round((2.0 * common / total) * 100.0))
+  ```
+* **Lesson Learned & Takeaway for Viva**:
+  When constructing bounding relaxations for discrete combinatorial optimization, the bounding function must account for any discretization or rounding applied by the target system. An unrounded continuous relaxation can fall below an integer-rounded objective, violating admissibility.
+
+---
+
 *(Additional failure incidents will be appended dynamically as each track's test suite executes)*.

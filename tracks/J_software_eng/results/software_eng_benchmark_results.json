@@ -1,0 +1,70 @@
+{
+  "metadata": {
+    "track": "Track J: Software Engineering Optimization",
+    "project_name": "SeatGeek/fuzzywuzzy",
+    "license": "MIT",
+    "project_lines_of_code": 1675,
+    "student": "Yash Deshmukh",
+    "roll_no": "241070018",
+    "institution": "VJTI Mumbai",
+    "timestamp": "2026-11-01T23:33:49"
+  },
+  "scaling_benchmarks": [
+    {
+      "corpus_size": 500,
+      "n_queries": 30,
+      "baseline_time_mean": 0.39605441999992763,
+      "baseline_time_std": 0.008149163768677699,
+      "optimized_time_mean": 0.14053037999983645,
+      "optimized_time_std": 0.004087329769622364,
+      "speedup_factor": 2.8182832779672875,
+      "latency_per_query_base_ms": 13.201813999997588,
+      "latency_per_query_opt_ms": 4.684345999994548
+    },
+    {
+      "corpus_size": 1000,
+      "n_queries": 30,
+      "baseline_time_mean": 0.7802210999994713,
+      "baseline_time_std": 0.024168394763286218,
+      "optimized_time_mean": 0.22519474000000628,
+      "optimized_time_std": 0.03263525246200026,
+      "speedup_factor": 3.464650639706103,
+      "latency_per_query_base_ms": 26.007369999982377,
+      "latency_per_query_opt_ms": 7.506491333333543
+    },
+    {
+      "corpus_size": 2000,
+      "n_queries": 30,
+      "baseline_time_mean": 1.9703674799999136,
+      "baseline_time_std": 0.393148115581544,
+      "optimized_time_mean": 0.25976431999988564,
+      "optimized_time_std": 0.0041392161165253105,
+      "speedup_factor": 7.585212164629773,
+      "latency_per_query_base_ms": 65.67891599999712,
+      "latency_per_query_opt_ms": 8.658810666662854
+    },
+    {
+      "corpus_size": 3000,
+      "n_queries": 30,
+      "baseline_time_mean": 2.385305519999747,
+      "baseline_time_std": 0.029434049553652402,
+      "optimized_time_mean": 0.2859992600002442,
+      "optimized_time_std": 0.01476488877718988,
+      "speedup_factor": 8.34025067057065,
+      "latency_per_query_base_ms": 79.51018399999157,
+      "latency_per_query_opt_ms": 9.533308666674808
+    }
+  ],
+  "cprofile_summary": {
+    "baseline_total_calls": 2468074,
+    "baseline_total_time_sec": 0.8969810999999999,
+    "optimized_total_calls": 1082913,
+    "optimized_total_time_sec": 0.3567620999999999,
+    "call_reduction_ratio": 2.279106447147647
+  },
+  "memory_profile": {
+    "baseline_peak_kb": 6.517578125,
+    "optimized_peak_kb": 572.53515625,
+    "delta_kb": 566.017578125
+  }
+}
