@@ -132,3 +132,65 @@ def test_curvature_approximations():
     # Check that rank is <= 2
     rank = np.linalg.matrix_rank(F_lowrank, tol=1e-7)
     assert rank <= 2
+
+
+def test_saddle_point_exact_vs_perturbed():
+    """Verifies that exact saddle point is an equilibrium for GD, but perturbed escapes."""
+    saddle = SaddlePointLandscape()
+    
+    # Exact saddle start [0, 0]
+    x_exact = np.array([0.0, 0.0])
+    for _ in range(20):
+        x_exact = x_exact - 0.1 * saddle.gradient(x_exact)
+    np.testing.assert_allclose(x_exact, np.array([0.0, 0.0]))
+    
+    # Perturbed start [1e-5, 1e-5]
+    x_pert = np.array([1e-5, 1e-5])
+    for _ in range(20):
+        x_pert = x_pert - 0.1 * saddle.gradient(x_pert)
+    # y must diverge negatively along negative curvature
+    assert abs(x_pert[1]) > 1e-4
+    assert abs(x_pert[1]) > abs(x_pert[0])
+
+
+def test_rastrigin_multi_start_local_minima():
+    """Verifies that Rastrigin contains multiple local minima across random restarts."""
+    rastrigin = RastriginLandscape(dim=2)
+    rng = np.random.default_rng(123)
+    
+    final_vals = []
+    for _ in range(15):
+        x = rng.uniform(-5.12, 5.12, size=2)
+        for _ in range(200):
+            x = x - 0.005 * rastrigin.gradient(x)
+        final_vals.append(round(rastrigin.value(x), 1))
+        
+    unique_basins = set(final_vals)
+    # Must find at least 3 distinct basins
+    assert len(unique_basins) >= 3
+
+
+def test_minibatch_variance_reduction():
+    """Verifies that larger batch sizes strictly reduce gradient variance."""
+    rng = np.random.default_rng(42)
+    N = 100
+    X = rng.normal(0, 1, size=(N, 2))
+    y = rng.choice([-1.0, 1.0], size=(N, 1))
+    mlp = SimpleMLP(in_dim=2, hidden_dim=4, out_dim=1, reg_lambda=1e-4, seed=42)
+    mlp.loss(X, y)
+    full_g = mlp.backward(y)
+    
+    # Variance for B=1
+    grads_1 = [mlp.backward(y[i:i+1]) for i in range(20) if mlp.loss(X[i:i+1], y[i:i+1]) is not None]
+    var_1 = np.mean([np.sum((g - full_g)**2) for g in grads_1])
+    
+    # Variance for B=20
+    grads_20 = []
+    for _ in range(20):
+        idx = rng.choice(N, size=20, replace=False)
+        mlp.loss(X[idx], y[idx])
+        grads_20.append(mlp.backward(y[idx]))
+    var_20 = np.mean([np.sum((g - full_g)**2) for g in grads_20])
+    
+    assert var_20 < var_1, f"Expected var(B=20) < var(B=1), got {var_20} vs {var_1}"
+
