@@ -5,7 +5,7 @@ This checklist tracks the implementation, experimental demonstration, and verifi
 | Syllabus Area | Algorithm / Technique | Track | Implementation File | Verification Test | Result Artifact | Status |
 |---|---|:---:|---|---|---|:---:|
 | **Foundations of ML Optimization** | Parameters, loss functions & regularization | Track A | `tracks/A_continuous/models.py` | `tracks/A_continuous/tests/test_continuous.py` | `tracks/A_continuous/results/` | Verified & Completed |
-| | Continuous vs discrete optimization formulation | Tracks A & B | `tracks/A_continuous/landscapes.py`, `tracks/B_discrete/knapsack_alloc.py` | Direct mathematical test | Benchmark tables | In Progress |
+| | Continuous vs discrete optimization formulation | Tracks A & B | `tracks/A_continuous/landscapes.py`, `tracks/B_discrete/knapsack_solvers.py` | Direct mathematical test | Benchmark tables | Verified & Completed |
 | | Convex vs non-convex landscapes (saddle points, local minima) | Track A | `tracks/A_continuous/landscapes.py` | `tracks/A_continuous/tests/test_continuous.py` | Convergence curves | Verified & Completed |
 | | Basic quantum computing concepts in optimization | Tracks C & I | `tracks/C_quantum_opt/pqc_qnn.py`, `tracks/I_quantum_algos_qml/circuits_from_scratch.py` | `tracks/C_quantum_opt/tests/test_quantum_opt.py` | Noise & state plots | Planned |
 | **Continuous Optimization** | Gradient Descent (Batch GD) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Step-size sensitivity CSV | Verified & Completed |
@@ -24,13 +24,13 @@ This checklist tracks the implementation, experimental demonstration, and verifi
 | | Convergence (convex, strongly convex, non-convex) | Track A | `tracks/A_continuous/benchmarks.py` | Empirical rate validation | Rate plot $\log(f - f^*)$ | Verified & Completed |
 | | Step-size and optimizer tuning | Track A | `tracks/A_continuous/benchmarks.py` | Grid search sensitivity analysis | Sensitivity heatmaps | Verified & Completed |
 | | Noisy objectives & stochastic variance | Track A | `tracks/A_continuous/benchmarks.py` | Repeated runs (mean $\pm$ std) | Stochastic trajectory plot | Verified & Completed |
-| **Discrete Optimization** | Greedy selection | Track B | `tracks/B_discrete/knapsack_alloc.py` | `tracks/B_discrete/tests/test_discrete.py` | Suboptimality gap table | Planned |
-| | Integer Linear Programming (ILP) | Track B | `tracks/B_discrete/knapsack_alloc.py` | PuLP solver comparison | Exact vs heuristic | Planned |
-| | Custom Branch-and-Bound (from scratch) | Track B | `tracks/B_discrete/knapsack_alloc.py` | `tracks/B_discrete/tests/test_discrete.py` | Node exploration tree log | Planned |
-| | Dynamic Programming | Track B | `tracks/B_discrete/knapsack_alloc.py` | `tracks/B_discrete/tests/test_discrete.py` | Optimal cost matrix | Planned |
-| | Combinatorial feature selection | Track B | `tracks/B_discrete/feature_selection.py` | Forward/backward selection test | AIC/BIC feature curve | Planned |
-| | QUBO / Ising formulation (binary-to-spin) | Track B | `tracks/B_discrete/qubo_formulation.py` | Energy Hamiltonian check | QUBO matrix CSV | Planned |
-| | Penalty terms for constraints (Max-Cut / Selection) | Track B | `tracks/B_discrete/qubo_formulation.py` | Feasibility audit under penalty | Constraint penalty plot | Planned |
+| **Discrete Optimization** | Greedy selection | Track B | `tracks/B_discrete/knapsack_solvers.py` | `tracks/B_discrete/tests/test_discrete.py` | Suboptimality gap table | Verified & Completed |
+| | Integer Linear Programming (ILP) | Track B | `tracks/B_discrete/knapsack_solvers.py` | `scipy.optimize.milp` & PuLP solve | Exact vs heuristic | Verified & Completed |
+| | Custom Branch-and-Bound (from scratch) | Track B | `tracks/B_discrete/knapsack_solvers.py` | `tracks/B_discrete/tests/test_discrete.py` | Node exploration tree log | Verified & Completed |
+| | Dynamic Programming | Track B | `tracks/B_discrete/knapsack_solvers.py` | `tracks/B_discrete/tests/test_discrete.py` | Optimal cost matrix | Verified & Completed |
+| | Combinatorial feature selection | Track B | `tracks/B_discrete/feature_selection.py` | Forward/backward selection test | AIC/BIC feature curve | Verified & Completed |
+| | QUBO / Ising formulation (binary-to-spin) | Track B | `tracks/B_discrete/qubo_formulation.py` | Energy Hamiltonian check | QUBO matrix CSV | Verified & Completed |
+| | Penalty terms for constraints (Max-Cut / Selection) | Track B | `tracks/B_discrete/qubo_formulation.py` | Feasibility audit under penalty | Constraint penalty plot | Verified & Completed |
 | **Quantum Optimization** | QAOA (solving Track B Max-Cut QUBO) | Track C | `tracks/C_quantum_opt/qaoa_maxcut.py` | `tracks/C_quantum_opt/tests/test_quantum_opt.py` | Approximation ratio vs depth $p$ | Planned |
 | | VQE (Variational Quantum Eigensolver) | Track C | `tracks/C_quantum_opt/vqe_ising.py` | `tracks/C_quantum_opt/tests/test_quantum_opt.py` | Ground state energy convergence | Planned |
 | | Parameterized Quantum Circuits (PQCs / QNNs) | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Unitary trace test | Expressibility metric | Planned |

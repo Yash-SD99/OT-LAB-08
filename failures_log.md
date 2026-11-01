@@ -11,8 +11,8 @@ Every case documented below was caught by automated unit tests or mathematical i
 | ID | Track | Failure Classification | Root Cause | Detection Mechanism | Resolution |
 |---|:---:|---|---|---|---|
 | **FAIL-01** | Track A (Continuous) | Mathematical / Operator Precedence Error | Flawed parentheses in `f_opt = 0.5 * float(x_opt @ A @ x_opt - b @ x_opt)` scaled the linear term by 0.5, causing theoretical minimum to evaluate to 0.0 instead of $-0.5 b^T A^{-1} b$, yielding negative optimality gaps. | Automated verification: $f(x) - f^* < 0$ caught in sensitivity benchmark output. | Corrected grouping to `0.5 * (x_opt @ A @ x_opt) - (b @ x_opt)` ensuring mathematical equivalence to $-0.5 b^T x^*$. |
-| **FAIL-02** | *[Track Name]* | *[To be populated upon discovery during track execution]* | *Pending* | *Pending* | *Pending* |
-| **FAIL-03** | *[Track Name]* | *[To be populated upon discovery during track execution]* | *Pending* | *Pending* | *Pending* |
+| **FAIL-02** | Track B (Discrete / QUBO) | Algebraic Mapping Error | In `qubo_to_ising`, the constant diagonal offset contribution was set to `C += 0.25 * Q[i, i]` instead of `0.5 * Q[i, i]`, violating energy conservation between binary and spin bases. | Unit test assertion failure: `test_qubo_ising_conversion_identity` reported discrepancy between $x^T Q x$ and $H_{\text{Ising}}(s)$. | Corrected diagonal constant accumulation to `C += 0.5 * Q_sym[i, i]`, achieving machine-precision equivalence ($< 10^{-16}$). |
+| **FAIL-03** | Track B (Discrete / B&B) | Algorithmic Bounding Logic Error | In custom Branch-and-Bound, `fractional_bound` returned `0.0` when `curr_wt >= capacity`. When an item combination exactly filled capacity (`curr_wt == capacity`), the upper bound was returned as 0.0 instead of `curr_val`, causing the optimal incumbent to be pruned prematurely. | Known-instance test failure: B&B returned 240.0 while DP and `scipy.optimize.milp` found 270.0. | Corrected boundary logic to return `curr_val` when `curr_wt == capacity` and prune only when strictly exceeding capacity. |
 
 ---
 
@@ -39,6 +39,54 @@ Every case documented below was caught by automated unit tests or mathematical i
   ```
 * **Lesson Learned & Takeaway for Viva**:
   Never assume scalar objective simplifications in AI-generated code are algebraically correct. Always verify invariants like $f(x) - f^* \ge 0$ for convex functions against known analytical closed-form solutions before trusting benchmark metrics.
+
+---
+
+### Case FAIL-02: Constant Offset Error in QUBO-to-Ising Spin Mapping (Track B)
+* **Track Affected**: Track B (Discrete Optimization / QUBO)
+* **Initial Prompt**: "Write a function qubo_to_ising(Q) to convert QUBO matrix to Ising Hamiltonian (J, h, C)."
+* **Flawed Code Excerpt**:
+  ```python
+  for i in range(N):
+      h[i] += 0.5 * Q_sym[i, i]
+      C += 0.25 * Q_sym[i, i]  # FLAWED: Divided by 4 instead of 2
+  ```
+* **Failure Description & Invariant Violated**:
+  When substituting $x_i = \frac{s_i + 1}{2}$ into the diagonal term $Q_{ii} x_i^2 = Q_{ii} x_i$:
+  $$Q_{ii} \frac{s_i + 1}{2} = \frac{1}{2} Q_{ii} s_i + \frac{1}{2} Q_{ii}$$
+  The constant contribution is $\frac{1}{2} Q_{ii}$, not $\frac{1}{4} Q_{ii}$. The AI confused the linear substitution with the quadratic cross-term substitution $\frac{s_i+1}{2} \frac{s_j+1}{2} = \frac{1}{4} (s_i s_j + s_i + s_j + 1)$. Consequently, the baseline Ising energy shifted away from the true QUBO energy by $\frac{1}{4} \sum_i Q_{ii}$.
+* **How It Was Detected**:
+  Unit test `test_qubo_ising_conversion_identity` asserted $x^T Q x == H_{\text{Ising}}(s)$ for random states. The test failed with `AssertionError: 0.0 != -0.21637`.
+* **Corrective Fix**:
+  Updated the accumulation to `C += 0.5 * Q_sym[i, i]`. Re-running the test verified exact zero difference ($0.00 \times 10^{-16}$).
+* **Lesson Learned & Takeaway for Viva**:
+  Quantum mapping transformations must preserve the exact Hamiltonian spectrum. A constant energy shift in the classical mapping propagates directly into biased phase rotations in QAOA circuits in Track C.
+
+---
+
+### Case FAIL-03: Boundary Misjudgment in Branch-and-Bound Linear Relaxation (Track B)
+* **Track Affected**: Track B (Discrete Optimization / Custom B&B)
+* **Initial Prompt**: "Implement a custom Branch-and-Bound solver for 0/1 Knapsack with fractional linear relaxation bounding."
+* **Flawed Code Excerpt**:
+  ```python
+  def fractional_bound(level, curr_val, curr_wt):
+      if curr_wt >= instance.capacity:
+          return 0.0  # FLAWED: When curr_wt == capacity, upper bound is curr_val, not 0.0!
+  ```
+* **Failure Description & Invariant Violated**:
+  In Branch-and-Bound, an upper bound must be an *admissible* (upper) bound on the achievable total objective from that subtree. If `curr_wt == capacity`, the sack is exactly full, so zero *additional* weight can be packed, meaning the maximum possible value achievable from this node is exactly `curr_val`. The AI conflated "additional achievable value is 0" with "total upper bound is 0". When a path perfectly packed the knapsack to capacity (50.0), its upper bound was set to 0.0, causing the node to be immediately pruned because $0.0 \le \text{best\_value}$.
+* **How It Was Detected**:
+  Unit test `test_knapsack_exact_solvers_equivalence` compared DP, Custom B&B, and `scipy.optimize.milp` on an instance with values $[60, 100, 120, 80, 30]$ and weights $[10, 20, 30, 15, 5]$ with capacity $50$. DP and ILP found optimal value $270.0$ (packing items $0, 1, 3, 4$ with total weight $50.0$), but B&B returned $240.0$.
+* **Corrective Fix**:
+  Corrected the boundary condition:
+  ```python
+  if curr_wt > instance.capacity:
+      return 0.0
+  if curr_wt == instance.capacity:
+      return float(curr_val)
+  ```
+* **Lesson Learned & Takeaway for Viva**:
+  Branch-and-Bound correctness hinges entirely on the admissibility of the bounding function ($\text{bound}(u) \ge f(x)$ for all leaves $x$ in subtree $u$). Underestimating the bound at boundary conditions breaks admissibility and silently prunes the global optimum.
 
 ---
 

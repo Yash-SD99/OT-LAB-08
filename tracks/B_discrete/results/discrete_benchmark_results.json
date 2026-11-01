@@ -1,0 +1,334 @@
+{
+  "benchmark_1_knapsack_scaling": {
+    "sizes": [
+      10,
+      15,
+      20,
+      25,
+      30,
+      40
+    ],
+    "runtimes_ms": {
+      "Greedy": [
+        1.4700000001539593,
+        0.028200000087963417,
+        0.2729999996518018,
+        0.034699999559961725,
+        0.030500000320898835,
+        0.033799999982875306
+      ],
+      "Dynamic Programming": [
+        0.4517999996096478,
+        0.07349999941652641,
+        0.10449999990669312,
+        0.12229999992996454,
+        0.15010000061010942,
+        0.1643999994485057
+      ],
+      "Custom Branch-and-Bound": [
+        0.22840000019641593,
+        0.14250000003812602,
+        0.09189999946102034,
+        0.1711999993858626,
+        0.1733999997668434,
+        0.3443000005063368
+      ],
+      "ILP (scipy.optimize.milp)": [
+        20.491299999775947,
+        6.9447000005311565,
+        1.3564000000769738,
+        5.638700000417884,
+        1.3221999997767853,
+        3.637200000412122
+      ]
+    },
+    "objectives": {
+      "Greedy": [
+        356.0,
+        559.0,
+        761.0,
+        763.0,
+        1061.0,
+        1598.0
+      ],
+      "Dynamic Programming": [
+        359.0,
+        559.0,
+        761.0,
+        765.0,
+        1061.0,
+        1608.0
+      ],
+      "Custom Branch-and-Bound": [
+        359.0,
+        559.0,
+        761.0,
+        765.0,
+        1061.0,
+        1608.0
+      ],
+      "ILP (scipy.optimize.milp)": [
+        359.0,
+        559.0,
+        761.0,
+        765.0,
+        1061.0,
+        1608.0
+      ]
+    },
+    "pruning_stats": {
+      "explored": [
+        23,
+        54,
+        30,
+        79,
+        56,
+        118
+      ],
+      "pruned": [
+        10,
+        19,
+        12,
+        20,
+        20,
+        37
+      ]
+    }
+  },
+  "benchmark_2_feature_selection": {
+    "dataset_shape": [
+      80,
+      10
+    ],
+    "true_features": [
+      1,
+      4,
+      7
+    ],
+    "target_cardinality": 3,
+    "exact_selection": {
+      "method": "Exact Exhaustive Subset Selection",
+      "selected_indices": [
+        1,
+        4,
+        7
+      ],
+      "selected_mask": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "mse": 0.018609895786169787,
+      "r2": 0.9991945815240812,
+      "subsets_evaluated": 175,
+      "runtime_ms": 5.669299999681243,
+      "is_exact": true
+    },
+    "forward_greedy": {
+      "method": "Forward Greedy Selection",
+      "selected_indices": [
+        1,
+        4,
+        7
+      ],
+      "selected_mask": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "mse": 0.018609895786169787,
+      "r2": 0.9991945815240812,
+      "subsets_evaluated": 27,
+      "runtime_ms": 0.6735000006301561,
+      "is_exact": false
+    },
+    "runtime_speedup": 8.417668885488935,
+    "evaluations_ratio": 6.481481481481482
+  },
+  "benchmark_3_maxcut_qubo_baseline": {
+    "6_nodes": {
+      "num_nodes": 6,
+      "edges": 3,
+      "exact_max_cut": 3.0,
+      "exact_min_energy": -3.0,
+      "exact_runtime_ms": 0.17409999964002054,
+      "sa_mean_cut": 3.0,
+      "sa_std_cut": 0.0,
+      "sa_approximation_ratio": 1.0,
+      "sa_mean_runtime_ms": 114.2517900002531
+    },
+    "8_nodes": {
+      "num_nodes": 8,
+      "edges": 9,
+      "exact_max_cut": 8.0,
+      "exact_min_energy": -8.0,
+      "exact_runtime_ms": 4.86670000009326,
+      "sa_mean_cut": 8.0,
+      "sa_std_cut": 0.0,
+      "sa_approximation_ratio": 1.0,
+      "sa_mean_runtime_ms": 204.14881000006062
+    },
+    "10_nodes": {
+      "num_nodes": 10,
+      "edges": 19,
+      "exact_max_cut": 15.0,
+      "exact_min_energy": -15.0,
+      "exact_runtime_ms": 11.251400000219292,
+      "sa_mean_cut": 15.0,
+      "sa_std_cut": 0.0,
+      "sa_approximation_ratio": 1.0,
+      "sa_mean_runtime_ms": 223.4372700001586
+    }
+  },
+  "benchmark_4_penalty_tradeoff": {
+    "penalty_sweep": [
+      {
+        "lambda": 0.01,
+        "selected_state": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "actual_weight": 78.0,
+        "target_weight": 35.0,
+        "actual_value": 250.0,
+        "constraint_violation": 43.0,
+        "is_feasible": false
+      },
+      {
+        "lambda": 0.1,
+        "selected_state": [
+          1,
+          1,
+          0,
+          1,
+          1
+        ],
+        "actual_weight": 53.0,
+        "target_weight": 35.0,
+        "actual_value": 180.0,
+        "constraint_violation": 18.0,
+        "is_feasible": false
+      },
+      {
+        "lambda": 0.5,
+        "selected_state": [
+          1,
+          0,
+          0,
+          1,
+          1
+        ],
+        "actual_weight": 38.0,
+        "target_weight": 35.0,
+        "actual_value": 130.0,
+        "constraint_violation": 3.0,
+        "is_feasible": false
+      },
+      {
+        "lambda": 1.0,
+        "selected_state": [
+          1,
+          0,
+          0,
+          1,
+          1
+        ],
+        "actual_weight": 38.0,
+        "target_weight": 35.0,
+        "actual_value": 130.0,
+        "constraint_violation": 3.0,
+        "is_feasible": false
+      },
+      {
+        "lambda": 2.5,
+        "selected_state": [
+          0,
+          1,
+          0,
+          0,
+          1
+        ],
+        "actual_weight": 35.0,
+        "target_weight": 35.0,
+        "actual_value": 110.0,
+        "constraint_violation": 0.0,
+        "is_feasible": true
+      },
+      {
+        "lambda": 5.0,
+        "selected_state": [
+          0,
+          1,
+          0,
+          0,
+          1
+        ],
+        "actual_weight": 35.0,
+        "target_weight": 35.0,
+        "actual_value": 110.0,
+        "constraint_violation": 0.0,
+        "is_feasible": true
+      },
+      {
+        "lambda": 15.0,
+        "selected_state": [
+          0,
+          1,
+          0,
+          0,
+          1
+        ],
+        "actual_weight": 35.0,
+        "target_weight": 35.0,
+        "actual_value": 110.0,
+        "constraint_violation": 0.0,
+        "is_feasible": true
+      },
+      {
+        "lambda": 50.0,
+        "selected_state": [
+          0,
+          1,
+          0,
+          0,
+          1
+        ],
+        "actual_weight": 35.0,
+        "target_weight": 35.0,
+        "actual_value": 110.0,
+        "constraint_violation": 0.0,
+        "is_feasible": true
+      }
+    ]
+  },
+  "minor_embedding_limits": {
+    "logical_qubits": 8,
+    "graph_density": 1.0,
+    "chimera_estimated_physical_qubits": 16,
+    "pegasus_estimated_physical_qubits": 8,
+    "qubit_expansion_factor_chimera": 2.0,
+    "qubit_expansion_factor_pegasus": 1.0,
+    "limiting_factors": [
+      "Ferromagnetic chain breaks (destroys ground-state solution if coupling J_chain is too weak)",
+      "Precision loss due to digital-to-analog converter (DAC) quantization of couplings",
+      "Energy scale attenuation: adding penalty couplings compresses the dynamic range of problem Hamiltonian"
+    ]
+  }
+}
