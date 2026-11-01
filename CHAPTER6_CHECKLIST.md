@@ -51,7 +51,7 @@ This checklist tracks the implementation, experimental demonstration, and verifi
 | | GradNorm | Track D | `tracks/D_submodular_parallel_distributed/multitask_mgda_gradnorm.py` | Gradient norm balance test | Dynamic task weight balance | Verified & Completed |
 | **Domain-Specific Tracks** | Track E: Non-Convex Portfolio Optimization | Track E | `tracks/E_case_study/solvers.py` | Constraint feasibility check | Efficient frontier comparison | Planned |
 | | Track F: Toy TAC Compiler (4 passes + optimization) | Track F | `tracks/F_compiler/passes.py` & `formulation_opt.py` | `test_compiler.py` (strict output equivalence) | Code size, compile time, & VM cycles | Verified & Completed |
-| | Track G: xv6 OS Scheduler Optimization | Track G | `tracks/G_xv6/patches/` | Codespaces build & usertests plan | Marked "NOT YET MEASURED" | Planned |
+| | Track G: xv6 OS Scheduler Optimization | Track G | `tracks/G_xv6/patches/` & `user/` | Codespaces build & usertests plan | Marked "NOT YET MEASURED on Host" | Verified & Completed |
 | | Track H: SQLite Index Selection (Knapsack/ILP) | Track H | `tracks/H_dbms/index_selection_opt.py` | Query checksum verification | Latency & EXPLAIN ANALYZE | Planned |
 | | Track I: Quantum Algorithms (DJ, BV, Grover, QFT, QPE) & QML | Track I | `tracks/I_quantum_algos_qml/circuits_from_scratch.py` | Correctness assertions on simulator | Grover vs Linear crossover | Planned |
 | | Track J: Software Eng Optimization (>1,000 LOC) | Track J | `tracks/J_software_eng/formulated_optimizer.py` | Regression test suite | Profiler speedup & memory | Planned |

@@ -1,0 +1,51 @@
+{
+  "track": "Track G: xv6 OS Scheduler Optimization",
+  "environment": {
+    "target_platform": "GitHub Codespaces (Linux)",
+    "architecture": "RISC-V 64-bit",
+    "emulator": "qemu-system-riscv64",
+    "status": "NOT YET MEASURED on Host (To be benchmarked in GitHub Codespaces)"
+  },
+  "kernel_features": [
+    {
+      "feature": "Lottery / Priority Scheduler",
+      "status": "Patch ready in tracks/G_xv6/patches/0001_lottery_scheduler_and_schedstat.patch",
+      "mechanism": "Proportional-share randomized ticket lottery replacing xv6 default Round-Robin"
+    },
+    {
+      "feature": "sys_schedstat System Call",
+      "status": "Patch ready in tracks/G_xv6/patches/0001_lottery_scheduler_and_schedstat.patch",
+      "mechanism": "Copies runtime ticks, runnable wait ticks, and context switch counts to user space"
+    }
+  ],
+  "verification_plan": {
+    "usertests": "NOT YET MEASURED on Host (Target: ALL TESTS PASSED in QEMU)",
+    "workload_cpu": {
+      "status": "NOT YET MEASURED on Host",
+      "matrix_dim": 32,
+      "iterations": 500,
+      "measured_ticks_run": "NOT YET MEASURED",
+      "measured_sched_count": "NOT YET MEASURED"
+    },
+    "workload_io": {
+      "status": "NOT YET MEASURED on Host",
+      "rounds": 50,
+      "measured_elapsed_ticks": "NOT YET MEASURED",
+      "measured_ticks_wait": "NOT YET MEASURED"
+    },
+    "workload_mixed": {
+      "status": "NOT YET MEASURED on Host",
+      "phases": 30,
+      "measured_elapsed_ticks": "NOT YET MEASURED",
+      "measured_ticks_run": "NOT YET MEASURED"
+    },
+    "sched_bench_proportional_fairness": {
+      "status": "NOT YET MEASURED on Host",
+      "worker_processes": 3,
+      "allocated_ticket_ratios": [10, 20, 30],
+      "theoretical_cpu_shares": ["16.7%", "33.3%", "50.0%"],
+      "measured_cpu_shares": "NOT YET MEASURED",
+      "fairness_error": "NOT YET MEASURED"
+    }
+  }
+}

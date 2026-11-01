@@ -1,0 +1,284 @@
+diff --git a/Makefile b/Makefile
+index 39a99d7..84be621 100644
+--- a/Makefile
++++ b/Makefile
+@@ -132,6 +132,10 @@ UPROGS=\
+ 	$U/_grind\
+ 	$U/_wc\
+ 	$U/_zombie\
++	$U/_workload_cpu\
++	$U/_workload_io\
++	$U/_workload_mixed\
++	$U/_sched_bench\
+ 
+ fs.img: mkfs/mkfs README $(UPROGS)
+ 	mkfs/mkfs fs.img README $(UPROGS)
+diff --git a/kernel/defs.h b/kernel/defs.h
+index a3c962b..792f9e4 100644
+--- a/kernel/defs.h
++++ b/kernel/defs.h
+@@ -106,6 +106,7 @@ void            yield(void);
+ int             either_copyout(int user_dst, uint64 dst, void *src, uint64 len);
+ int             either_copyin(void *dst, int user_src, uint64 src, uint64 len);
+ void            procdump(void);
++int             settickets(int);
+ 
+ // swtch.S
+ void            swtch(struct context*, struct context*);
+diff --git a/kernel/proc.c b/kernel/proc.c
+index 959b778..303310f 100644
+--- a/kernel/proc.c
++++ b/kernel/proc.c
+@@ -124,6 +124,10 @@ allocproc(void)
+   p->pid = allocpid();
+   p->state = USED;
+ 
++  p->tickets = 10;
++  p->ticks_run = 0;
++  p->ticks_wait = 0;
++  p->sched_count = 0;
++
+   // Allocate a trapframe page.
+   if((p->trapframe = (struct trapframe *)kalloc()) == 0){
+     freeproc(p);
+@@ -312,6 +316,7 @@ fork(void)
+ 
+   safestrcpy(np->name, p->name, sizeof(p->name));
+ 
++  np->tickets = p->tickets;
+   pid = np->pid;
+ 
+   release(&np->lock);
+@@ -441,6 +446,14 @@ wait(uint64 addr)
+   }
+ }
+ 
++static unsigned long rand_next = 1;
++static int
++rand_lcg(void)
++{
++  rand_next = rand_next * 1103515245 + 12345;
++  return (unsigned int)(rand_next / 65536) % 32768;
++}
++
+ // Per-CPU process scheduler.
+ // Each CPU calls scheduler() after setting itself up.
+ // Scheduler never returns.  It loops, doing:
+@@ -454,26 +467,49 @@ scheduler(void)
+   struct cpu *c = mycpu();
+   
+   c->proc = 0;
+-  for(;;){
++  for(;;){
+     // Avoid deadlock by enabling interrupts.
+     intr_on();
+ 
++    int total_tickets = 0;
+     for(p = proc; p < &proc[NPROC]; p++) {
+       acquire(&p->lock);
+       if(p->state == RUNNABLE) {
+-        // Switch to chosen process.  It is the process's job
+-        // to release its lock and then reacquire it
+-        // before jumping back to us.
+-        p->state = RUNNING;
+-        c->proc = p;
+-        swtch(&c->context, &p->context);
+-
+-        // Process is done running for now.
+-        // It should have changed its p->state before coming back.
+-        c->proc = 0;
++        total_tickets += p->tickets;
+       }
+       release(&p->lock);
+     }
++
++    if(total_tickets <= 0)
++      continue;
++
++    int winning_ticket = rand_lcg() % total_tickets;
++    int current_counter = 0;
++
++    for(p = proc; p < &proc[NPROC]; p++) {
++      acquire(&p->lock);
++      if(p->state == RUNNABLE) {
++        current_counter += p->tickets;
++        if(current_counter > winning_ticket) {
++          p->state = RUNNING;
++          p->sched_count++;
++          c->proc = p;
++          swtch(&c->context, &p->context);
++
++          c->proc = 0;
++          release(&p->lock);
++          break;
++        }
++      }
++      release(&p->lock);
++    }
+   }
+ }
+ 
+diff --git a/kernel/proc.h b/kernel/proc.h
+index d021857..efad613 100644
+--- a/kernel/proc.h
++++ b/kernel/proc.h
+@@ -104,4 +104,8 @@ struct proc {
+   struct file *ofile[NOFILE];  // Open files
+   struct inode *cwd;           // Current directory
+   char name[16];               // Process name (debugging)
++  int tickets;                 // Lottery tickets for proportional-share scheduling
++  uint ticks_run;              // Total ticks process spent in RUNNING state
++  uint ticks_wait;             // Total ticks process spent in RUNNABLE state
++  uint sched_count;            // Number of times scheduled onto CPU
+ };
+diff --git a/kernel/schedstat.h b/kernel/schedstat.h
+new file mode 100644
+index 0000000..f5bc3a1
+--- /dev/null
++++ b/kernel/schedstat.h
+@@ -0,0 +1,15 @@
++#ifndef _SCHEDSTAT_H_
++#define _SCHEDSTAT_H_
++
++// Shared structure for reporting scheduling statistics to user space
++struct schedstat {
++  int pid;
++  int tickets;
++  int ticks_run;
++  int ticks_wait;
++  int sched_count;
++};
++
++#endif
+diff --git a/kernel/syscall.c b/kernel/syscall.c
+index ed65409..be2c244 100644
+--- a/kernel/syscall.c
++++ b/kernel/syscall.c
+@@ -101,6 +101,8 @@ extern uint64 sys_unlink(void);
+ extern uint64 sys_wait(void);
+ extern uint64 sys_write(void);
+ extern uint64 sys_uptime(void);
++extern uint64 sys_settickets(void);
++extern uint64 sys_schedstat(void);
+ 
+ static uint64 (*syscalls[])(void) = {
+ [SYS_fork]    sys_fork,
+@@ -126,6 +128,8 @@ static uint64 (*syscalls[])(void) = {
+ [SYS_link]    sys_link,
+ [SYS_mkdir]   sys_mkdir,
+ [SYS_close]   sys_close,
++[SYS_settickets] sys_settickets,
++[SYS_schedstat]  sys_schedstat,
+ };
+ 
+ void
+diff --git a/kernel/syscall.h b/kernel/syscall.h
+index bc5f356..e3bb520 100644
+--- a/kernel/syscall.h
++++ b/kernel/syscall.h
+@@ -20,3 +20,5 @@
+ #define SYS_link   19
+ #define SYS_mkdir  20
+ #define SYS_close  21
++#define SYS_settickets 22
++#define SYS_schedstat  23
+diff --git a/kernel/sysproc.c b/kernel/sysproc.c
+index 1de144e..bb99201 100644
+--- a/kernel/sysproc.c
++++ b/kernel/sysproc.c
+@@ -5,6 +5,7 @@
+ #include "memlayout.h"
+ #include "spinlock.h"
+ #include "proc.h"
++#include "schedstat.h"
+ 
+ uint64
+ sys_exit(void)
+@@ -89,3 +90,38 @@ sys_uptime(void)
+   release(&tickslock);
+   return xticks;
+ }
++
++uint64
++sys_settickets(void)
++{
++  int tickets;
++  argint(0, &tickets);
++  if(tickets <= 0)
++    return -1;
++  struct proc *p = myproc();
++  acquire(&p->lock);
++  p->tickets = tickets;
++  release(&p->lock);
++  return 0;
++}
++
++uint64
++sys_schedstat(void)
++{
++  uint64 addr;
++  argaddr(0, &addr);
++  struct proc *p = myproc();
++  struct schedstat st;
++
++  acquire(&p->lock);
++  st.pid = p->pid;
++  st.tickets = p->tickets;
++  st.ticks_run = p->ticks_run;
++  st.ticks_wait = p->ticks_wait;
++  st.sched_count = p->sched_count;
++  release(&p->lock);
++
++  if(copyout(p->pagetable, addr, (char *)&st, sizeof(st)) < 0)
++    return -1;
++  return 0;
++}
+diff --git a/kernel/trap.c b/kernel/trap.c
+index 512c850..24a64d1 100644
+--- a/kernel/trap.c
++++ b/kernel/trap.c
+@@ -79,7 +79,14 @@ usertrap(void)
+ 
+   // give up the CPU if this is a timer interrupt.
+   if(which_dev == 2)
++  {
++    struct proc *p = myproc();
++    if(p) {
++      acquire(&p->lock);
++      p->ticks_run++;
++      release(&p->lock);
++    }
+     yield();
++  }
+ 
+   usertrapret();
+ }
+diff --git a/user/user.h b/user/user.h
+index 4d398d5..b8e6128 100644
+--- a/user/user.h
++++ b/user/user.h
+@@ -1,4 +1,5 @@
+ struct stat;
++struct schedstat;
+ 
+ // system calls
+ int fork(void);
+@@ -22,6 +23,8 @@ int getpid(void);
+ char* sbrk(int);
+ int sleep(int);
+ int uptime(void);
++int settickets(int);
++int schedstat(struct schedstat*);
+ 
+ // ulib.c
+ int stat(const char*, struct stat*);
+diff --git a/user/usys.pl b/user/usys.pl
+index 01e426e..c3e86c0 100755
+--- a/user/usys.pl
++++ b/user/usys.pl
+@@ -36,3 +36,5 @@ entry("getpid");
+ entry("sbrk");
+ entry("sleep");
+ entry("uptime");
++entry("settickets");
++entry("schedstat");
