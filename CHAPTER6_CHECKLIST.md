@@ -1,0 +1,57 @@
+# Chapter 6 Syllabus Coverage Checklist
+
+This checklist tracks the implementation, experimental demonstration, and verification of every algorithm and technique taught in Chapter 6 (as specified in Section 5 of Assignment 8).
+
+| Syllabus Area | Algorithm / Technique | Track | Implementation File | Verification Test | Result Artifact | Status |
+|---|---|:---:|---|---|---|:---:|
+| **Foundations of ML Optimization** | Parameters, loss functions & regularization | Track A | `tracks/A_continuous/models.py` | `tracks/A_continuous/tests/test_continuous.py` | `tracks/A_continuous/results/` | Planned |
+| | Continuous vs discrete optimization formulation | Tracks A & B | `tracks/A_continuous/landscapes.py`, `tracks/B_discrete/knapsack_alloc.py` | Direct mathematical test | Benchmark tables | Planned |
+| | Convex vs non-convex landscapes (saddle points, local minima) | Track A | `tracks/A_continuous/landscapes.py` | `tracks/A_continuous/tests/test_continuous.py` | Convergence curves | Planned |
+| | Basic quantum computing concepts in optimization | Tracks C & I | `tracks/C_quantum_opt/pqc_qnn.py`, `tracks/I_quantum_algos_qml/circuits_from_scratch.py` | `tracks/C_quantum_opt/tests/test_quantum_opt.py` | Noise & state plots | Planned |
+| **Continuous Optimization** | Gradient Descent (Batch GD) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Step-size sensitivity CSV | Planned |
+| | Stochastic Gradient Descent (SGD) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Noisy objective CSV | Planned |
+| | Mini-batch SGD | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Batch-size comparison | Planned |
+| | Momentum | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Valley acceleration plot | Planned |
+| | Nesterov Accelerated Gradient (NAG) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Convergence comparison | Planned |
+| | AdaGrad | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Learning rate decay curves | Planned |
+| | RMSProp | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Non-convex tracking | Planned |
+| | Adam | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Convergence plots | Planned |
+| | Backpropagation (separate from optimizer) | Track A | `tracks/A_continuous/models.py` | Numerical gradient check ($<10^{-6}$) | Numerical diff report | Planned |
+| | Newton's Method (2nd order) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Quadratic convergence table | Planned |
+| | Gauss-Newton Method | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Non-linear least squares | Planned |
+| | Curvature approximations (Fisher, diagonal/low-rank) | Track A | `tracks/A_continuous/optimizers.py` | Curvature matrix audit | Eigenvalue spectrum | Planned |
+| | Hessian-Vector Products (HVP) | Track A | `tracks/A_continuous/optimizers.py` | Finite-difference comparison | Runtime vs Exact Hessian | Planned |
+| | Convergence (convex, strongly convex, non-convex) | Track A | `tracks/A_continuous/benchmarks.py` | Empirical rate validation | Rate plot $\log(f - f^*)$ | Planned |
+| | Step-size and optimizer tuning | Track A | `tracks/A_continuous/benchmarks.py` | Grid search sensitivity analysis | Sensitivity heatmaps | Planned |
+| | Noisy objectives & stochastic variance | Track A | `tracks/A_continuous/benchmarks.py` | Repeated runs (mean $\pm$ std) | Stochastic trajectory plot | Planned |
+| **Discrete Optimization** | Greedy selection | Track B | `tracks/B_discrete/knapsack_alloc.py` | `tracks/B_discrete/tests/test_discrete.py` | Suboptimality gap table | Planned |
+| | Integer Linear Programming (ILP) | Track B | `tracks/B_discrete/knapsack_alloc.py` | PuLP solver comparison | Exact vs heuristic | Planned |
+| | Custom Branch-and-Bound (from scratch) | Track B | `tracks/B_discrete/knapsack_alloc.py` | `tracks/B_discrete/tests/test_discrete.py` | Node exploration tree log | Planned |
+| | Dynamic Programming | Track B | `tracks/B_discrete/knapsack_alloc.py` | `tracks/B_discrete/tests/test_discrete.py` | Optimal cost matrix | Planned |
+| | Combinatorial feature selection | Track B | `tracks/B_discrete/feature_selection.py` | Forward/backward selection test | AIC/BIC feature curve | Planned |
+| | QUBO / Ising formulation (binary-to-spin) | Track B | `tracks/B_discrete/qubo_formulation.py` | Energy Hamiltonian check | QUBO matrix CSV | Planned |
+| | Penalty terms for constraints (Max-Cut / Selection) | Track B | `tracks/B_discrete/qubo_formulation.py` | Feasibility audit under penalty | Constraint penalty plot | Planned |
+| **Quantum Optimization** | QAOA (solving Track B Max-Cut QUBO) | Track C | `tracks/C_quantum_opt/qaoa_maxcut.py` | `tracks/C_quantum_opt/tests/test_quantum_opt.py` | Approximation ratio vs depth $p$ | Planned |
+| | VQE (Variational Quantum Eigensolver) | Track C | `tracks/C_quantum_opt/vqe_ising.py` | `tracks/C_quantum_opt/tests/test_quantum_opt.py` | Ground state energy convergence | Planned |
+| | Parameterized Quantum Circuits (PQCs / QNNs) | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Unitary trace test | Expressibility metric | Planned |
+| | Parameter-shift rule | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Finite-difference gradient comparison | Exact gradient diff | Planned |
+| | SPSA (Simultaneous Perturbation Stoch. Approx.) | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Convergence under stochastic shots | SPSA vs Parameter-shift | Planned |
+| | Quantum Natural Gradient (QNG / Fubini-Study) | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Metric tensor positive-definiteness | QNG vs Standard Gradient | Planned |
+| | Finite-shot measurement cost & hardware noise | Track C | `tracks/C_quantum_opt/noise_and_barren.py` | Noise model variance test | Error vs shot count ($10^2 - 10^4$) | Planned |
+| | Barren Plateaus analysis | Track C | `tracks/C_quantum_opt/noise_and_barren.py` | Variance decay over qubits $n \in [2, 8]$ | Gradient variance curve $\mathrm{Var}(\partial E)$ | Planned |
+| | Quantum Annealing embedding limits | Track C | `tracks/C_quantum_opt/noise_and_barren.py` | Chimera/Pegasus graph mapping | Minor embedding overhead | Planned |
+| **Submodular & Parallel Optimization** | Submodular diminishing returns verification | Track D | `tracks/D_submodular_parallel_distributed/submodular_greedy.py` | Marginal gain monotonicity test | Diminishing returns curve | Planned |
+| | Greedy selection approximation guarantee ($1 - 1/e$) | Track D | `tracks/D_submodular_parallel_distributed/submodular_greedy.py` | Optimal exhaustive comparison | Empirical vs $(1 - 1/e)$ bound | Planned |
+| | Makespan & Load balancing | Track D | `tracks/D_submodular_parallel_distributed/parallel_work_stealing.py` | Worker load variance test | Workload distribution chart | Planned |
+| | Work stealing scheduler | Track D | `tracks/D_submodular_parallel_distributed/parallel_work_stealing.py` | Task completion queue audit | Stolen task count log | Planned |
+| | Parallelism types (Data, Model, Pipeline) | Track D | `tracks/D_submodular_parallel_distributed/parallel_work_stealing.py` | Execution timeline breakdown | Throughput vs core count | Planned |
+| | Speedup, Parallel Efficiency, Amdahl & Gustafson | Track D | `tracks/D_submodular_parallel_distributed/parallel_work_stealing.py` | Multi-core scaling ($P=1, 2, 4$) | Amdahl vs Measured fit | Planned |
+| **Distributed & Multi-Task** | Federated Learning (FedAvg) | Track D | `tracks/D_submodular_parallel_distributed/federated_fedavg.py` | Local epochs $E \in \{1, 5, 10\}$ test | Non-IID accuracy curves | Planned |
+| | MGDA (Multiple Gradient Descent Algorithm) | Track D | `tracks/D_submodular_parallel_distributed/multi_task_mgda.py` | Pareto-optimality / stationary test | Pareto front vs Equal weights | Planned |
+| | GradNorm | Track D | `tracks/D_submodular_parallel_distributed/multi_task_mgda.py` | Gradient norm balance test | Dynamic task weight balance | Planned |
+| **Domain-Specific Tracks** | Track E: Non-Convex Portfolio Optimization | Track E | `tracks/E_case_study/solvers.py` | Constraint feasibility check | Efficient frontier comparison | Planned |
+| | Track F: Toy TAC Compiler (4 passes + optimization) | Track F | `tracks/F_compiler/passes.py` | Bytecode output equivalence | Code size & instruction delta | Planned |
+| | Track G: xv6 OS Scheduler Optimization | Track G | `tracks/G_xv6/patches/` | Codespaces build & usertests plan | Marked "NOT YET MEASURED" | Planned |
+| | Track H: SQLite Index Selection (Knapsack/ILP) | Track H | `tracks/H_dbms/index_selection_opt.py` | Query checksum verification | Latency & EXPLAIN ANALYZE | Planned |
+| | Track I: Quantum Algorithms (DJ, BV, Grover, QFT, QPE) & QML | Track I | `tracks/I_quantum_algos_qml/circuits_from_scratch.py` | Correctness assertions on simulator | Grover vs Linear crossover | Planned |
+| | Track J: Software Eng Optimization (>1,000 LOC) | Track J | `tracks/J_software_eng/formulated_optimizer.py` | Regression test suite | Profiler speedup & memory | Planned |

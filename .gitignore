@@ -1,0 +1,31 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment
+.venv/
+env/
+venv/
+ENV/
+
+# Jupyter / Colab checkpoints
+.ipynb_checkpoints/
+
+# IDE / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# xv6 build artifacts (if compiled locally)
+tracks/G_xv6/xv6-riscv/
+*.o
+*.d
+*.asm
+*.sym
+fs.img
+xv6.img
