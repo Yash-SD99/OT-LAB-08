@@ -1,0 +1,364 @@
+{
+  "strategy_selection_table": [
+    {
+      "method": "Exact MIQP (Branch-and-Bound)",
+      "chapter6_category": "Mixed-Integer Quadratic Programming / B&B",
+      "variable_types": "Mixed Binary (z) + Continuous (w)",
+      "optimality_guarantee": "Global Mathematical Optimum",
+      "scalability": "Exponential in Cardinality O(C(N, K)); practical for N <= 50, K <= 6",
+      "runtime_characteristics": "High compute cost (seconds to minutes on large N)",
+      "hardware_profile": "Single-thread or multi-core CPU branch-and-cut"
+    },
+    {
+      "method": "Greedy Forward Selection",
+      "chapter6_category": "Greedy Heuristic with QP Subspace Projection",
+      "variable_types": "Iterative Binary Decision + Continuous QP",
+      "optimality_guarantee": "Suboptimal (Greedy Approximation)",
+      "scalability": "Polynomial O(K * N * QP_time); scales to N = 10,000+ assets",
+      "runtime_characteristics": "Ultra-fast (< 50 ms), deterministic",
+      "hardware_profile": "Standard lightweight CPU; ideal for real-time streaming"
+    },
+    {
+      "method": "Simulated Annealing",
+      "chapter6_category": "Stochastic Local Search Metaheuristic",
+      "variable_types": "Mixed Discrete Neighborhood + Simplex Projection",
+      "optimality_guarantee": "Asymptotic convergence in infinite time; heuristic in practice",
+      "scalability": "Linear in iterations O(Iter * QP_time); tunable trade-off",
+      "runtime_characteristics": "Moderate (100 - 300 ms); avoids local non-convex traps",
+      "hardware_profile": "CPU-friendly; embarrassingly parallel across random restarts"
+    },
+    {
+      "method": "Genetic Algorithm",
+      "chapter6_category": "Population-Based Evolutionary Metaheuristic",
+      "variable_types": "Binary Chromosome with Repair + Continuous Phenotype",
+      "optimality_guarantee": "Heuristic (Explores multi-modal combinatorial fitness)",
+      "scalability": "O(PopSize * Generations * QP_time); easily parallelizable",
+      "runtime_characteristics": "Balanced exploration (1 - 2 seconds)",
+      "hardware_profile": "Massively parallelizable across CPU cores or GPU threads"
+    }
+  ],
+  "solver_comparison_k4": {
+    "MIQP": {
+      "method": "Exact MIQP (Branch-and-Bound)",
+      "objective_value": -0.13389195861300568,
+      "expected_return": 0.19356951974381267,
+      "portfolio_variance": 0.027355122261614045,
+      "portfolio_volatility": 0.1653938398538895,
+      "sharpe_ratio": 1.1703550743777025,
+      "transaction_cost": 0.046,
+      "cardinality": 4,
+      "solve_time_ms": 10512.400999999954,
+      "is_feasible": true,
+      "optimality_gap_pct": 0.0,
+      "active_assets": [
+        "AAPL_synth",
+        "GOOG_synth",
+        "NVDA_synth",
+        "CVX_synth"
+      ],
+      "weights": {
+        "AAPL_synth": 0.15000000000000116,
+        "GOOG_synth": 0.3999999999999995,
+        "NVDA_synth": 0.3999999999999993,
+        "CVX_synth": 0.04999999999999999
+      }
+    },
+    "Greedy": {
+      "method": "Greedy Forward Selection",
+      "objective_value": -0.13368494154881078,
+      "expected_return": 0.19340229443060417,
+      "portfolio_variance": 0.02743470576358673,
+      "portfolio_volatility": 0.1656342529900948,
+      "sharpe_ratio": 1.16764673332496,
+      "transaction_cost": 0.046,
+      "cardinality": 4,
+      "solve_time_ms": 33.82620000047609,
+      "is_feasible": true,
+      "optimality_gap_pct": 0.15461500925029745,
+      "active_assets": [
+        "AAPL_synth",
+        "MSFT_synth",
+        "GOOG_synth",
+        "NVDA_synth"
+      ],
+      "weights": {
+        "AAPL_synth": 0.14999999999999983,
+        "MSFT_synth": 0.05000000000000028,
+        "GOOG_synth": 0.39999999999999986,
+        "NVDA_synth": 0.4
+      }
+    },
+    "SimulatedAnnealing": {
+      "method": "Simulated Annealing",
+      "objective_value": -0.12761284122859567,
+      "expected_return": 0.1893681908726194,
+      "portfolio_variance": 0.026510699288047432,
+      "portfolio_volatility": 0.16282106524663026,
+      "sharpe_ratio": 1.163044785303286,
+      "transaction_cost": 0.0485,
+      "cardinality": 3,
+      "solve_time_ms": 222.20060000108788,
+      "is_feasible": true,
+      "optimality_gap_pct": 4.689689694180094,
+      "active_assets": [
+        "MSFT_synth",
+        "GOOG_synth",
+        "NVDA_synth"
+      ],
+      "weights": {
+        "MSFT_synth": 0.19999999999999987,
+        "GOOG_synth": 0.4000000000000001,
+        "NVDA_synth": 0.4000000000000001
+      }
+    },
+    "GeneticAlgorithm": {
+      "method": "Genetic Algorithm",
+      "objective_value": -0.13389195861300568,
+      "expected_return": 0.19356951974381267,
+      "portfolio_variance": 0.027355122261614045,
+      "portfolio_volatility": 0.1653938398538895,
+      "sharpe_ratio": 1.1703550743777025,
+      "transaction_cost": 0.046,
+      "cardinality": 4,
+      "solve_time_ms": 1337.6382000005833,
+      "is_feasible": true,
+      "optimality_gap_pct": 0.0,
+      "active_assets": [
+        "AAPL_synth",
+        "GOOG_synth",
+        "NVDA_synth",
+        "CVX_synth"
+      ],
+      "weights": {
+        "AAPL_synth": 0.15000000000000116,
+        "GOOG_synth": 0.3999999999999995,
+        "NVDA_synth": 0.3999999999999993,
+        "CVX_synth": 0.04999999999999999
+      }
+    }
+  },
+  "efficient_frontiers": {
+    "MIQP": [
+      {
+        "lambda": 0.2,
+        "expected_return": 0.18326757212351064,
+        "volatility": 0.15204143851908544,
+        "sharpe": 1.2053790986758222,
+        "objective": 0.020904785088774296
+      },
+      {
+        "lambda": 0.4,
+        "expected_return": 0.19251108108689366,
+        "volatility": 0.16252366320202033,
+        "sharpe": 1.1845110877644836,
+        "objective": -0.017797461884455593
+      },
+      {
+        "lambda": 0.7,
+        "expected_return": 0.1935695197438127,
+        "volatility": 0.16539383985388956,
+        "sharpe": 1.1703550743777023,
+        "objective": -0.07582110268986185
+      },
+      {
+        "lambda": 1.0,
+        "expected_return": 0.19356951974381267,
+        "volatility": 0.1653938398538895,
+        "sharpe": 1.1703550743777025,
+        "objective": -0.13389195861300568
+      },
+      {
+        "lambda": 1.5,
+        "expected_return": 0.1935695197438127,
+        "volatility": 0.16539383985388956,
+        "sharpe": 1.1703550743777023,
+        "objective": -0.230676718484912
+      },
+      {
+        "lambda": 2.0,
+        "expected_return": 0.1935695197438127,
+        "volatility": 0.16539383985388956,
+        "sharpe": 1.1703550743777023,
+        "objective": -0.3274614783568184
+      }
+    ],
+    "Greedy": [
+      {
+        "lambda": 0.2,
+        "expected_return": 0.1825174367902948,
+        "volatility": 0.1514010807587133,
+        "sharpe": 1.2055226810512099,
+        "objective": 0.020957656269394248
+      },
+      {
+        "lambda": 0.4,
+        "expected_return": 0.19218439635650858,
+        "volatility": 0.1623188819712437,
+        "sharpe": 1.1839928542050693,
+        "objective": -0.01770004882040617
+      },
+      {
+        "lambda": 0.7,
+        "expected_return": 0.19340229443060414,
+        "volatility": 0.16563425299009482,
+        "sharpe": 1.1676467333249596,
+        "objective": -0.07566425321962952
+      },
+      {
+        "lambda": 1.0,
+        "expected_return": 0.19340229443060417,
+        "volatility": 0.1656342529900948,
+        "sharpe": 1.16764673332496,
+        "objective": -0.13368494154881078
+      },
+      {
+        "lambda": 1.5,
+        "expected_return": 0.19340229443060417,
+        "volatility": 0.1656342529900948,
+        "sharpe": 1.16764673332496,
+        "objective": -0.23038608876411287
+      },
+      {
+        "lambda": 2.0,
+        "expected_return": 0.19340229443060417,
+        "volatility": 0.16563425299009482,
+        "sharpe": 1.1676467333249598,
+        "objective": -0.32708723597941497
+      }
+    ],
+    "SimulatedAnnealing": [
+      {
+        "lambda": 0.2,
+        "expected_return": 0.17113805456375028,
+        "volatility": 0.14293872831830107,
+        "sharpe": 1.1972826159657302,
+        "objective": 0.021988129113876487
+      },
+      {
+        "lambda": 0.4,
+        "expected_return": 0.18699668602189873,
+        "volatility": 0.17036519608269154,
+        "sharpe": 1.097622579738262,
+        "objective": -0.014286524390612523
+      },
+      {
+        "lambda": 0.7,
+        "expected_return": 0.18041374720726747,
+        "volatility": 0.16343530882432059,
+        "sharpe": 1.1038847633665092,
+        "objective": -0.06693407295983671
+      },
+      {
+        "lambda": 1.0,
+        "expected_return": 0.1935695197438127,
+        "volatility": 0.16539383985388953,
+        "sharpe": 1.1703550743777025,
+        "objective": -0.13389195861300568
+      },
+      {
+        "lambda": 1.5,
+        "expected_return": 0.18207809031209904,
+        "volatility": 0.16637990179378537,
+        "sharpe": 1.0943514712358127,
+        "objective": -0.21327599960769372
+      },
+      {
+        "lambda": 2.0,
+        "expected_return": 0.19122007047227363,
+        "volatility": 0.16524443938849914,
+        "sharpe": 1.1571951902278799,
+        "objective": -0.3227872785701376
+      }
+    ],
+    "GeneticAlgorithm": [
+      {
+        "lambda": 0.2,
+        "expected_return": 0.18326757212351064,
+        "volatility": 0.15204143851908544,
+        "sharpe": 1.2053790986758222,
+        "objective": 0.020904785088774296
+      },
+      {
+        "lambda": 0.4,
+        "expected_return": 0.19251108108689366,
+        "volatility": 0.16252366320202033,
+        "sharpe": 1.1845110877644836,
+        "objective": -0.017797461884455593
+      },
+      {
+        "lambda": 0.7,
+        "expected_return": 0.1935695197438127,
+        "volatility": 0.16539383985388956,
+        "sharpe": 1.1703550743777023,
+        "objective": -0.07582110268986185
+      },
+      {
+        "lambda": 1.0,
+        "expected_return": 0.19356951974381267,
+        "volatility": 0.1653938398538895,
+        "sharpe": 1.1703550743777025,
+        "objective": -0.13389195861300568
+      },
+      {
+        "lambda": 1.5,
+        "expected_return": 0.1935695197438127,
+        "volatility": 0.16539383985388956,
+        "sharpe": 1.1703550743777023,
+        "objective": -0.230676718484912
+      },
+      {
+        "lambda": 2.0,
+        "expected_return": 0.1935695197438127,
+        "volatility": 0.16539383985388956,
+        "sharpe": 1.1703550743777023,
+        "objective": -0.3274614783568184
+      }
+    ]
+  },
+  "cardinality_scaling": [
+    {
+      "max_cardinality": 3,
+      "greedy_return": 0.18428140977952512,
+      "greedy_volatility": 0.15184977617333417,
+      "greedy_sharpe": 1.2135770919357216,
+      "greedy_time_ms": 1.3948000014352147,
+      "sa_return": 0.18428140977952512,
+      "sa_volatility": 0.15184977617333417,
+      "sa_sharpe": 1.2135770919357216,
+      "sa_time_ms": 171.7635999993945
+    },
+    {
+      "max_cardinality": 4,
+      "greedy_return": 0.19340229443060417,
+      "greedy_volatility": 0.1656342529900948,
+      "greedy_sharpe": 1.16764673332496,
+      "greedy_time_ms": 33.90849999959755,
+      "sa_return": 0.1893681908726194,
+      "sa_volatility": 0.16282106524663026,
+      "sa_sharpe": 1.163044785303286,
+      "sa_time_ms": 184.91380000159552
+    },
+    {
+      "max_cardinality": 5,
+      "greedy_return": 0.19222481855781776,
+      "greedy_volatility": 0.16427465124374546,
+      "greedy_sharpe": 1.1701429106831627,
+      "greedy_time_ms": 83.5570999988704,
+      "sa_return": 0.18569269969429067,
+      "sa_volatility": 0.16354504535207376,
+      "sa_sharpe": 1.1354223498152345,
+      "sa_time_ms": 205.89430000109132
+    },
+    {
+      "max_cardinality": 6,
+      "greedy_return": 0.19038761082031536,
+      "greedy_volatility": 0.1653074157248355,
+      "greedy_sharpe": 1.1517185117528386,
+      "greedy_time_ms": 134.37560000056692,
+      "sa_return": 0.1857941187286597,
+      "sa_volatility": 0.16603270209917845,
+      "sa_sharpe": 1.1190212312371868,
+      "sa_time_ms": 199.41500000095402
+    }
+  ]
+}
