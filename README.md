@@ -41,7 +41,7 @@ To guarantee universal accessibility and zero-barrier reproducibility on free cl
 | Tool Name & Model Version | Tracks Utilized | Dates Used | Kinds of Work Conducted | Notes & Attribution |
 |---|:---:|:---:|---|---|
 | **Antigravity (Google DeepMind)** | Tracks A–J | Nov 2026 | Architecture planning, pure NumPy algorithmic implementation, test suite generation, benchmarking scripts, LaTeX documentation | Primary pair-programming agent |
-| *[Second Assistant, e.g. Claude 3.5 / ChatGPT]* | Tracks [TBD by Student] | Nov 2026 | Independent code review, prompt comparison audit in `tool_comparison.md` | Secondary reviewer |
+| **Claude Code (claude-sonnet-5-5, Anthropic)** | Track A | Nov 2026 | Comparative evaluation on Gauss-Newton with Levenberg-Marquardt damping | Benchmark comparison in [`tool_comparison.md`](tool_comparison.md) |
 
 *(Detailed prompt trajectories, AI responses, revisions, and commit hashes are logged under the [`prompts/`](prompts/) directory)*.
 
@@ -90,9 +90,9 @@ OTLAB08/
    ```bash
    python -m tracks.A_continuous.benchmarks
    ```
-3. Run the automated test suite:
+3. Run the automated test suite (71 passing tests across all tracks):
    ```bash
-   pytest tracks/
+   pytest --ignore=tracks/J_software_eng/fuzzywuzzy_upstream
    ```
 
 ### Running Track G (xv6 Kernel) on GitHub Codespaces
