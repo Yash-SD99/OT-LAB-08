@@ -72,7 +72,6 @@ OTLAB08/
 │
 ├── prompts/                           # Track-by-track prompt logs and conversation traces
 ├── report/                            # Final comprehensive Technical Report
-└── demo/                              # Video demonstration script and slides
 ```
 
 ---
