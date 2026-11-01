@@ -1,128 +1,61 @@
 {
   "benchmark_1_qaoa": {
-    "6_nodes": {
-      "p_1": {
-        "method": "QAOA (p=1)",
-        "p_depth": 1,
-        "optimal_gammas": [
-          0.9660353942910215
-        ],
-        "optimal_betas": [
-          1.1781056704850024
-        ],
-        "final_expected_cut": 2.316427115075032,
-        "max_cut_ground_truth": 3.0,
-        "approximation_ratio": 0.7721423716916774,
-        "prob_optimal_ground_state": 0.4559888340575668,
-        "runtime_ms": 50.708599999779835,
-        "iterations": 40,
-        "is_simulation": true,
-        "label": "noise-model simulation, not real hardware"
-      },
-      "p_2": {
-        "method": "QAOA (p=2)",
-        "p_depth": 2,
-        "optimal_gammas": [
-          0.6819965228185075,
-          1.1425921774013907
-        ],
-        "optimal_betas": [
-          1.1430976431197652,
-          -0.27113014734824936
-        ],
-        "final_expected_cut": 2.74743300224353,
-        "max_cut_ground_truth": 3.0,
-        "approximation_ratio": 0.9158110007478433,
-        "prob_optimal_ground_state": 0.8090229912737441,
-        "runtime_ms": 42.882500000814616,
-        "iterations": 40,
-        "is_simulation": true,
-        "label": "noise-model simulation, not real hardware"
-      },
-      "p_3": {
-        "method": "QAOA (p=3)",
-        "p_depth": 3,
-        "optimal_gammas": [
-          0.8801274156641444,
-          0.14733739155226627,
-          1.0650214612251092
-        ],
-        "optimal_betas": [
-          0.5515065458251792,
-          0.5887985566077525,
-          -0.3359491182759946
-        ],
-        "final_expected_cut": 2.8041833771707263,
-        "max_cut_ground_truth": 3.0,
-        "approximation_ratio": 0.9347277923902421,
-        "prob_optimal_ground_state": 0.8888340166942844,
-        "runtime_ms": 44.99340000074881,
-        "iterations": 40,
-        "is_simulation": true,
-        "label": "noise-model simulation, not real hardware"
-      }
+    "p_1": {
+      "p_depth": 1,
+      "mean_expected_cut": 10.652626887687072,
+      "std_expected_cut": 1.2633380277835387e-07,
+      "mean_approximation_ratio": 0.7609019205490768,
+      "std_approximation_ratio": 9.023843046332977e-09,
+      "mean_prob_optimal": 0.5022862453204847,
+      "std_prob_optimal": 2.2089113711103025e-05,
+      "mean_runtime_ms": 40.135246666613966,
+      "std_runtime_ms": 8.12152880838527,
+      "max_cut_ground_truth": 14.0,
+      "optimal_bitstrings": [
+        "0101",
+        "1010"
+      ],
+      "track_b_exact_cut": 14.0,
+      "track_b_sa_mean_cut": 14.0,
+      "track_b_sa_std_cut": 0.0
     },
-    "8_nodes": {
-      "p_1": {
-        "method": "QAOA (p=1)",
-        "p_depth": 1,
-        "optimal_gammas": [
-          0.699821379412996
-        ],
-        "optimal_betas": [
-          1.2009737600462824
-        ],
-        "final_expected_cut": 6.32064359130185,
-        "max_cut_ground_truth": 8.0,
-        "approximation_ratio": 0.7900804489127312,
-        "prob_optimal_ground_state": 0.17815008629992546,
-        "runtime_ms": 42.28239999974903,
-        "iterations": 40,
-        "is_simulation": true,
-        "label": "noise-model simulation, not real hardware"
-      },
-      "p_2": {
-        "method": "QAOA (p=2)",
-        "p_depth": 2,
-        "optimal_gammas": [
-          0.5518034286232257,
-          1.0438606276223397
-        ],
-        "optimal_betas": [
-          1.0830855093000857,
-          -0.26021961024017565
-        ],
-        "final_expected_cut": 6.933816211912051,
-        "max_cut_ground_truth": 8.0,
-        "approximation_ratio": 0.8667270264890063,
-        "prob_optimal_ground_state": 0.3612028044004283,
-        "runtime_ms": 47.047699999893666,
-        "iterations": 40,
-        "is_simulation": true,
-        "label": "noise-model simulation, not real hardware"
-      },
-      "p_3": {
-        "method": "QAOA (p=3)",
-        "p_depth": 3,
-        "optimal_gammas": [
-          0.43289131281664056,
-          -0.11690363603304564,
-          1.1212015829751785
-        ],
-        "optimal_betas": [
-          0.8630405908195801,
-          0.24722586210442582,
-          -0.205999758684967
-        ],
-        "final_expected_cut": 6.915765945771451,
-        "max_cut_ground_truth": 8.0,
-        "approximation_ratio": 0.8644707432214314,
-        "prob_optimal_ground_state": 0.336240557508905,
-        "runtime_ms": 52.934299999833456,
-        "iterations": 40,
-        "is_simulation": true,
-        "label": "noise-model simulation, not real hardware"
-      }
+    "p_2": {
+      "p_depth": 2,
+      "mean_expected_cut": 11.015452796607596,
+      "std_expected_cut": 0.009655932824137294,
+      "mean_approximation_ratio": 0.7868180569005424,
+      "std_approximation_ratio": 0.0006897094874383758,
+      "mean_prob_optimal": 0.5727193902818178,
+      "std_prob_optimal": 0.0014607517070450884,
+      "mean_runtime_ms": 45.820093333289456,
+      "std_runtime_ms": 4.7373574201205395,
+      "max_cut_ground_truth": 14.0,
+      "optimal_bitstrings": [
+        "0101",
+        "1010"
+      ],
+      "track_b_exact_cut": 14.0,
+      "track_b_sa_mean_cut": 14.0,
+      "track_b_sa_std_cut": 0.0
+    },
+    "p_3": {
+      "p_depth": 3,
+      "mean_expected_cut": 11.886866371440686,
+      "std_expected_cut": 0.6395495550396494,
+      "mean_approximation_ratio": 0.8490618836743349,
+      "std_approximation_ratio": 0.04568211107426069,
+      "mean_prob_optimal": 0.6784165968358498,
+      "std_prob_optimal": 0.09604834513853243,
+      "mean_runtime_ms": 63.518499999918276,
+      "std_runtime_ms": 18.811100386222243,
+      "max_cut_ground_truth": 14.0,
+      "optimal_bitstrings": [
+        "0101",
+        "1010"
+      ],
+      "track_b_exact_cut": 14.0,
+      "track_b_sa_mean_cut": 14.0,
+      "track_b_sa_std_cut": 0.0
     }
   },
   "benchmark_2_vqe": {
@@ -134,7 +67,7 @@
       "exact_ground_energy": -2.4032119259115534,
       "energy_error": 1.8758328224066645e-12,
       "relative_error": 7.805523941444113e-13,
-      "runtime_ms": 36.630699999477656,
+      "runtime_ms": 71.72869999885734,
       "iterations": 170,
       "is_simulation": true,
       "label": "noise-model simulation, not real hardware"
@@ -147,7 +80,7 @@
       "exact_ground_energy": -3.4270340889080773,
       "energy_error": 0.0003799513517410702,
       "relative_error": 0.00011086885682602895,
-      "runtime_ms": 201.27059999958874,
+      "runtime_ms": 346.3575999994646,
       "iterations": 728,
       "is_simulation": true,
       "label": "noise-model simulation, not real hardware"
@@ -160,22 +93,45 @@
       "exact_ground_energy": -4.469490344005437,
       "energy_error": 0.0027376959203442297,
       "relative_error": 0.0006125297762453113,
-      "runtime_ms": 260.40889999967476,
+      "runtime_ms": 514.6899999999732,
       "iterations": 928,
       "is_simulation": true,
       "label": "noise-model simulation, not real hardware"
     }
   },
-  "benchmark_3_gradients": {
-    "iterations": 30,
-    "final_cost_ps": -1.2614248179668766,
-    "evaluations_ps": 570,
-    "final_cost_spsa": -1.5221239856255375,
-    "evaluations_spsa": 90,
-    "final_cost_qng": -2.9999999999996807,
-    "evaluations_qng": 840
+  "benchmark_3_equal_budget_gradients": {
+    "spsa": {
+      "method": "spsa",
+      "budget": 300,
+      "optimal_lr": 0.4,
+      "n_seeds": 15,
+      "mean_final_cost": -2.804434482591377,
+      "std_final_cost": 0.45983724243352075,
+      "mean_steps_completed": 100.0,
+      "mean_total_evaluations": 301.0
+    },
+    "param_shift": {
+      "method": "param_shift",
+      "budget": 300,
+      "optimal_lr": 0.4,
+      "n_seeds": 15,
+      "mean_final_cost": -2.9057629105990683,
+      "std_final_cost": 0.3499528474966035,
+      "mean_steps_completed": 15.0,
+      "mean_total_evaluations": 286.0
+    },
+    "qng": {
+      "method": "qng",
+      "budget": 300,
+      "optimal_lr": 0.2,
+      "n_seeds": 15,
+      "mean_final_cost": -2.48681854630138,
+      "std_final_cost": 0.4034249845487611,
+      "mean_steps_completed": 10.0,
+      "mean_total_evaluations": 281.0
+    }
   },
-  "benchmark_4_5_6_noise_barren": {
+  "benchmarks_4_through_9": {
     "shot_noise": {
       "n_qubits": 3,
       "exact_expectation": 0.4843690179560308,
@@ -189,26 +145,28 @@
         5000
       ],
       "measured_variances": [
-        0.035056,
-        0.016364,
-        0.0036614400000000006,
-        0.0025984000000000007,
-        0.0016416400000000002,
-        0.00045148639999999994,
-        0.00025483640000000007
+        0.03196416,
+        0.01421696,
+        0.003145318400000001,
+        0.0027931136,
+        0.0015678976,
+        0.000476790784,
+        0.00032938905599999986
       ],
       "theoretical_scaling_fit": [
-        0.035056,
-        0.017528,
-        0.0070111999999999996,
-        0.0035055999999999998,
-        0.0017527999999999999,
-        0.00070112,
-        0.00035056
-      ]
+        0.03196416,
+        0.01598208,
+        0.006392832,
+        0.003196416,
+        0.001598208,
+        0.0006392832,
+        0.0003196416
+      ],
+      "sampling_distribution": "multinomial/binomial Born-rule projection",
+      "n_trials": 25
     },
     "depolarizing_noise": {
-      "error_rates": [
+      "noise_rates": [
         0.0,
         0.01,
         0.03,
@@ -216,14 +174,59 @@
         0.1,
         0.2
       ],
-      "ratios": [
-        0.9821054073681452,
-        0.8383124499844914,
-        0.8383124499844914,
-        0.8383124499844914,
-        0.8383124499844914,
-        0.8391324042745294
-      ]
+      "qaoa_by_depth": {
+        "1": [
+          0.7608848490961817,
+          0.7608848490961817,
+          0.7608848490961817,
+          0.7608848490961817,
+          0.7234426620569205,
+          0.7080048617746366
+        ],
+        "2": [
+          0.7855515005291374,
+          0.7855515005291374,
+          0.7855515005291374,
+          0.7855515005291374,
+          0.7620766298797043,
+          0.7602657695110645
+        ],
+        "3": [
+          0.770660789222896,
+          0.770660789222896,
+          0.7554187870703408,
+          0.7487372020879035,
+          0.755967492289175,
+          0.7463853884964774
+        ]
+      },
+      "vqe_by_layers": {
+        "1": [
+          0.2671259094475249,
+          0.2671259094475249,
+          0.33763575981994803,
+          0.2671259094475249,
+          0.2671259094475249,
+          1.0976547719004492
+        ],
+        "2": [
+          1.2161481260277713,
+          1.2161481260277713,
+          1.2161481260277713,
+          1.296767353383417,
+          1.350740163162118,
+          1.4721041653470965
+        ],
+        "3": [
+          1.5509520680537172,
+          1.5509520680537172,
+          1.6690021417305883,
+          1.5509520680537172,
+          1.6544958203033926,
+          1.6411245141717092
+        ]
+      },
+      "n_trials": 10
     },
     "barren_plateaus": {
       "qubits_range": [
@@ -234,23 +237,142 @@
         6,
         7
       ],
-      "gradient_variances": [
-        0.22160489243738582,
-        0.28119886447714454,
-        0.11986848613144359,
-        0.06082985084927202,
-        0.047271823000760424,
-        0.01408453679189337
+      "n_samples_per_qubit": 50,
+      "global_gradient_variances": [
+        0.09775016440707082,
+        0.08057599333647752,
+        0.028474348029353735,
+        0.013484216302484944,
+        0.008376489683586124,
+        0.0034813540582854414
       ],
-      "gradient_means": [
-        0.1255236313308579,
-        -0.04314998682396164,
-        -0.004533662370727248,
-        0.05191476718881851,
-        -0.03621398423933458,
-        0.03792430418675405
+      "local_gradient_variances": [
+        0.15863814231909362,
+        0.07104353349801627,
+        0.037273104511931866,
+        0.017698850949312835,
+        0.007773648322146788,
+        0.003825200417033876
       ],
-      "n_samples_per_qubit": 30
-    }
+      "fitted_decay_rate_global": 0.691821916141618,
+      "fitted_decay_rate_local": 0.7430716164671601,
+      "ansatz_description": "Hardware-efficient alternating Ry-Rz with CNOT ring (pseudo-random 2-design, NOT Haar-distributed)"
+    },
+    "qnn_classifier": {
+      "epochs": 25,
+      "final_loss": 0.5142244724970083,
+      "final_accuracy": 1.0,
+      "initial_loss": 0.7464010118209962,
+      "initial_accuracy": 0.5,
+      "loss_history": [
+        0.7464010118209962,
+        0.7325284267167405,
+        0.7203262700127109,
+        0.7096102178368414,
+        0.7001820738509218,
+        0.6918089089661983,
+        0.6842388722874319,
+        0.6772209341516473,
+        0.6705196434231273,
+        0.663923288155063,
+        0.65724669438945,
+        0.6503308009973229,
+        0.6430409968839169,
+        0.6352656377191684,
+        0.6269155836599918,
+        0.6179251888733297,
+        0.6082549374460131,
+        0.5978957762761148,
+        0.5868749944595785,
+        0.5752630415837701,
+        0.5631798068652429,
+        0.5507977007156051,
+        0.5383380028312478,
+        0.5260574253689277,
+        0.5142244724970083
+      ],
+      "accuracy_history": [
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5833333333333334,
+        0.5833333333333334,
+        0.5833333333333334,
+        0.5833333333333334,
+        0.5833333333333334,
+        0.5833333333333334,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.75,
+        0.8333333333333334,
+        0.9166666666666666,
+        0.9166666666666666,
+        0.9166666666666666,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "runtime_ms": 3323.0363999991823,
+      "optimal_params": [
+        2.7487067180304416,
+        -0.9640746574074732,
+        2.762357887703864,
+        0.8553820128152979,
+        -1.991197141845605,
+        3.232207326394066,
+        1.7924471475026227,
+        1.938370018646079,
+        -1.976604041363359,
+        -0.311734346044068
+      ]
+    },
+    "quantum_annealing_embedding": {
+      "j_chain_values": [
+        0.1,
+        0.3,
+        0.5,
+        1.0,
+        1.5,
+        2.5,
+        5.0,
+        10.0
+      ],
+      "chain_break_rates": [
+        1.0,
+        1.0,
+        1.0,
+        0.68,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ground_state_success_rates": [
+        0.0,
+        0.0,
+        0.0,
+        0.32,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "optimal_j_chain": 1.5,
+      "n_trials_per_point": 25,
+      "note": "Demonstrates minor-embedding sweet-spot: low J_c breaks chains; excessive J_c distorts problem spectrum."
+    },
+    "kronecker_crosscheck": {
+      "bell_state_max_error": 0.0,
+      "ghz_state_max_error": 0.0,
+      "rotation_tensor_max_error": 0.0,
+      "rzz_gate_max_error": 1.2412670766236366e-16
+    },
+    "qiskit_crosscheck": null
   }
 }
