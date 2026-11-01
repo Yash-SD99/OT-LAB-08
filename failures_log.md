@@ -13,6 +13,8 @@ Every case documented below was caught by automated unit tests or mathematical i
 | **FAIL-01** | Track A (Continuous) | Mathematical / Operator Precedence Error | Flawed parentheses in `f_opt = 0.5 * float(x_opt @ A @ x_opt - b @ x_opt)` scaled the linear term by 0.5, causing theoretical minimum to evaluate to 0.0 instead of $-0.5 b^T A^{-1} b$, yielding negative optimality gaps. | Automated verification: $f(x) - f^* < 0$ caught in sensitivity benchmark output. | Corrected grouping to `0.5 * (x_opt @ A @ x_opt) - (b @ x_opt)` ensuring mathematical equivalence to $-0.5 b^T x^*$. |
 | **FAIL-02** | Track B (Discrete / QUBO) | Algebraic Mapping Error | In `qubo_to_ising`, the constant diagonal offset contribution was set to `C += 0.25 * Q[i, i]` instead of `0.5 * Q[i, i]`, violating energy conservation between binary and spin bases. | Unit test assertion failure: `test_qubo_ising_conversion_identity` reported discrepancy between $x^T Q x$ and $H_{\text{Ising}}(s)$. | Corrected diagonal constant accumulation to `C += 0.5 * Q_sym[i, i]`, achieving machine-precision equivalence ($< 10^{-16}$). |
 | **FAIL-03** | Track B (Discrete / B&B) | Algorithmic Bounding Logic Error | In custom Branch-and-Bound, `fractional_bound` returned `0.0` when `curr_wt >= capacity`. When an item combination exactly filled capacity (`curr_wt == capacity`), the upper bound was returned as 0.0 instead of `curr_val`, causing the optimal incumbent to be pruned prematurely. | Known-instance test failure: B&B returned 240.0 while DP and `scipy.optimize.milp` found 270.0. | Corrected boundary logic to return `curr_val` when `curr_wt == capacity` and prune only when strictly exceeding capacity. |
+| **FAIL-04** | Track C (Quantum Opt) | Random Number Generator State Reset | In `apply_depolarizing_noise`, a local `rng = np.random.default_rng(seed)` was instantiated on every gate call. Since the seed was identical each gate, the random draw was always the same value (0.7739), meaning noise was never applied when error rate $p < 0.77$. | Test failure in `test_depolarizing_noise_fidelity_decay`: fidelity under noise $p=0.1$ remained identical to $1.0$. | Moved `rng` to persistent state on `QuantumCircuitSimulator` instance (`self.rng`), advancing the PRNG sequence across gates. |
+| **FAIL-05** | Track F (Compiler Opt) | Over-conservative Liveness in Dead Code Elimination | In `DeadCodeEliminationPass`, instruction removal was restricted via `if instr.dest in used_vars or not instr.dest.startswith("t_"):`, which prevented non-temporary user variables from ever being pruned even when unread. | Unit test failure: Dead assignment elimination failed to eliminate unused store variables, leaving instruction count unoptimized. | Redefined liveness strictly through backward def-use graph analysis over active variable references. |
 
 ---
 
@@ -87,6 +89,46 @@ Every case documented below was caught by automated unit tests or mathematical i
   ```
 * **Lesson Learned & Takeaway for Viva**:
   Branch-and-Bound correctness hinges entirely on the admissibility of the bounding function ($\text{bound}(u) \ge f(x)$ for all leaves $x$ in subtree $u$). Underestimating the bound at boundary conditions breaks admissibility and silently prunes the global optimum.
+
+---
+
+### Case FAIL-04: PRNG Re-initialization Defeating Quantum Noise Simulation (Track C)
+* **Track Affected**: Track C (Quantum Optimization / Noise)
+* **Initial Prompt**: "Implement a local depolarizing error channel in QuantumCircuitSimulator."
+* **Flawed Code Excerpt**:
+  ```python
+  def apply_depolarizing_noise(self, qubit: int, p: float):
+      rng = np.random.default_rng(self.seed) # FLAWED: fresh RNG reset on every gate
+      if rng.random() < p:
+          # apply random Pauli X, Y, or Z
+  ```
+* **Failure Description & Invariant Violated**:
+  Because `rng = np.random.default_rng(self.seed)` was called inside `apply_depolarizing_noise` for every single gate, the first call to `rng.random()` always yielded the exact same pseudo-random float: $0.773956$. For any realistic gate error rate $p < 0.77$ (such as $p = 0.05$ or $p = 0.10$), the conditional `rng.random() < p` was always False. The noise channel was thus silently skipped on 100% of gates.
+* **How It Was Detected**:
+  In `test_depolarizing_noise_fidelity_decay`, the output state fidelity under noise rate $p = 0.1$ was asserted to be $< 0.99$. The test failed because the fidelity was exactly $1.00000000$.
+* **Corrective Fix**:
+  Created a persistent `self.rng = np.random.default_rng(seed)` attribute on `QuantumCircuitSimulator` so that PRNG state advances deterministically and continuously across gate operations.
+* **Lesson Learned & Takeaway for Viva**:
+  Stateless PRNG calls in looped or event-driven simulations will repeatedly sample the same prefix of pseudo-random numbers, turning stochastic models completely deterministic. Always manage PRNG states explicitly as instance members.
+
+---
+
+### Case FAIL-05: Over-conservative Liveness in Dead Code Elimination (Track F)
+* **Track Affected**: Track F (Compiler Optimization / DCE Pass)
+* **Initial Prompt**: "Implement DeadCodeEliminationPass in IR optimization pipeline."
+* **Flawed Code Excerpt**:
+  ```python
+  if instr.dest in used_vars or not instr.dest.startswith("t_"):
+      new_instructions.append(instr) # FLAWED: assumed non-t_ vars are external outputs
+  ```
+* **Failure Description & Invariant Violated**:
+  The AI attempted to prevent pruning user variables by checking `not instr.dest.startswith("t_")`. In a compiler intermediate representation, any dead variable assignment (e.g. `x = 5` followed by no reads before function return) is candidate dead code unless it affects exported return registers or observable side-effects. The heuristic prevented dead stores to user-named variables from ever being eliminated, reducing optimization efficiency.
+* **How It Was Detected**:
+  In `test_output_equivalence_across_optimizations`, a dead assignment benchmark had 8 instructions. After DCE, it still had 8 instructions instead of shrinking to 4 instructions, failing the assertion `len(opt_ir) < len(ir)`.
+* **Corrective Fix**:
+  Formalized backward liveness analysis: only the designated return variable and variables referenced in downstream expressions remain in the live set.
+* **Lesson Learned & Takeaway for Viva**:
+  Heuristic shortcuts (like checking string prefixes) fail compiler invariants. Compilers require formal dataflow analysis (like backward reaching definitions and live-variable analysis) rather than naming conventions.
 
 ---
 

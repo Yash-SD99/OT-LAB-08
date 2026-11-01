@@ -1,0 +1,155 @@
+{
+  "optimization_levels": {
+    "ArithmeticPipeline": {
+      "O0": {
+        "code_size": 11,
+        "instructions_executed": 11,
+        "compile_time_us": 0.0,
+        "runtime_us": 15.800000255694613,
+        "output": [
+          160,
+          160
+        ]
+      },
+      "O1": {
+        "code_size": 2,
+        "instructions_executed": 2,
+        "compile_time_us": 31.70000036334386,
+        "runtime_us": 1.99999976757681,
+        "output": [
+          160,
+          160
+        ]
+      },
+      "O2": {
+        "code_size": 2,
+        "instructions_executed": 2,
+        "compile_time_us": 23.400000827678014,
+        "runtime_us": 1.2000000424450263,
+        "output": [
+          160,
+          160
+        ]
+      },
+      "O3": {
+        "code_size": 2,
+        "instructions_executed": 2,
+        "compile_time_us": 8112.49999969732,
+        "runtime_us": 5.800000508315861,
+        "optimal_pass_sequence": [
+          "ConstFold",
+          "DCE"
+        ],
+        "output": [
+          160,
+          160
+        ]
+      }
+    },
+    "LoopAccumulator": {
+      "O0": {
+        "code_size": 15,
+        "instructions_executed": 310,
+        "compile_time_us": 0.0,
+        "runtime_us": 235.99999985890463,
+        "output": [
+          1625,
+          1625
+        ]
+      },
+      "O1": {
+        "code_size": 14,
+        "instructions_executed": 309,
+        "compile_time_us": 45.900000259280205,
+        "runtime_us": 101.39999994862592,
+        "output": [
+          1625,
+          1625
+        ]
+      },
+      "O2": {
+        "code_size": 14,
+        "instructions_executed": 309,
+        "compile_time_us": 36.89999994094251,
+        "runtime_us": 146.7000001866836,
+        "output": [
+          1625,
+          1625
+        ]
+      },
+      "O3": {
+        "code_size": 14,
+        "instructions_executed": 309,
+        "compile_time_us": 7568.09999984398,
+        "runtime_us": 97.79999982129084,
+        "optimal_pass_sequence": [
+          "ConstFold",
+          "DCE"
+        ],
+        "output": [
+          1625,
+          1625
+        ]
+      }
+    }
+  },
+  "formulations": {
+    "loop_unroll_optimization": {
+      "formulation": "Loop Unroll Optimization",
+      "optimal_unroll_factor": 16,
+      "min_cost": 57.0,
+      "candidate_evaluations": [
+        {
+          "unroll_factor": 1,
+          "code_size": 5,
+          "branch_overhead": 400.0,
+          "cache_penalty": 2.0,
+          "total_cost": 402.0
+        },
+        {
+          "unroll_factor": 2,
+          "code_size": 10,
+          "branch_overhead": 200.0,
+          "cache_penalty": 4.0,
+          "total_cost": 204.0
+        },
+        {
+          "unroll_factor": 4,
+          "code_size": 20,
+          "branch_overhead": 100.0,
+          "cache_penalty": 8.0,
+          "total_cost": 108.0
+        },
+        {
+          "unroll_factor": 8,
+          "code_size": 40,
+          "branch_overhead": 50.0,
+          "cache_penalty": 16.0,
+          "total_cost": 66.0
+        },
+        {
+          "unroll_factor": 16,
+          "code_size": 80,
+          "branch_overhead": 25.0,
+          "cache_penalty": 32.0,
+          "total_cost": 57.0
+        }
+      ]
+    },
+    "register_allocation": {
+      "method": "Chaitin-Briggs Register Allocation",
+      "num_physical_registers": 3,
+      "register_assignment": {
+        "v1": 0,
+        "v2": 1,
+        "v4": 1,
+        "v5": 0,
+        "v3": 0,
+        "v6": 1
+      },
+      "spills": [],
+      "spill_count": 0,
+      "is_colorable_without_spills": true
+    }
+  }
+}
