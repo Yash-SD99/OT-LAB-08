@@ -17,6 +17,7 @@ Every case documented below was caught by automated unit tests or mathematical i
 | **FAIL-05** | Track F (Compiler Opt) | Over-conservative Liveness in Dead Code Elimination | In `DeadCodeEliminationPass`, instruction removal was restricted via `if instr.dest in used_vars or not instr.dest.startswith("t_"):`, which prevented non-temporary user variables from ever being pruned even when unread. | Unit test failure: Dead assignment elimination failed to eliminate unused store variables, leaving instruction count unoptimized. | Redefined liveness strictly through backward def-use graph analysis over active variable references. |
 | **FAIL-06** | Track F (Compiler Opt) | Loop Back-Edge Liveness Blindness in DCE | Single backward liveness pass failed to propagate variable usage across loop back-edges (`goto start_lbl`), causing induction variable updates (`iter = iter - 1`) to be mistakenly pruned as dead code. | Differential testing failure: 100% divergence in while-loop execution between -O0 and -O3. | Implemented multi-pass backward fixed-point iteration until the live set reaches convergence. |
 | **FAIL-07** | Track F (Compiler Opt) | Premature Invalidation of Available Expressions in CSE | In `CommonSubexpressionEliminationPass`, invalidation filtered expressions where `v != d_str` after recording, deleting the newly recorded result temporary immediately upon definition. | Unit test failure: `test_common_subexpression_elimination` showed `ADD` remained instead of reusing previous temporary via `ASSIGN`. | Restructured invalidation to run prior to adding the new expression to the available cache. |
+| **FAIL-08** | Track H (DBMS Optimization) | SQLite Freelist Blindness in Storage Footprint Measurement | Measuring candidate index storage size via raw `PRAGMA page_count` before and after `CREATE INDEX` failed because dropped indices left unallocated pages in SQLite's freelist, which subsequent index builds reused without expanding total pages, yielding 0 KB measured storage for 7 out of 10 candidate indices. | Benchmark execution showed 0.0 KB footprint for multiple candidate indices, distorting the 0/1 Knapsack constraints. | Accounted for internal freelist pages by tracking active pages: $\Delta \text{pages} = (\text{page\_count} - \text{freelist\_count})_{\text{after}} - (\text{page\_count} - \text{freelist\_count})_{\text{before}}$. |
 
 ---
 
@@ -183,6 +184,32 @@ Every case documented below was caught by automated unit tests or mathematical i
   Moved the operand invalidation step to run *prior* to inserting the new expression, ensuring previous obsolete values are pruned while newly computed expressions remain cached.
 * **Lesson Learned & Takeaway for Viva**:
   Ordering of cache invalidation vs insertion in stateful optimization passes is critical. Invalidating after insertion risks evicting the newly computed state.
+
+---
+
+### Case FAIL-08: SQLite Freelist Blindness in Index Storage Profiling (Track H)
+* **Track Affected**: Track H (Relational DBMS Optimization / Index Selection)
+* **Initial Prompt**: "Measure index storage size using PRAGMA page_count before and after CREATE INDEX."
+* **Flawed Code Excerpt**:
+  ```python
+  p_before = cur.execute("PRAGMA page_count;").fetchone()[0]
+  cur.execute(info["sql"]) # CREATE INDEX
+  conn.commit()
+  p_after = cur.execute("PRAGMA page_count;").fetchone()[0]
+  cur.execute(f"DROP INDEX {idx_name};")
+  size_bytes = (p_after - p_before) * page_size
+  ```
+* **Failure Description & Invariant Violated**:
+  When SQLite drops an index (`DROP INDEX`), it does not immediately truncate or shrink the database file. Instead, it marks the allocated pages as free, moving them to an internal *freelist*. When the loop iterated to evaluate the *next* candidate index, SQLite fulfilled the new B-tree page allocations directly from the existing freelist rather than allocating new pages from the operating system. Consequently, `p_after` equaled `p_before`, and `(p_after - p_before)` evaluated to `0`, falsely reporting that 7 out of 10 candidate indices occupied 0 bytes of disk storage. This severely corrupted the 0/1 Knapsack ILP capacity constraints.
+* **How It Was Detected**:
+  Inspecting benchmark logs revealed 0.0 KB footprints for major indexes like `idx_orders_cust` and `idx_order_items_oid` despite them indexing 50,000 to 100,000 rows.
+* **Corrective Fix**:
+  Queried `PRAGMA freelist_count;` and computed the net *active* pages:
+  $$\text{active\_pages} = \text{page\_count} - \text{freelist\_count}$$
+  $$\Delta \text{pages} = \text{active\_after} - \text{active\_before}$$
+  This accurately isolates the exact page footprint consumed by the index regardless of whether pages were drawn from the freelist or the OS.
+* **Lesson Learned & Takeaway for Viva**:
+  Storage engines decouple physical OS file size from logical database allocations via page freelists. Profiling storage requirements in embedded DBMSs requires querying internal free-space tracking (`PRAGMA freelist_count` or `VACUUM`) rather than raw file length.
 
 ---
 

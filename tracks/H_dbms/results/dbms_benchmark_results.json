@@ -1,0 +1,559 @@
+{
+  "candidate_index_sizes": {
+    "idx_orders_cust": 524288,
+    "idx_orders_status_cust": 978944,
+    "idx_orders_date_amt": 1380352,
+    "idx_orders_amt": 819200,
+    "idx_order_items_oid": 1110016,
+    "idx_order_items_pid": 1069056,
+    "idx_order_items_disc_pid": 1847296,
+    "idx_customers_segment": 188416,
+    "idx_customers_country": 106496,
+    "idx_products_cat_price_stock": 57344
+  },
+  "candidate_index_benefits": {
+    "idx_orders_cust": 6.5665,
+    "idx_orders_status_cust": 6.5734,
+    "idx_orders_date_amt": 3.869,
+    "idx_orders_amt": 5.6116,
+    "idx_order_items_oid": 0.0,
+    "idx_order_items_pid": 0.0,
+    "idx_order_items_disc_pid": 0.0,
+    "idx_customers_segment": 0.0,
+    "idx_customers_country": 0.0,
+    "idx_products_cat_price_stock": 0.225
+  },
+  "formulation_solvers": {
+    "Chapter6_ILP": {
+      "method": "Chapter 6: 0/1 Knapsack ILP (scipy.optimize.milp)",
+      "chosen_indices": [
+        "idx_orders_cust",
+        "idx_orders_status_cust",
+        "idx_orders_amt",
+        "idx_products_cat_price_stock"
+      ],
+      "total_benefit_ms": 18.9765,
+      "total_storage_bytes": 2379776,
+      "storage_budget_bytes": 2621440,
+      "budget_utilized_pct": 90.78125,
+      "solve_time_us": 7742.000001599081
+    },
+    "Greedy": {
+      "method": "Greedy Marginal-Benefit Selection",
+      "chosen_indices": [
+        "idx_orders_cust",
+        "idx_orders_amt",
+        "idx_orders_status_cust",
+        "idx_products_cat_price_stock"
+      ],
+      "total_benefit_ms": 18.9765,
+      "total_storage_bytes": 2379776,
+      "storage_budget_bytes": 2621440,
+      "budget_utilized_pct": 90.78125,
+      "solve_time_us": 27.099998987978324
+    },
+    "Exhaustive": {
+      "method": "Exhaustive Configuration Search",
+      "chosen_indices": [
+        "idx_orders_cust",
+        "idx_orders_status_cust",
+        "idx_orders_amt",
+        "idx_products_cat_price_stock"
+      ],
+      "total_benefit_ms": 18.9765,
+      "total_storage_bytes": 2379776,
+      "storage_budget_bytes": 2621440,
+      "budget_utilized_pct": 90.78125,
+      "evaluated_configurations": 1024,
+      "solve_time_us": 1406.1000001674984
+    }
+  },
+  "configurations_evaluation": {
+    "Baseline_Unindexed": {
+      "index_set": [],
+      "num_indices": 0,
+      "query_metrics": {
+        "Q1_PointLookup": {
+          "mean_latency_ms": 4.114960000151768,
+          "std_latency_ms": 0.2362068216782681,
+          "row_count": 1,
+          "checksum": "6a77a0ccc562166baaadd9f4026ee7fcc37c984fd7428a7fa1eac6d6e55bb5db",
+          "plan_details": [
+            "SCAN orders"
+          ],
+          "uses_index": false,
+          "weight": 2.0,
+          "weighted_latency_ms": 8.229920000303537
+        },
+        "Q2_RangeSort": {
+          "mean_latency_ms": 5.234380000183592,
+          "std_latency_ms": 0.1462936686795616,
+          "row_count": 50,
+          "checksum": "84be85832cb5a367a8facf19d30941110f63ce49c6e87c318c5c218d018864b3",
+          "plan_details": [
+            "SCAN orders",
+            "USE TEMP B-TREE FOR ORDER BY"
+          ],
+          "uses_index": false,
+          "weight": 1.5,
+          "weighted_latency_ms": 7.851570000275387
+        },
+        "Q3_MultiTableJoin": {
+          "mean_latency_ms": 193.1507600002078,
+          "std_latency_ms": 6.18600596408238,
+          "row_count": 70,
+          "checksum": "7fe506774985eed437ac09f533495c4da44d529432c4d1d2a4b732e270e8c653",
+          "plan_details": [
+            "SCAN oi",
+            "SEARCH o USING INTEGER PRIMARY KEY (rowid=?)",
+            "SEARCH c USING INTEGER PRIMARY KEY (rowid=?)",
+            "SEARCH p USING INTEGER PRIMARY KEY (rowid=?)",
+            "USE TEMP B-TREE FOR GROUP BY"
+          ],
+          "uses_index": false,
+          "weight": 3.0,
+          "weighted_latency_ms": 579.4522800006234
+        },
+        "Q4_LineItemAggregation": {
+          "mean_latency_ms": 22.669220000170753,
+          "std_latency_ms": 0.4503612035105717,
+          "row_count": 1789,
+          "checksum": "9710365a5e475c95fe9a783dc34b6ff571b8d66d5d78ba9491f297695c8a973b",
+          "plan_details": [
+            "SCAN order_items",
+            "USE TEMP B-TREE FOR GROUP BY"
+          ],
+          "uses_index": false,
+          "weight": 1.5,
+          "weighted_latency_ms": 34.00383000025613
+        },
+        "Q5_CorrelatedSubquery": {
+          "mean_latency_ms": 7.967539999663131,
+          "std_latency_ms": 0.4800301307230324,
+          "row_count": 830,
+          "checksum": "9b1358c314a887f3c2a3782d9d96f2bfc655991057f94593a279df23c15b844a",
+          "plan_details": [
+            "SEARCH customers USING INTEGER PRIMARY KEY (rowid=?)",
+            "LIST SUBQUERY 1",
+            "SCAN orders",
+            "CREATE BLOOM FILTER",
+            "USE TEMP B-TREE FOR DISTINCT"
+          ],
+          "uses_index": false,
+          "weight": 2.0,
+          "weighted_latency_ms": 15.935079999326263
+        },
+        "Q6_ProductRange": {
+          "mean_latency_ms": 0.22352000014507212,
+          "std_latency_ms": 0.007028058047862031,
+          "row_count": 84,
+          "checksum": "979d2d8afa0636d2535d13107d7e75737731f23d99bcfb58dd3f33700af1683c",
+          "plan_details": [
+            "SCAN products"
+          ],
+          "uses_index": false,
+          "weight": 1.0,
+          "weighted_latency_ms": 0.22352000014507212
+        }
+      },
+      "total_weighted_latency_ms": 645.6962000009298,
+      "workload_wall_ms": 1439.266499999576,
+      "qps": 4.16879014414757,
+      "storage_bytes": 0,
+      "speedup": 0.9357935666912106
+    },
+    "Greedy_Selection": {
+      "index_set": [
+        "idx_orders_cust",
+        "idx_orders_amt",
+        "idx_orders_status_cust",
+        "idx_products_cat_price_stock"
+      ],
+      "num_indices": 4,
+      "query_metrics": {
+        "Q1_PointLookup": {
+          "mean_latency_ms": 0.04917999940516893,
+          "std_latency_ms": 0.00355999970830211,
+          "row_count": 1,
+          "checksum": "6a77a0ccc562166baaadd9f4026ee7fcc37c984fd7428a7fa1eac6d6e55bb5db",
+          "plan_details": [
+            "SEARCH orders USING INDEX idx_orders_status_cust (order_status=? AND cust_id=?)"
+          ],
+          "uses_index": true,
+          "weight": 2.0,
+          "weighted_latency_ms": 0.09835999881033786
+        },
+        "Q2_RangeSort": {
+          "mean_latency_ms": 0.1687200005108025,
+          "std_latency_ms": 0.022254922995634762,
+          "row_count": 50,
+          "checksum": "84be85832cb5a367a8facf19d30941110f63ce49c6e87c318c5c218d018864b3",
+          "plan_details": [
+            "SEARCH orders USING INDEX idx_orders_amt (total_amount>?)",
+            "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+          ],
+          "uses_index": true,
+          "weight": 1.5,
+          "weighted_latency_ms": 0.25308000076620374
+        },
+        "Q3_MultiTableJoin": {
+          "mean_latency_ms": 188.1896400002006,
+          "std_latency_ms": 8.36326080428117,
+          "row_count": 70,
+          "checksum": "7fe506774985eed437ac09f533495c4da44d529432c4d1d2a4b732e270e8c653",
+          "plan_details": [
+            "SCAN oi",
+            "SEARCH o USING INTEGER PRIMARY KEY (rowid=?)",
+            "SEARCH c USING INTEGER PRIMARY KEY (rowid=?)",
+            "SEARCH p USING INTEGER PRIMARY KEY (rowid=?)",
+            "USE TEMP B-TREE FOR GROUP BY"
+          ],
+          "uses_index": false,
+          "weight": 3.0,
+          "weighted_latency_ms": 564.5689200006018
+        },
+        "Q4_LineItemAggregation": {
+          "mean_latency_ms": 21.332780000011553,
+          "std_latency_ms": 0.29297243803182044,
+          "row_count": 1789,
+          "checksum": "9710365a5e475c95fe9a783dc34b6ff571b8d66d5d78ba9491f297695c8a973b",
+          "plan_details": [
+            "SCAN order_items",
+            "USE TEMP B-TREE FOR GROUP BY"
+          ],
+          "uses_index": false,
+          "weight": 1.5,
+          "weighted_latency_ms": 31.99917000001733
+        },
+        "Q5_CorrelatedSubquery": {
+          "mean_latency_ms": 26.244620000215946,
+          "std_latency_ms": 0.5119531127441231,
+          "row_count": 830,
+          "checksum": "9b1358c314a887f3c2a3782d9d96f2bfc655991057f94593a279df23c15b844a",
+          "plan_details": [
+            "SEARCH customers USING INTEGER PRIMARY KEY (rowid=?)",
+            "LIST SUBQUERY 1",
+            "SCAN orders USING INDEX idx_orders_cust",
+            "CREATE BLOOM FILTER"
+          ],
+          "uses_index": true,
+          "weight": 2.0,
+          "weighted_latency_ms": 52.48924000043189
+        },
+        "Q6_ProductRange": {
+          "mean_latency_ms": 0.13355999981286004,
+          "std_latency_ms": 0.009101340565810264,
+          "row_count": 84,
+          "checksum": "979d2d8afa0636d2535d13107d7e75737731f23d99bcfb58dd3f33700af1683c",
+          "plan_details": [
+            "SEARCH products USING INDEX idx_products_cat_price_stock (category=? AND price>? AND price<?)",
+            "USE TEMP B-TREE FOR ORDER BY"
+          ],
+          "uses_index": true,
+          "weight": 1.0,
+          "weighted_latency_ms": 0.13355999981286004
+        }
+      },
+      "total_weighted_latency_ms": 649.5423300004404,
+      "workload_wall_ms": 1436.1258000008092,
+      "qps": 4.177906977227635,
+      "storage_bytes": 2379776,
+      "speedup": 0.9302524594469797
+    },
+    "Chapter6_ILP": {
+      "index_set": [
+        "idx_orders_cust",
+        "idx_orders_status_cust",
+        "idx_orders_amt",
+        "idx_products_cat_price_stock"
+      ],
+      "num_indices": 4,
+      "query_metrics": {
+        "Q1_PointLookup": {
+          "mean_latency_ms": 0.04945999935443979,
+          "std_latency_ms": 0.00414178713922385,
+          "row_count": 1,
+          "checksum": "6a77a0ccc562166baaadd9f4026ee7fcc37c984fd7428a7fa1eac6d6e55bb5db",
+          "plan_details": [
+            "SEARCH orders USING INDEX idx_orders_status_cust (order_status=? AND cust_id=?)"
+          ],
+          "uses_index": true,
+          "weight": 2.0,
+          "weighted_latency_ms": 0.09891999870887958
+        },
+        "Q2_RangeSort": {
+          "mean_latency_ms": 0.15468000019609462,
+          "std_latency_ms": 0.024848291566967995,
+          "row_count": 50,
+          "checksum": "84be85832cb5a367a8facf19d30941110f63ce49c6e87c318c5c218d018864b3",
+          "plan_details": [
+            "SEARCH orders USING INDEX idx_orders_amt (total_amount>?)",
+            "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+          ],
+          "uses_index": true,
+          "weight": 1.5,
+          "weighted_latency_ms": 0.23202000029414194
+        },
+        "Q3_MultiTableJoin": {
+          "mean_latency_ms": 194.5171000003029,
+          "std_latency_ms": 6.60405901844893,
+          "row_count": 70,
+          "checksum": "7fe506774985eed437ac09f533495c4da44d529432c4d1d2a4b732e270e8c653",
+          "plan_details": [
+            "SCAN oi",
+            "SEARCH o USING INTEGER PRIMARY KEY (rowid=?)",
+            "SEARCH c USING INTEGER PRIMARY KEY (rowid=?)",
+            "SEARCH p USING INTEGER PRIMARY KEY (rowid=?)",
+            "USE TEMP B-TREE FOR GROUP BY"
+          ],
+          "uses_index": false,
+          "weight": 3.0,
+          "weighted_latency_ms": 583.5513000009087
+        },
+        "Q4_LineItemAggregation": {
+          "mean_latency_ms": 20.927320000555483,
+          "std_latency_ms": 0.5904967316576677,
+          "row_count": 1789,
+          "checksum": "9710365a5e475c95fe9a783dc34b6ff571b8d66d5d78ba9491f297695c8a973b",
+          "plan_details": [
+            "SCAN order_items",
+            "USE TEMP B-TREE FOR GROUP BY"
+          ],
+          "uses_index": false,
+          "weight": 1.5,
+          "weighted_latency_ms": 31.390980000833224
+        },
+        "Q5_CorrelatedSubquery": {
+          "mean_latency_ms": 24.823800000012852,
+          "std_latency_ms": 0.521990662549333,
+          "row_count": 830,
+          "checksum": "9b1358c314a887f3c2a3782d9d96f2bfc655991057f94593a279df23c15b844a",
+          "plan_details": [
+            "SEARCH customers USING INTEGER PRIMARY KEY (rowid=?)",
+            "LIST SUBQUERY 1",
+            "SCAN orders USING INDEX idx_orders_cust",
+            "CREATE BLOOM FILTER"
+          ],
+          "uses_index": true,
+          "weight": 2.0,
+          "weighted_latency_ms": 49.647600000025705
+        },
+        "Q6_ProductRange": {
+          "mean_latency_ms": 0.1317800004471792,
+          "std_latency_ms": 0.008660577094629675,
+          "row_count": 84,
+          "checksum": "979d2d8afa0636d2535d13107d7e75737731f23d99bcfb58dd3f33700af1683c",
+          "plan_details": [
+            "SEARCH products USING INDEX idx_products_cat_price_stock (category=? AND price>? AND price<?)",
+            "USE TEMP B-TREE FOR ORDER BY"
+          ],
+          "uses_index": true,
+          "weight": 1.0,
+          "weighted_latency_ms": 0.1317800004471792
+        }
+      },
+      "total_weighted_latency_ms": 665.0526000012178,
+      "workload_wall_ms": 1459.01319999939,
+      "qps": 4.1123685515679425,
+      "storage_bytes": 2379776,
+      "speedup": 0.9085572329116899
+    },
+    "All_Candidates": {
+      "index_set": [
+        "idx_orders_cust",
+        "idx_orders_status_cust",
+        "idx_orders_date_amt",
+        "idx_orders_amt",
+        "idx_order_items_oid",
+        "idx_order_items_pid",
+        "idx_order_items_disc_pid",
+        "idx_customers_segment",
+        "idx_customers_country",
+        "idx_products_cat_price_stock"
+      ],
+      "num_indices": 10,
+      "query_metrics": {
+        "Q1_PointLookup": {
+          "mean_latency_ms": 0.05157999985385686,
+          "std_latency_ms": 0.004115531249207535,
+          "row_count": 1,
+          "checksum": "6a77a0ccc562166baaadd9f4026ee7fcc37c984fd7428a7fa1eac6d6e55bb5db",
+          "plan_details": [
+            "SEARCH orders USING INDEX idx_orders_status_cust (order_status=? AND cust_id=?)"
+          ],
+          "uses_index": true,
+          "weight": 2.0,
+          "weighted_latency_ms": 0.10315999970771372
+        },
+        "Q2_RangeSort": {
+          "mean_latency_ms": 0.16945999996096361,
+          "std_latency_ms": 0.03457650100640163,
+          "row_count": 50,
+          "checksum": "84be85832cb5a367a8facf19d30941110f63ce49c6e87c318c5c218d018864b3",
+          "plan_details": [
+            "SEARCH orders USING INDEX idx_orders_amt (total_amount>?)",
+            "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+          ],
+          "uses_index": true,
+          "weight": 1.5,
+          "weighted_latency_ms": 0.2541899999414454
+        },
+        "Q3_MultiTableJoin": {
+          "mean_latency_ms": 734.1094999999768,
+          "std_latency_ms": 20.444775061557625,
+          "row_count": 70,
+          "checksum": "7fe506774985eed437ac09f533495c4da44d529432c4d1d2a4b732e270e8c653",
+          "plan_details": [
+            "SCAN p USING COVERING INDEX idx_products_cat_price_stock",
+            "SEARCH oi USING INDEX idx_order_items_pid (product_id=?)",
+            "SEARCH o USING INTEGER PRIMARY KEY (rowid=?)",
+            "SEARCH c USING INTEGER PRIMARY KEY (rowid=?)",
+            "USE TEMP B-TREE FOR GROUP BY"
+          ],
+          "uses_index": true,
+          "weight": 3.0,
+          "weighted_latency_ms": 2202.3284999999305
+        },
+        "Q4_LineItemAggregation": {
+          "mean_latency_ms": 192.48442000098294,
+          "std_latency_ms": 10.390862156435865,
+          "row_count": 1789,
+          "checksum": "9710365a5e475c95fe9a783dc34b6ff571b8d66d5d78ba9491f297695c8a973b",
+          "plan_details": [
+            "SCAN order_items USING INDEX idx_order_items_pid"
+          ],
+          "uses_index": true,
+          "weight": 1.5,
+          "weighted_latency_ms": 288.7266300014744
+        },
+        "Q5_CorrelatedSubquery": {
+          "mean_latency_ms": 28.989119999823743,
+          "std_latency_ms": 0.6927362538795582,
+          "row_count": 830,
+          "checksum": "9b1358c314a887f3c2a3782d9d96f2bfc655991057f94593a279df23c15b844a",
+          "plan_details": [
+            "SEARCH customers USING INDEX idx_customers_segment (segment=? AND rowid=?)",
+            "LIST SUBQUERY 1",
+            "SCAN orders USING INDEX idx_orders_cust",
+            "CREATE BLOOM FILTER"
+          ],
+          "uses_index": true,
+          "weight": 2.0,
+          "weighted_latency_ms": 57.978239999647485
+        },
+        "Q6_ProductRange": {
+          "mean_latency_ms": 0.14193999959388748,
+          "std_latency_ms": 0.010542598790529005,
+          "row_count": 84,
+          "checksum": "979d2d8afa0636d2535d13107d7e75737731f23d99bcfb58dd3f33700af1683c",
+          "plan_details": [
+            "SEARCH products USING INDEX idx_products_cat_price_stock (category=? AND price>? AND price<?)",
+            "USE TEMP B-TREE FOR ORDER BY"
+          ],
+          "uses_index": true,
+          "weight": 1.0,
+          "weighted_latency_ms": 0.14193999959388748
+        }
+      },
+      "total_weighted_latency_ms": 2549.5326600002954,
+      "workload_wall_ms": 5824.236399999791,
+      "qps": 1.0301779646169953,
+      "storage_bytes": 8081408,
+      "speedup": 0.2369996507508013
+    }
+  },
+  "checksum_verification": {
+    "Q1_PointLookup": {
+      "baseline_hash": "6a77a0ccc562166baaadd9f4026ee7fcc37c984fd7428a7fa1eac6d6e55bb5db",
+      "optimized_hash": "6a77a0ccc562166baaadd9f4026ee7fcc37c984fd7428a7fa1eac6d6e55bb5db",
+      "matches": true,
+      "baseline_plan": [
+        "SCAN orders"
+      ],
+      "optimized_plan": [
+        "SEARCH orders USING INDEX idx_orders_status_cust (order_status=? AND cust_id=?)"
+      ],
+      "uses_index": true
+    },
+    "Q2_RangeSort": {
+      "baseline_hash": "84be85832cb5a367a8facf19d30941110f63ce49c6e87c318c5c218d018864b3",
+      "optimized_hash": "84be85832cb5a367a8facf19d30941110f63ce49c6e87c318c5c218d018864b3",
+      "matches": true,
+      "baseline_plan": [
+        "SCAN orders",
+        "USE TEMP B-TREE FOR ORDER BY"
+      ],
+      "optimized_plan": [
+        "SEARCH orders USING INDEX idx_orders_amt (total_amount>?)",
+        "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+      ],
+      "uses_index": true
+    },
+    "Q3_MultiTableJoin": {
+      "baseline_hash": "7fe506774985eed437ac09f533495c4da44d529432c4d1d2a4b732e270e8c653",
+      "optimized_hash": "7fe506774985eed437ac09f533495c4da44d529432c4d1d2a4b732e270e8c653",
+      "matches": true,
+      "baseline_plan": [
+        "SCAN oi",
+        "SEARCH o USING INTEGER PRIMARY KEY (rowid=?)",
+        "SEARCH c USING INTEGER PRIMARY KEY (rowid=?)",
+        "SEARCH p USING INTEGER PRIMARY KEY (rowid=?)",
+        "USE TEMP B-TREE FOR GROUP BY"
+      ],
+      "optimized_plan": [
+        "SCAN oi",
+        "SEARCH o USING INTEGER PRIMARY KEY (rowid=?)",
+        "SEARCH c USING INTEGER PRIMARY KEY (rowid=?)",
+        "SEARCH p USING INTEGER PRIMARY KEY (rowid=?)",
+        "USE TEMP B-TREE FOR GROUP BY"
+      ],
+      "uses_index": false
+    },
+    "Q4_LineItemAggregation": {
+      "baseline_hash": "9710365a5e475c95fe9a783dc34b6ff571b8d66d5d78ba9491f297695c8a973b",
+      "optimized_hash": "9710365a5e475c95fe9a783dc34b6ff571b8d66d5d78ba9491f297695c8a973b",
+      "matches": true,
+      "baseline_plan": [
+        "SCAN order_items",
+        "USE TEMP B-TREE FOR GROUP BY"
+      ],
+      "optimized_plan": [
+        "SCAN order_items",
+        "USE TEMP B-TREE FOR GROUP BY"
+      ],
+      "uses_index": false
+    },
+    "Q5_CorrelatedSubquery": {
+      "baseline_hash": "9b1358c314a887f3c2a3782d9d96f2bfc655991057f94593a279df23c15b844a",
+      "optimized_hash": "9b1358c314a887f3c2a3782d9d96f2bfc655991057f94593a279df23c15b844a",
+      "matches": true,
+      "baseline_plan": [
+        "SEARCH customers USING INTEGER PRIMARY KEY (rowid=?)",
+        "LIST SUBQUERY 1",
+        "SCAN orders",
+        "CREATE BLOOM FILTER",
+        "USE TEMP B-TREE FOR DISTINCT"
+      ],
+      "optimized_plan": [
+        "SEARCH customers USING INTEGER PRIMARY KEY (rowid=?)",
+        "LIST SUBQUERY 1",
+        "SCAN orders USING INDEX idx_orders_cust",
+        "CREATE BLOOM FILTER"
+      ],
+      "uses_index": true
+    },
+    "Q6_ProductRange": {
+      "baseline_hash": "979d2d8afa0636d2535d13107d7e75737731f23d99bcfb58dd3f33700af1683c",
+      "optimized_hash": "979d2d8afa0636d2535d13107d7e75737731f23d99bcfb58dd3f33700af1683c",
+      "matches": true,
+      "baseline_plan": [
+        "SCAN products"
+      ],
+      "optimized_plan": [
+        "SEARCH products USING INDEX idx_products_cat_price_stock (category=? AND price>? AND price<?)",
+        "USE TEMP B-TREE FOR ORDER BY"
+      ],
+      "uses_index": true
+    }
+  }
+}

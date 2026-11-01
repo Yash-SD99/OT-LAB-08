@@ -29,3 +29,6 @@ tracks/G_xv6/xv6-riscv/
 *.sym
 fs.img
 xv6.img
+
+# Database binary files (reproducibly built via db_generator.py)
+*.db
