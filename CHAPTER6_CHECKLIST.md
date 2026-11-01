@@ -4,26 +4,26 @@ This checklist tracks the implementation, experimental demonstration, and verifi
 
 | Syllabus Area | Algorithm / Technique | Track | Implementation File | Verification Test | Result Artifact | Status |
 |---|---|:---:|---|---|---|:---:|
-| **Foundations of ML Optimization** | Parameters, loss functions & regularization | Track A | `tracks/A_continuous/models.py` | `tracks/A_continuous/tests/test_continuous.py` | `tracks/A_continuous/results/` | Planned |
-| | Continuous vs discrete optimization formulation | Tracks A & B | `tracks/A_continuous/landscapes.py`, `tracks/B_discrete/knapsack_alloc.py` | Direct mathematical test | Benchmark tables | Planned |
-| | Convex vs non-convex landscapes (saddle points, local minima) | Track A | `tracks/A_continuous/landscapes.py` | `tracks/A_continuous/tests/test_continuous.py` | Convergence curves | Planned |
+| **Foundations of ML Optimization** | Parameters, loss functions & regularization | Track A | `tracks/A_continuous/models.py` | `tracks/A_continuous/tests/test_continuous.py` | `tracks/A_continuous/results/` | Verified & Completed |
+| | Continuous vs discrete optimization formulation | Tracks A & B | `tracks/A_continuous/landscapes.py`, `tracks/B_discrete/knapsack_alloc.py` | Direct mathematical test | Benchmark tables | In Progress |
+| | Convex vs non-convex landscapes (saddle points, local minima) | Track A | `tracks/A_continuous/landscapes.py` | `tracks/A_continuous/tests/test_continuous.py` | Convergence curves | Verified & Completed |
 | | Basic quantum computing concepts in optimization | Tracks C & I | `tracks/C_quantum_opt/pqc_qnn.py`, `tracks/I_quantum_algos_qml/circuits_from_scratch.py` | `tracks/C_quantum_opt/tests/test_quantum_opt.py` | Noise & state plots | Planned |
-| **Continuous Optimization** | Gradient Descent (Batch GD) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Step-size sensitivity CSV | Planned |
-| | Stochastic Gradient Descent (SGD) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Noisy objective CSV | Planned |
-| | Mini-batch SGD | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Batch-size comparison | Planned |
-| | Momentum | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Valley acceleration plot | Planned |
-| | Nesterov Accelerated Gradient (NAG) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Convergence comparison | Planned |
-| | AdaGrad | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Learning rate decay curves | Planned |
-| | RMSProp | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Non-convex tracking | Planned |
-| | Adam | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Convergence plots | Planned |
-| | Backpropagation (separate from optimizer) | Track A | `tracks/A_continuous/models.py` | Numerical gradient check ($<10^{-6}$) | Numerical diff report | Planned |
-| | Newton's Method (2nd order) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Quadratic convergence table | Planned |
-| | Gauss-Newton Method | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Non-linear least squares | Planned |
-| | Curvature approximations (Fisher, diagonal/low-rank) | Track A | `tracks/A_continuous/optimizers.py` | Curvature matrix audit | Eigenvalue spectrum | Planned |
-| | Hessian-Vector Products (HVP) | Track A | `tracks/A_continuous/optimizers.py` | Finite-difference comparison | Runtime vs Exact Hessian | Planned |
-| | Convergence (convex, strongly convex, non-convex) | Track A | `tracks/A_continuous/benchmarks.py` | Empirical rate validation | Rate plot $\log(f - f^*)$ | Planned |
-| | Step-size and optimizer tuning | Track A | `tracks/A_continuous/benchmarks.py` | Grid search sensitivity analysis | Sensitivity heatmaps | Planned |
-| | Noisy objectives & stochastic variance | Track A | `tracks/A_continuous/benchmarks.py` | Repeated runs (mean $\pm$ std) | Stochastic trajectory plot | Planned |
+| **Continuous Optimization** | Gradient Descent (Batch GD) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Step-size sensitivity CSV | Verified & Completed |
+| | Stochastic Gradient Descent (SGD) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Noisy objective CSV | Verified & Completed |
+| | Mini-batch SGD | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Batch-size comparison | Verified & Completed |
+| | Momentum | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Valley acceleration plot | Verified & Completed |
+| | Nesterov Accelerated Gradient (NAG) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Convergence comparison | Verified & Completed |
+| | AdaGrad | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Learning rate decay curves | Verified & Completed |
+| | RMSProp | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Non-convex tracking | Verified & Completed |
+| | Adam | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Convergence plots | Verified & Completed |
+| | Backpropagation (separate from optimizer) | Track A | `tracks/A_continuous/models.py` | Numerical gradient check ($<10^{-6}$) | Numerical diff report | Verified & Completed |
+| | Newton's Method (2nd order) | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Quadratic convergence table | Verified & Completed |
+| | Gauss-Newton Method | Track A | `tracks/A_continuous/optimizers.py` | `tracks/A_continuous/tests/test_continuous.py` | Non-linear least squares | Verified & Completed |
+| | Curvature approximations (Fisher, diagonal/low-rank) | Track A | `tracks/A_continuous/optimizers.py` | Curvature matrix audit | Eigenvalue spectrum | Verified & Completed |
+| | Hessian-Vector Products (HVP) | Track A | `tracks/A_continuous/optimizers.py` | Finite-difference comparison | Runtime vs Exact Hessian | Verified & Completed |
+| | Convergence (convex, strongly convex, non-convex) | Track A | `tracks/A_continuous/benchmarks.py` | Empirical rate validation | Rate plot $\log(f - f^*)$ | Verified & Completed |
+| | Step-size and optimizer tuning | Track A | `tracks/A_continuous/benchmarks.py` | Grid search sensitivity analysis | Sensitivity heatmaps | Verified & Completed |
+| | Noisy objectives & stochastic variance | Track A | `tracks/A_continuous/benchmarks.py` | Repeated runs (mean $\pm$ std) | Stochastic trajectory plot | Verified & Completed |
 | **Discrete Optimization** | Greedy selection | Track B | `tracks/B_discrete/knapsack_alloc.py` | `tracks/B_discrete/tests/test_discrete.py` | Suboptimality gap table | Planned |
 | | Integer Linear Programming (ILP) | Track B | `tracks/B_discrete/knapsack_alloc.py` | PuLP solver comparison | Exact vs heuristic | Planned |
 | | Custom Branch-and-Bound (from scratch) | Track B | `tracks/B_discrete/knapsack_alloc.py` | `tracks/B_discrete/tests/test_discrete.py` | Node exploration tree log | Planned |
