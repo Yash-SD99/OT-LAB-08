@@ -1,0 +1,256 @@
+{
+  "benchmark_1_qaoa": {
+    "6_nodes": {
+      "p_1": {
+        "method": "QAOA (p=1)",
+        "p_depth": 1,
+        "optimal_gammas": [
+          0.9660353942910215
+        ],
+        "optimal_betas": [
+          1.1781056704850024
+        ],
+        "final_expected_cut": 2.316427115075032,
+        "max_cut_ground_truth": 3.0,
+        "approximation_ratio": 0.7721423716916774,
+        "prob_optimal_ground_state": 0.4559888340575668,
+        "runtime_ms": 50.708599999779835,
+        "iterations": 40,
+        "is_simulation": true,
+        "label": "noise-model simulation, not real hardware"
+      },
+      "p_2": {
+        "method": "QAOA (p=2)",
+        "p_depth": 2,
+        "optimal_gammas": [
+          0.6819965228185075,
+          1.1425921774013907
+        ],
+        "optimal_betas": [
+          1.1430976431197652,
+          -0.27113014734824936
+        ],
+        "final_expected_cut": 2.74743300224353,
+        "max_cut_ground_truth": 3.0,
+        "approximation_ratio": 0.9158110007478433,
+        "prob_optimal_ground_state": 0.8090229912737441,
+        "runtime_ms": 42.882500000814616,
+        "iterations": 40,
+        "is_simulation": true,
+        "label": "noise-model simulation, not real hardware"
+      },
+      "p_3": {
+        "method": "QAOA (p=3)",
+        "p_depth": 3,
+        "optimal_gammas": [
+          0.8801274156641444,
+          0.14733739155226627,
+          1.0650214612251092
+        ],
+        "optimal_betas": [
+          0.5515065458251792,
+          0.5887985566077525,
+          -0.3359491182759946
+        ],
+        "final_expected_cut": 2.8041833771707263,
+        "max_cut_ground_truth": 3.0,
+        "approximation_ratio": 0.9347277923902421,
+        "prob_optimal_ground_state": 0.8888340166942844,
+        "runtime_ms": 44.99340000074881,
+        "iterations": 40,
+        "is_simulation": true,
+        "label": "noise-model simulation, not real hardware"
+      }
+    },
+    "8_nodes": {
+      "p_1": {
+        "method": "QAOA (p=1)",
+        "p_depth": 1,
+        "optimal_gammas": [
+          0.699821379412996
+        ],
+        "optimal_betas": [
+          1.2009737600462824
+        ],
+        "final_expected_cut": 6.32064359130185,
+        "max_cut_ground_truth": 8.0,
+        "approximation_ratio": 0.7900804489127312,
+        "prob_optimal_ground_state": 0.17815008629992546,
+        "runtime_ms": 42.28239999974903,
+        "iterations": 40,
+        "is_simulation": true,
+        "label": "noise-model simulation, not real hardware"
+      },
+      "p_2": {
+        "method": "QAOA (p=2)",
+        "p_depth": 2,
+        "optimal_gammas": [
+          0.5518034286232257,
+          1.0438606276223397
+        ],
+        "optimal_betas": [
+          1.0830855093000857,
+          -0.26021961024017565
+        ],
+        "final_expected_cut": 6.933816211912051,
+        "max_cut_ground_truth": 8.0,
+        "approximation_ratio": 0.8667270264890063,
+        "prob_optimal_ground_state": 0.3612028044004283,
+        "runtime_ms": 47.047699999893666,
+        "iterations": 40,
+        "is_simulation": true,
+        "label": "noise-model simulation, not real hardware"
+      },
+      "p_3": {
+        "method": "QAOA (p=3)",
+        "p_depth": 3,
+        "optimal_gammas": [
+          0.43289131281664056,
+          -0.11690363603304564,
+          1.1212015829751785
+        ],
+        "optimal_betas": [
+          0.8630405908195801,
+          0.24722586210442582,
+          -0.205999758684967
+        ],
+        "final_expected_cut": 6.915765945771451,
+        "max_cut_ground_truth": 8.0,
+        "approximation_ratio": 0.8644707432214314,
+        "prob_optimal_ground_state": 0.336240557508905,
+        "runtime_ms": 52.934299999833456,
+        "iterations": 40,
+        "is_simulation": true,
+        "label": "noise-model simulation, not real hardware"
+      }
+    }
+  },
+  "benchmark_2_vqe": {
+    "3_qubits": {
+      "method": "VQE (layers=2)",
+      "n_qubits": 3,
+      "num_parameters": 9,
+      "vqe_ground_energy": -2.4032119259096776,
+      "exact_ground_energy": -2.4032119259115534,
+      "energy_error": 1.8758328224066645e-12,
+      "relative_error": 7.805523941444113e-13,
+      "runtime_ms": 36.630699999477656,
+      "iterations": 170,
+      "is_simulation": true,
+      "label": "noise-model simulation, not real hardware"
+    },
+    "4_qubits": {
+      "method": "VQE (layers=2)",
+      "n_qubits": 4,
+      "num_parameters": 12,
+      "vqe_ground_energy": -3.426654137556336,
+      "exact_ground_energy": -3.4270340889080773,
+      "energy_error": 0.0003799513517410702,
+      "relative_error": 0.00011086885682602895,
+      "runtime_ms": 201.27059999958874,
+      "iterations": 728,
+      "is_simulation": true,
+      "label": "noise-model simulation, not real hardware"
+    },
+    "5_qubits": {
+      "method": "VQE (layers=2)",
+      "n_qubits": 5,
+      "num_parameters": 15,
+      "vqe_ground_energy": -4.466752648085093,
+      "exact_ground_energy": -4.469490344005437,
+      "energy_error": 0.0027376959203442297,
+      "relative_error": 0.0006125297762453113,
+      "runtime_ms": 260.40889999967476,
+      "iterations": 928,
+      "is_simulation": true,
+      "label": "noise-model simulation, not real hardware"
+    }
+  },
+  "benchmark_3_gradients": {
+    "iterations": 30,
+    "final_cost_ps": -1.2614248179668766,
+    "evaluations_ps": 570,
+    "final_cost_spsa": -1.5221239856255375,
+    "evaluations_spsa": 90,
+    "final_cost_qng": -2.9999999999996807,
+    "evaluations_qng": 840
+  },
+  "benchmark_4_5_6_noise_barren": {
+    "shot_noise": {
+      "n_qubits": 3,
+      "exact_expectation": 0.4843690179560308,
+      "shots_list": [
+        50,
+        100,
+        250,
+        500,
+        1000,
+        2500,
+        5000
+      ],
+      "measured_variances": [
+        0.035056,
+        0.016364,
+        0.0036614400000000006,
+        0.0025984000000000007,
+        0.0016416400000000002,
+        0.00045148639999999994,
+        0.00025483640000000007
+      ],
+      "theoretical_scaling_fit": [
+        0.035056,
+        0.017528,
+        0.0070111999999999996,
+        0.0035055999999999998,
+        0.0017527999999999999,
+        0.00070112,
+        0.00035056
+      ]
+    },
+    "depolarizing_noise": {
+      "error_rates": [
+        0.0,
+        0.01,
+        0.03,
+        0.05,
+        0.1,
+        0.2
+      ],
+      "ratios": [
+        0.9821054073681452,
+        0.8383124499844914,
+        0.8383124499844914,
+        0.8383124499844914,
+        0.8383124499844914,
+        0.8391324042745294
+      ]
+    },
+    "barren_plateaus": {
+      "qubits_range": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "gradient_variances": [
+        0.22160489243738582,
+        0.28119886447714454,
+        0.11986848613144359,
+        0.06082985084927202,
+        0.047271823000760424,
+        0.01408453679189337
+      ],
+      "gradient_means": [
+        0.1255236313308579,
+        -0.04314998682396164,
+        -0.004533662370727248,
+        0.05191476718881851,
+        -0.03621398423933458,
+        0.03792430418675405
+      ],
+      "n_samples_per_qubit": 30
+    }
+  }
+}

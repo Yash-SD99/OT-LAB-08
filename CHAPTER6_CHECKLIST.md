@@ -31,15 +31,15 @@ This checklist tracks the implementation, experimental demonstration, and verifi
 | | Combinatorial feature selection | Track B | `tracks/B_discrete/feature_selection.py` | Forward/backward selection test | AIC/BIC feature curve | Verified & Completed |
 | | QUBO / Ising formulation (binary-to-spin) | Track B | `tracks/B_discrete/qubo_formulation.py` | Energy Hamiltonian check | QUBO matrix CSV | Verified & Completed |
 | | Penalty terms for constraints (Max-Cut / Selection) | Track B | `tracks/B_discrete/qubo_formulation.py` | Feasibility audit under penalty | Constraint penalty plot | Verified & Completed |
-| **Quantum Optimization** | QAOA (solving Track B Max-Cut QUBO) | Track C | `tracks/C_quantum_opt/qaoa_maxcut.py` | `tracks/C_quantum_opt/tests/test_quantum_opt.py` | Approximation ratio vs depth $p$ | Planned |
-| | VQE (Variational Quantum Eigensolver) | Track C | `tracks/C_quantum_opt/vqe_ising.py` | `tracks/C_quantum_opt/tests/test_quantum_opt.py` | Ground state energy convergence | Planned |
-| | Parameterized Quantum Circuits (PQCs / QNNs) | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Unitary trace test | Expressibility metric | Planned |
-| | Parameter-shift rule | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Finite-difference gradient comparison | Exact gradient diff | Planned |
-| | SPSA (Simultaneous Perturbation Stoch. Approx.) | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Convergence under stochastic shots | SPSA vs Parameter-shift | Planned |
-| | Quantum Natural Gradient (QNG / Fubini-Study) | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Metric tensor positive-definiteness | QNG vs Standard Gradient | Planned |
-| | Finite-shot measurement cost & hardware noise | Track C | `tracks/C_quantum_opt/noise_and_barren.py` | Noise model variance test | Error vs shot count ($10^2 - 10^4$) | Planned |
-| | Barren Plateaus analysis | Track C | `tracks/C_quantum_opt/noise_and_barren.py` | Variance decay over qubits $n \in [2, 8]$ | Gradient variance curve $\mathrm{Var}(\partial E)$ | Planned |
-| | Quantum Annealing embedding limits | Track C | `tracks/C_quantum_opt/noise_and_barren.py` | Chimera/Pegasus graph mapping | Minor embedding overhead | Planned |
+| **Quantum Optimization** | QAOA (solving Track B Max-Cut QUBO) | Track C | `tracks/C_quantum_opt/qaoa_maxcut.py` | `tracks/C_quantum_opt/tests/test_quantum_opt.py` | Approximation ratio vs depth $p$ | Verified & Completed |
+| | VQE (Variational Quantum Eigensolver) | Track C | `tracks/C_quantum_opt/vqe_ising.py` | `tracks/C_quantum_opt/tests/test_quantum_opt.py` | Ground state energy convergence | Verified & Completed |
+| | Parameterized Quantum Circuits (PQCs / QNNs) | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Unitary trace test | Expressibility metric | Verified & Completed |
+| | Parameter-shift rule | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Finite-difference gradient comparison | Exact gradient diff | Verified & Completed |
+| | SPSA (Simultaneous Perturbation Stoch. Approx.) | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Convergence under stochastic shots | SPSA vs Parameter-shift | Verified & Completed |
+| | Quantum Natural Gradient (QNG / Fubini-Study) | Track C | `tracks/C_quantum_opt/pqc_qnn.py` | Metric tensor positive-definiteness | QNG vs Standard Gradient | Verified & Completed |
+| | Finite-shot measurement cost & hardware noise | Track C | `tracks/C_quantum_opt/noise_and_barren.py` | Noise model variance test | Error vs shot count ($10^2 - 10^4$) | Verified & Completed |
+| | Barren Plateaus analysis | Track C | `tracks/C_quantum_opt/noise_and_barren.py` | Variance decay over qubits $n \in [2, 8]$ | Gradient variance curve $\mathrm{Var}(\partial E)$ | Verified & Completed |
+| | Quantum Annealing embedding limits | Track C | `tracks/B_discrete/classical_qubo_solver.py` | Chimera/Pegasus graph mapping | Minor embedding overhead | Verified & Completed |
 | **Submodular & Parallel Optimization** | Submodular diminishing returns verification | Track D | `tracks/D_submodular_parallel_distributed/submodular_greedy.py` | Marginal gain monotonicity test | Diminishing returns curve | Planned |
 | | Greedy selection approximation guarantee ($1 - 1/e$) | Track D | `tracks/D_submodular_parallel_distributed/submodular_greedy.py` | Optimal exhaustive comparison | Empirical vs $(1 - 1/e)$ bound | Planned |
 | | Makespan & Load balancing | Track D | `tracks/D_submodular_parallel_distributed/parallel_work_stealing.py` | Worker load variance test | Workload distribution chart | Planned |
