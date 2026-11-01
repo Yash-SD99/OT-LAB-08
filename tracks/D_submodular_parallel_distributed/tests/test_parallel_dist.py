@@ -11,7 +11,9 @@ from tracks.D_submodular_parallel_distributed.submodular_opt import (
 from tracks.D_submodular_parallel_distributed.parallel_scheduling import (
     StaticScheduler,
     WorkStealingSimulator,
-    fit_amdahl_gustafson
+    fit_amdahl_gustafson,
+    evaluate_pipeline_parallelism,
+    measure_ipc_overhead
 )
 from tracks.D_submodular_parallel_distributed.federated_fedavg import (
     DistributedDataset,
@@ -95,6 +97,21 @@ class TestTrackD(unittest.TestCase):
         # Non-conflicting inner products
         self.assertGreaterEqual(np.dot(g_mgda, g1), -1e-6)
         self.assertGreaterEqual(np.dot(g_mgda, g2), -1e-6)
+
+    def test_pipeline_bubble_fraction(self):
+        """Pipeline bubble fraction matches theoretical formula (P - 1) / (M + P - 1)."""
+        res = evaluate_pipeline_parallelism(n_stages=4, n_microbatches=16, stage_time_ms=5.0)
+        expected_bubble = (4 - 1) / (16 + 4 - 1) # 3 / 19 approx 0.1579
+        self.assertAlmostEqual(res["bubble_fraction"], expected_bubble, places=4)
+        self.assertLess(res["pipeline_efficiency"], 1.0)
+        self.assertGreater(res["pipeline_efficiency"], 0.8)
+
+    def test_ipc_communication_overhead(self):
+        """IPC transfer overhead measures positive latency and throughput for byte payloads."""
+        res = measure_ipc_overhead(message_sizes_kb=[1, 10])
+        self.assertEqual(len(res["latencies_ms"]), 2)
+        self.assertGreater(res["latencies_ms"][0], 0.0)
+        self.assertGreater(res["throughputs_mb_s"][0], 0.0)
 
 
 if __name__ == "__main__":
