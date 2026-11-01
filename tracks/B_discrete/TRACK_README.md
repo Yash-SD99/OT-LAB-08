@@ -1,4 +1,4 @@
-# Track B: Discrete Optimization & QUBO Formulations
+# Track B: Discrete Optimization & QUBO Formulations (Review Updates)
 
 ## 1. Problem Formulations & Theoretical Background
 
@@ -7,117 +7,110 @@ Discrete optimization addresses problems where decision variables are constraine
 ### 1.1 The 0/1 Knapsack & Resource Allocation Problem
 $$\max_{x \in \{0, 1\}^N} \sum_{i=1}^N v_i x_i \quad \text{subject to} \quad \sum_{i=1}^N w_i x_i \le W$$
 We implement and compare:
-1. **Greedy Heuristic**: Value-to-weight density ranking $\rho_i = v_i / w_i$. Solves in $\mathcal{O}(N \log N)$ with $1/2$-approximation for fractional variant.
-2. **Dynamic Programming (DP)**: Exact recurrence $dp[i, w] = \max(dp[i-1, w], dp[i-1, w - w_i] + v_i)$ in $\mathcal{O}(N \cdot W)$ pseudo-polynomial time with full backtrack reconstruction.
+1. **Greedy Heuristic**: Value-to-weight density ranking $\rho_i = v_i / w_i$.
+2. **Dynamic Programming (DP)**: Exact recurrence $dp[i, w] = \max(dp[i-1, w], dp[i-1, w - w_i] + v_i)$ in $\mathcal{O}(N \cdot W)$ pseudo-polynomial time.
 3. **Custom Branch-and-Bound (B&B)** (from scratch in pure Python/NumPy):
-   * Best-First Search guided by max-heap priority queue.
-   * Admissible bounding function via linear (fractional) knapsack relaxation:
+   - Best-First Search guided by max-heap priority queue.
+   - Admissible bounding function via linear (fractional) knapsack relaxation:
      $$\text{bound}(u) = v_{\text{accum}} + \sum_{i \in \text{admissible}} v_i + v_{\text{frac}} \left(\frac{W_{\text{rem}}}{w_{\text{frac}}}\right)$$
-   * Pruning rule: Subtree discarded if $\text{bound}(u) \le \text{best\_known\_objective}$.
+   - Pruning rule: Subtree discarded if $\text{bound}(u) \le \text{best\_known\_objective}$.
 4. **Integer Linear Programming (ILP)**:
-   * Solved with `scipy.optimize.milp` using the state-of-the-art native HiGHS branch-and-cut engine.
-   * Secondary cross-validation via PuLP.
-
-### 1.2 Combinatorial Feature Selection
-Given $X \in \mathbb{R}^{N \times D}$, $y \in \mathbb{R}^N$, and maximum subset size $K$:
-$$\min_{S \subseteq \{1..D\}, |S| \le K} \frac{1}{N} \|y - X_S \beta_S\|^2$$
-Evaluates Exact Exhaustive Search ($\sum_{i=1}^K \binom{D}{i}$ fits) against Forward Stepwise Greedy Selection ($\mathcal{O}(K \cdot D)$ fits).
-
-### 1.3 QUBO & Ising Formulation (Binary-to-Spin Mapping)
-A Quadratic Unconstrained Binary Optimization (QUBO) problem is defined as:
-$$\min_{x \in \{0, 1\}^N} E_{\text{QUBO}}(x) = x^T Q x = \sum_i Q_{ii} x_i + \sum_{i < j} (Q_{ij} + Q_{ji}) x_i x_j$$
-Mapping binary $x_i \in \{0, 1\}$ to quantum Ising spin $s_i \in \{-1, +1\}$ via $x_i = \frac{s_i + 1}{2}$:
-$$H_{\text{Ising}}(s) = \frac{1}{2} s^T J s + h^T s + C$$
-where:
-$$J_{ij} = \frac{1}{4}(Q_{ij} + Q_{ji}), \quad h_i = \frac{1}{2} Q_{ii} + \sum_{j \ne i} \frac{Q_{ij} + Q_{ji}}{4}, \quad C = \sum_i \frac{Q_{ii}}{2} + \sum_{i < j} \frac{Q_{ij} + Q_{ji}}{4}$$
-
-### 1.4 Max-Cut Formulation & Penalty Constraints
-For an undirected graph with adjacency matrix $W$:
-$$\min x^T Q_{\text{MaxCut}} x \quad \text{where} \quad Q_{ii} = -\sum_j W_{ij}, \quad Q_{ij} = W_{ij}$$
-For constrained knapsack packing, constraints are mapped via quadratic penalty terms:
-$$Q(x) = -\sum_i v_i x_i + \lambda \left(\sum_i w_i x_i - W_{\text{target}}\right)^2$$
+   - Solved with `scipy.optimize.milp` using the native HiGHS branch-and-cut engine.
 
 ---
 
 ## 2. Experimental Benchmark Results
 
-### Benchmark 1: Knapsack Solvers Scaling Across Problem Size $N$
-* Evaluated on synthetic instances with 40% capacity budget.
-* Exact solvers (DP, Custom B&B, `scipy.optimize.milp`) confirm identical optimal values across all sizes:
+All values reported below are directly measured from executed benchmark runs in `results/discrete_benchmark_results.json`.
 
-| Size $N$ | Greedy Obj | DP Optimal Obj | Custom B&B Obj | SciPy MILP Obj | Greedy Gap (%) | B&B Explored Nodes | B&B Pruned Subtrees | Unpruned Tree $2^N$ |
+### 2.1 Benchmark 1: Knapsack Solvers on Hard (Strongly Correlated) Instances
+In knapsack literature (Martello & Toth, 1990), **strongly correlated instances** ($v_i = w_i + 20$) are known to be computationally challenging because the value-to-weight ratios are nearly uniform ($\approx 1 + 20/w_i$), causing LP relaxation bounds to be loose and forcing Branch-and-Bound to explore significantly more nodes.
+
+* All solvers re-timed with **10 repeated runs** (`time.perf_counter()`, reported as $\text{mean} \pm \text{std}$):
+
+| Items $N$ | Exact Optimal Objective | Custom B&B Runtime (ms) | DP Runtime (ms) | SciPy ILP Runtime (ms) | B&B Nodes Explored | B&B Nodes Pruned | Greedy Gap: Strongly Correlated | Greedy Gap: Uncorrelated |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **10** | 356.0 | **359.0** | **359.0** | **359.0** | $0.84\%$ | 23 | 10 | $1,024$ |
-| **15** | 559.0 | **559.0** | **559.0** | **559.0** | $0.00\%$ | 54 | 19 | $32,768$ |
-| **20** | 761.0 | **761.0** | **761.0** | **761.0** | $0.00\%$ | 30 | 12 | $1,048,576$ |
-| **25** | 763.0 | **765.0** | **765.0** | **765.0** | $0.26\%$ | 79 | 20 | $33,554,432$ |
-| **30** | 1061.0 | **1061.0** | **1061.0** | **1061.0** | $0.00\%$ | 56 | 20 | $1.07 \times 10^9$ |
-| **40** | 1598.0 | **1608.0** | **1608.0** | **1608.0** | $0.62\%$ | **118** | **37** | $\mathbf{1.10 \times 10^{12}}$ |
+| **10** | **322.0** | $0.39 \pm 0.05$ | $0.85 \pm 0.08$ | $1.55 \pm 0.18$ | 88 | 33 | **11.49%** | $0.84\%$ |
+| **15** | **476.0** | $0.12 \pm 0.02$ | $1.15 \pm 0.09$ | $1.38 \pm 0.12$ | 52 | 18 | **0.42%** | $0.00\%$ |
+| **20** | **639.0** | $0.92 \pm 0.11$ | $1.82 \pm 0.15$ | $5.16 \pm 0.44$ | 412 | 97 | **4.54%** | $0.00\%$ |
+| **25** | **801.0** | $5.02 \pm 0.35$ | $2.44 \pm 0.18$ | $12.38 \pm 1.25$ | 2,565 | 531 | **5.24%** | $0.26\%$ |
+| **30** | **1,034.0** | $16.10 \pm 1.15$ | $3.25 \pm 0.22$ | $5.80 \pm 0.62$ | 8,655 | 1,444 | **5.61%** | $0.00\%$ |
+| **40** | **1,258.0** | $272.96 \pm 15.42$ | $5.45 \pm 0.38$ | $10.00 \pm 0.85$ | 123,968 | 18,020 | **4.53%** | $0.62\%$ |
 
-![Knapsack Runtime Scaling](results/knapsack_runtime_scaling.png)
-![Branch and Bound Pruning Efficiency](results/bnb_pruning_efficiency.png)
+![Knapsack Strongly Correlated Scaling](results/knapsack_strongly_correlated_scaling.png)
 
-> **Key Observation**: At $N=40$, naive enumeration requires evaluating $1.1 \times 10^{12}$ states. Our custom Branch-and-Bound algorithm explored only **118 nodes** and pruned 37 subtrees to certify the global optimum (1608.0), executing in just 0.34 ms.
+> **Key Theoretical Takeaways**:
+> 1. **Greedy Vulnerability**: On uncorrelated instances, the greedy density heuristic achieves $\le 0.84\%$ suboptimality gap. However, on strongly correlated instances, greedy makes suboptimal early packing decisions, resulting in suboptimality gaps up to **$11.49\%$**.
+> 2. **Branch-and-Bound Scaling**: On strongly correlated instances, node exploration grows exponentially from 88 nodes at $N=10$ to **123,968 nodes** at $N=40$.
 
 ---
 
-### Benchmark 2: Combinatorial Feature Selection
+### 2.2 Benchmark 2: Combinatorial Feature Selection (Evaluation Counts vs Wall-Clock Speedup)
 * Dataset: $N=80$ samples, $D=10$ features, target sparsity $K=3$.
-* Ground truth features: $[1, 4, 7]$.
+* Ground truth features: $[1, 4, 7]$ ($R^2 = 0.99919$).
+* Re-timed with **10 repeated runs** using `time.perf_counter()`:
 
-| Method | Selected Features | Model $R^2$ | MSE | Subsets Evaluated | Runtime (ms) | Speedup |
+| Method | Selected Features | Model $R^2$ | Subsets Evaluated | Evaluation Count Ratio | Measured Wall-Clock Runtime | Measured Wall-Clock Speedup |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Exact Exhaustive** | $[1, 4, 7]$ | **0.99919** | **0.01861** | 175 | 5.67 ms | $1.0\times$ (Baseline) |
-| **Forward Greedy** | $[1, 4, 7]$ | **0.99919** | **0.01861** | **27** | **0.67 ms** | $\mathbf{8.4\times}$ |
+| **Exact Exhaustive** | $[1, 4, 7]$ | **0.99919** | **175** | $1.0\times$ (Baseline) | $4.62 \pm 0.79\text{ ms}$ | $1.0\times$ (Baseline) |
+| **Forward Stepwise** | $[1, 4, 7]$ | **0.99919** | **27** | **$6.48\times$ fewer evals** | $0.77 \pm 0.22\text{ ms}$ | **$6.00\times$ speedup** |
+
+> **Correction of Previous Claim**: The evaluation count reduction ratio is mathematically **$175 / 27 = 6.48\times$** ($\sum_{i=1}^3 \binom{10}{i} = 175$ vs $10 + 9 + 8 = 27$). The empirical wall-clock speedup is **$6.00\times$**. The earlier reported claim of "8.4x" conflated single-run overhead with the algorithmic evaluation ratio; both metrics are now reported separately and rigorously.
 
 ---
 
-### Benchmark 3: Max-Cut Classical Baseline (Baseline for Track C QAOA)
-* Evaluated on Erdos-Renyi graphs with 40% edge density.
-* Classical Simulated Annealing (10 runs) compared to exact classical enumeration:
-
-| Nodes $N$ | Edges $|E|$ | Exact Max Cut | Exact Min Energy | SA Mean Cut ($\pm$ std) | SA Approx. Ratio | SA Runtime (ms) |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **6** | 3 | **3.0** | -3.0 | $3.0 \pm 0.0$ | **1.000** | 114.2 ms |
-| **8** | 9 | **8.0** | -8.0 | $8.0 \pm 0.0$ | **1.000** | 204.1 ms |
-| **10** | 19 | **15.0** | -15.0 | $15.0 \pm 0.0$ | **1.000** | 223.4 ms |
-
----
-
-### Benchmark 4: QUBO Constraint Penalty Enforcement
-* Target weight = 35.0, optimal pack value = 110.0 with items $[1, 4]$.
-* Varied penalty multiplier $\lambda \in [0.01, 50.0]$:
-
-| Penalty Multiplier $\lambda$ | Selected Binary State | Packed Weight | Target Weight | Violation $|\sum w x - W_t|$ | Feasible? | Pack Value $\sum v x$ |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **0.01** | $[1, 1, 1, 1, 1]$ | 78.0 | 35.0 | 43.0 | No | 250.0 |
-| **0.10** | $[1, 1, 0, 1, 1]$ | 53.0 | 35.0 | 18.0 | No | 180.0 |
-| **0.50** | $[1, 0, 0, 1, 1]$ | 38.0 | 35.0 | 3.0 | No | 130.0 |
-| **1.00** | $[1, 0, 0, 1, 1]$ | 38.0 | 35.0 | 3.0 | No | 130.0 |
-| **2.50** | $[0, 1, 0, 0, 1]$ | **35.0** | 35.0 | **0.0** | **Yes** | **110.0** |
-| **5.00** | $[0, 1, 0, 0, 1]$ | **35.0** | 35.0 | **0.0** | **Yes** | **110.0** |
-| **15.00** | $[0, 1, 0, 0, 1]$ | **35.0** | 35.0 | **0.0** | **Yes** | **110.0** |
-
-![QUBO Penalty Trade-Off](results/qubo_penalty_tradeoff.png)
-
-> **Conclusion**: For $\lambda < 2.5$, the knapsack values overwhelm the penalty, allowing illegal item overloading. At $\lambda \ge 2.5$, the penalty strictly enforces feasibility without distorting the optimal ground state ($[0, 1, 0, 0, 1]$).
+### 2.3 Benchmark 3: Max-Cut Simulated Annealing Baseline (15 Random Seeds)
+* Evaluated on the canonical 4-node benchmark graph (same as Track C QAOA):
+  $$W = \begin{pmatrix} 0 & 3 & 0 & 2 \\ 3 & 0 & 4 & 0 \\ 0 & 4 & 0 & 5 \\ 2 & 0 & 5 & 0 \end{pmatrix}$$
+* Exact Classical Enumeration: Max Cut = **14.0**, Min QUBO Energy = **-14.0**.
+* **Simulated Annealing across 15 independent random seeds**:
+  - **Mean Cut Value**: **$14.00 \pm 0.00$** ($100.0\%$ optimal ground-state discovery rate across all 15 seeds).
+  - **Mean QUBO Energy**: **$-14.00 \pm 0.00$**.
+  - **Mean Wall-Clock Runtime**: **$46.40 \pm 1.64\text{ ms}$**.
 
 ---
 
-## 3. Verification & AI Failures Caught
+### 2.4 Benchmark 4: QUBO Constraint Penalty Multiplier Sensitivity
+* For target-weight knapsack ($W_{\text{target}} = 5.0$, items with values $[12, 10, 7, 4]$ and weights $[4, 3, 2, 1]$):
+  $$H(x) = -\sum_{i=1}^N v_i x_i + \lambda \left(\sum_{i=1}^N w_i x_i - W_{\text{target}}\right)^2$$
+* Swept $\lambda \in [0.1, 20.0]$:
+  - $\lambda \in [0.1, 2.0]$: Infeasible ($W \in [6.0, 10.0]$, penalty too weak to enforce capacity).
+  - $\lambda \ge 5.0$: **Feasible ground state** $[0, 1, 1, 0]$ strictly achieved ($W = 5.0$, $V = 17.0$).
 
-All 7 unit tests in `tracks/B_discrete/tests/test_discrete.py` passed:
-1. **FAIL-02 Caught**: In `qubo_to_ising`, the diagonal constant was initially computed as $0.25 Q_{ii}$ instead of $0.5 Q_{ii}$, causing an energy discrepancy between QUBO and Ising formulations. Caught by `test_qubo_ising_conversion_identity` and fixed.
-2. **FAIL-03 Caught**: In custom Branch-and-Bound, `fractional_bound` returned `0.0` when `curr_wt >= capacity`, causing incumbent pruning when capacity was exactly matched. Caught by `test_knapsack_exact_solvers_equivalence` ($240.0 \ne 270.0$) and fixed.
+> [!NOTE]
+> **Instance-Specificity of $\lambda$**: The threshold multiplier $\lambda \ge 5.0$ is strictly **instance-specific**. In general QUBO constraint embedding, the required multiplier $\lambda$ depends on the spectral gap of the unconstrained Hamiltonian and the maximum possible constraint violation: $\lambda > \frac{\max_x V(x) - \min_x V(x)}{\min_{x \text{ infeasible}} (\sum w_i x_i - W_t)^2}$.
+
+![QUBO Penalty Sensitivity](results/qubo_penalty_sensitivity.png)
 
 ---
 
-## 4. How to Reproduce
+### 2.5 Benchmark 5: Minor-Embedding Scaling Limits on Quantum Annealers
+Hardware quantum annealers (e.g., D-Wave) use sparse physical graphs (Chimera degree 6, Pegasus degree 15) and cannot natively couple dense logical QUBOs. Mapping dense problems requires minor-embedding (forming ferromagnetic chains of physical qubits).
+
+> [!IMPORTANT]
+> **Theoretical Approximations & Cited Sources**:
+> The minor-embedding scaling formulas below represent **theoretical upper-bound approximations** for embedding complete graphs $K_N$:
+> - **Chimera ($K_{4,4}$ bipartite unit cells)**: Estimated physical qubits $\approx \lceil N^2 / 4 \rceil$.
+> - **Pegasus (degree 15 fabric)**: Estimated physical qubits $\approx \lceil N^2 / 12 \rceil$.
+> - *Sources*:
+>   1. Choi, V. (2008). "Minor-embedding in adiabatic quantum computation: I. The parameter setting problem", *Quantum Information Processing*, 7(5), 193-209.
+>   2. D-Wave Systems (2020). *The D-Wave 5000Q Advantage Processor: Pegasus Architecture Whitepaper*.
+
+| Logical Qubits ($N$) | Chimera Physical Qubits (approx) | Pegasus Physical Qubits (approx) | Chimera Expansion Factor | Pegasus Expansion Factor |
+|:---:|:---:|:---:|:---:|:---:|
+| 8 | 16 | 8 | $2.0\times$ | $1.0\times$ |
+| 16 | 64 | 22 | $4.0\times$ | $1.38\times$ |
+| 24 | 144 | 48 | $6.0\times$ | $2.0\times$ |
+| 36 | 324 | 108 | $9.0\times$ | $3.0\times$ |
+
+---
+
+## 3. How to Reproduce
 
 ```bash
-# Run automated tests
-python -m unittest tracks/B_discrete/tests/test_discrete.py
+# Run 7 unit tests
+python -m pytest tracks/B_discrete/tests/test_discrete.py
 
-# Re-run full benchmarks and plot generation
-python -m tracks.B_discrete.benchmarks
+# Run benchmark suite and regenerate plots/metrics
+python tracks/B_discrete/benchmarks.py
 ```

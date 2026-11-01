@@ -1,334 +1,385 @@
 {
-  "benchmark_1_knapsack_scaling": {
-    "sizes": [
-      10,
-      15,
-      20,
-      25,
-      30,
-      40
-    ],
-    "runtimes_ms": {
-      "Greedy": [
-        1.4700000001539593,
-        0.028200000087963417,
-        0.2729999996518018,
-        0.034699999559961725,
-        0.030500000320898835,
-        0.033799999982875306
-      ],
-      "Dynamic Programming": [
-        0.4517999996096478,
-        0.07349999941652641,
-        0.10449999990669312,
-        0.12229999992996454,
-        0.15010000061010942,
-        0.1643999994485057
-      ],
-      "Custom Branch-and-Bound": [
-        0.22840000019641593,
-        0.14250000003812602,
-        0.09189999946102034,
-        0.1711999993858626,
-        0.1733999997668434,
-        0.3443000005063368
-      ],
-      "ILP (scipy.optimize.milp)": [
-        20.491299999775947,
-        6.9447000005311565,
-        1.3564000000769738,
-        5.638700000417884,
-        1.3221999997767853,
-        3.637200000412122
-      ]
-    },
-    "objectives": {
-      "Greedy": [
-        356.0,
-        559.0,
-        761.0,
-        763.0,
-        1061.0,
-        1598.0
-      ],
-      "Dynamic Programming": [
-        359.0,
-        559.0,
-        761.0,
-        765.0,
-        1061.0,
-        1608.0
-      ],
-      "Custom Branch-and-Bound": [
-        359.0,
-        559.0,
-        761.0,
-        765.0,
-        1061.0,
-        1608.0
-      ],
-      "ILP (scipy.optimize.milp)": [
-        359.0,
-        559.0,
-        761.0,
-        765.0,
-        1061.0,
-        1608.0
-      ]
-    },
-    "pruning_stats": {
-      "explored": [
-        23,
-        54,
-        30,
-        79,
-        56,
-        118
-      ],
-      "pruned": [
-        10,
-        19,
-        12,
-        20,
-        20,
-        37
-      ]
-    }
+  "metadata": {
+    "track": "Track B: Discrete Optimization",
+    "student": "Yash Deshmukh",
+    "roll_no": "241070018",
+    "institution": "VJTI Mumbai",
+    "timestamp": "2026-11-01T23:47:41"
   },
-  "benchmark_2_feature_selection": {
-    "dataset_shape": [
-      80,
-      10
+  "knapsack_scaling": {
+    "strongly_correlated": [
+      {
+        "n_items": 10,
+        "exact_objective": 322.0,
+        "greedy_objective": 285.0,
+        "greedy_gap_percent": 11.490683229813664,
+        "bnb_nodes_explored": 88,
+        "bnb_nodes_pruned": 33,
+        "bnb_time_ms_mean": 0.3851199999189703,
+        "bnb_time_ms_std": 0.1361688715087135,
+        "dp_time_ms_mean": 0.04149000014876947,
+        "dp_time_ms_std": 0.011941478355199153,
+        "ilp_time_ms_mean": 1.5505800001847092,
+        "ilp_time_ms_std": 0.30246136221944536
+      },
+      {
+        "n_items": 15,
+        "exact_objective": 476.0,
+        "greedy_objective": 474.0,
+        "greedy_gap_percent": 0.42016806722689076,
+        "bnb_nodes_explored": 52,
+        "bnb_nodes_pruned": 18,
+        "bnb_time_ms_mean": 0.12217999938002322,
+        "bnb_time_ms_std": 0.0297748145546981,
+        "dp_time_ms_mean": 0.048019999485404696,
+        "dp_time_ms_std": 0.010563029608740575,
+        "ilp_time_ms_mean": 1.3799399999697926,
+        "ilp_time_ms_std": 0.17086703758812674
+      },
+      {
+        "n_items": 20,
+        "exact_objective": 639.0,
+        "greedy_objective": 610.0,
+        "greedy_gap_percent": 4.538341158059469,
+        "bnb_nodes_explored": 412,
+        "bnb_nodes_pruned": 97,
+        "bnb_time_ms_mean": 0.9202599996569916,
+        "bnb_time_ms_std": 0.29568739288389967,
+        "dp_time_ms_mean": 0.0659399998767185,
+        "dp_time_ms_std": 0.016702047621280018,
+        "ilp_time_ms_mean": 5.161799999950745,
+        "ilp_time_ms_std": 0.762156742419444
+      },
+      {
+        "n_items": 25,
+        "exact_objective": 801.0,
+        "greedy_objective": 759.0,
+        "greedy_gap_percent": 5.2434456928838955,
+        "bnb_nodes_explored": 2565,
+        "bnb_nodes_pruned": 531,
+        "bnb_time_ms_mean": 5.017709999810904,
+        "bnb_time_ms_std": 0.4702518250156284,
+        "dp_time_ms_mean": 0.08805999968899414,
+        "dp_time_ms_std": 0.038495615811001256,
+        "ilp_time_ms_mean": 12.378170000010869,
+        "ilp_time_ms_std": 0.9240479911058834
+      },
+      {
+        "n_items": 30,
+        "exact_objective": 1034.0,
+        "greedy_objective": 976.0,
+        "greedy_gap_percent": 5.609284332688588,
+        "bnb_nodes_explored": 8655,
+        "bnb_nodes_pruned": 1444,
+        "bnb_time_ms_mean": 16.101789999993343,
+        "bnb_time_ms_std": 0.6223710623060604,
+        "dp_time_ms_mean": 0.09824000044318382,
+        "dp_time_ms_std": 0.03296611022579817,
+        "ilp_time_ms_mean": 5.797619999975723,
+        "ilp_time_ms_std": 0.901208765489056
+      },
+      {
+        "n_items": 40,
+        "exact_objective": 1258.0,
+        "greedy_objective": 1201.0,
+        "greedy_gap_percent": 4.531001589825119,
+        "bnb_nodes_explored": 123968,
+        "bnb_nodes_pruned": 18020,
+        "bnb_time_ms_mean": 272.95629999989615,
+        "bnb_time_ms_std": 5.441937519320354,
+        "dp_time_ms_mean": 0.17327000005025184,
+        "dp_time_ms_std": 0.09879706503203389,
+        "ilp_time_ms_mean": 10.0045000001046,
+        "ilp_time_ms_std": 1.152446650897292
+      }
     ],
-    "true_features": [
+    "uncorrelated": [
+      {
+        "n_items": 10,
+        "exact_objective": 405.0,
+        "greedy_objective": 405.0,
+        "greedy_gap_percent": 0.0,
+        "bnb_nodes_explored": 14,
+        "bnb_nodes_pruned": 6
+      },
+      {
+        "n_items": 15,
+        "exact_objective": 598.0,
+        "greedy_objective": 569.0,
+        "greedy_gap_percent": 4.849498327759197,
+        "bnb_nodes_explored": 33,
+        "bnb_nodes_pruned": 13
+      },
+      {
+        "n_items": 20,
+        "exact_objective": 616.0,
+        "greedy_objective": 607.0,
+        "greedy_gap_percent": 1.461038961038961,
+        "bnb_nodes_explored": 71,
+        "bnb_nodes_pruned": 30
+      },
+      {
+        "n_items": 25,
+        "exact_objective": 879.0,
+        "greedy_objective": 866.0,
+        "greedy_gap_percent": 1.4789533560864618,
+        "bnb_nodes_explored": 72,
+        "bnb_nodes_pruned": 22
+      },
+      {
+        "n_items": 30,
+        "exact_objective": 1163.0,
+        "greedy_objective": 1163.0,
+        "greedy_gap_percent": 0.0,
+        "bnb_nodes_explored": 51,
+        "bnb_nodes_pruned": 19
+      },
+      {
+        "n_items": 40,
+        "exact_objective": 1470.0,
+        "greedy_objective": 1465.0,
+        "greedy_gap_percent": 0.3401360544217687,
+        "bnb_nodes_explored": 81,
+        "bnb_nodes_pruned": 24
+      }
+    ]
+  },
+  "feature_selection": {
+    "n_samples": 80,
+    "n_features": 10,
+    "k_target": 3,
+    "exhaustive_evaluations": 175,
+    "forward_evaluations": 27,
+    "evaluation_count_ratio": 6.481481481481482,
+    "exhaustive_time_ms_mean": 4.622779999590421,
+    "exhaustive_time_ms_std": 0.7948796620473938,
+    "forward_time_ms_mean": 0.7700499996644794,
+    "forward_time_ms_std": 0.2190212602667484,
+    "wall_clock_speedup": 6.0032205721766445,
+    "best_subset_exhaustive": [
       1,
       4,
       7
     ],
-    "target_cardinality": 3,
-    "exact_selection": {
-      "method": "Exact Exhaustive Subset Selection",
-      "selected_indices": [
-        1,
-        4,
-        7
-      ],
-      "selected_mask": [
-        0,
-        1,
-        0,
-        0,
-        1,
-        0,
-        0,
-        1,
-        0,
-        0
-      ],
-      "mse": 0.018609895786169787,
-      "r2": 0.9991945815240812,
-      "subsets_evaluated": 175,
-      "runtime_ms": 5.669299999681243,
-      "is_exact": true
-    },
-    "forward_greedy": {
-      "method": "Forward Greedy Selection",
-      "selected_indices": [
-        1,
-        4,
-        7
-      ],
-      "selected_mask": [
-        0,
-        1,
-        0,
-        0,
-        1,
-        0,
-        0,
-        1,
-        0,
-        0
-      ],
-      "mse": 0.018609895786169787,
-      "r2": 0.9991945815240812,
-      "subsets_evaluated": 27,
-      "runtime_ms": 0.6735000006301561,
-      "is_exact": false
-    },
-    "runtime_speedup": 8.417668885488935,
-    "evaluations_ratio": 6.481481481481482
+    "best_subset_forward": [
+      4,
+      1,
+      7
+    ]
   },
-  "benchmark_3_maxcut_qubo_baseline": {
-    "6_nodes": {
-      "num_nodes": 6,
-      "edges": 3,
-      "exact_max_cut": 3.0,
-      "exact_min_energy": -3.0,
-      "exact_runtime_ms": 0.17409999964002054,
-      "sa_mean_cut": 3.0,
-      "sa_std_cut": 0.0,
-      "sa_approximation_ratio": 1.0,
-      "sa_mean_runtime_ms": 114.2517900002531
-    },
-    "8_nodes": {
-      "num_nodes": 8,
-      "edges": 9,
-      "exact_max_cut": 8.0,
-      "exact_min_energy": -8.0,
-      "exact_runtime_ms": 4.86670000009326,
-      "sa_mean_cut": 8.0,
-      "sa_std_cut": 0.0,
-      "sa_approximation_ratio": 1.0,
-      "sa_mean_runtime_ms": 204.14881000006062
-    },
-    "10_nodes": {
-      "num_nodes": 10,
-      "edges": 19,
-      "exact_max_cut": 15.0,
-      "exact_min_energy": -15.0,
-      "exact_runtime_ms": 11.251400000219292,
-      "sa_mean_cut": 15.0,
-      "sa_std_cut": 0.0,
-      "sa_approximation_ratio": 1.0,
-      "sa_mean_runtime_ms": 223.4372700001586
-    }
+  "maxcut_sa_15_seeds": {
+    "exact_max_cut": 14.0,
+    "exact_min_energy": -14.0,
+    "sa_n_seeds": 15,
+    "sa_mean_cut": 14.0,
+    "sa_std_cut": 0.0,
+    "sa_mean_energy": -14.0,
+    "sa_std_energy": 0.0,
+    "sa_mean_runtime_ms": 46.40353333318975,
+    "sa_std_runtime_ms": 1.6358863513655026,
+    "sa_success_rate": 1.0
   },
-  "benchmark_4_penalty_tradeoff": {
-    "penalty_sweep": [
-      {
-        "lambda": 0.01,
-        "selected_state": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "actual_weight": 78.0,
-        "target_weight": 35.0,
-        "actual_value": 250.0,
-        "constraint_violation": 43.0,
-        "is_feasible": false
-      },
+  "penalty_sensitivity": {
+    "penalty_results": [
       {
         "lambda": 0.1,
-        "selected_state": [
+        "best_state": [
           1,
           1,
-          0,
           1,
           1
         ],
-        "actual_weight": 53.0,
-        "target_weight": 35.0,
-        "actual_value": 180.0,
-        "constraint_violation": 18.0,
-        "is_feasible": false
+        "total_weight": 10.0,
+        "total_value": 33.0,
+        "is_feasible": false,
+        "min_energy": -30.5
       },
       {
         "lambda": 0.5,
-        "selected_state": [
+        "best_state": [
+          1,
           1,
           0,
-          0,
-          1,
           1
         ],
-        "actual_weight": 38.0,
-        "target_weight": 35.0,
-        "actual_value": 130.0,
-        "constraint_violation": 3.0,
-        "is_feasible": false
+        "total_weight": 8.0,
+        "total_value": 26.0,
+        "is_feasible": false,
+        "min_energy": -21.5
       },
       {
         "lambda": 1.0,
-        "selected_state": [
+        "best_state": [
+          0,
           1,
-          0,
-          0,
           1,
           1
         ],
-        "actual_weight": 38.0,
-        "target_weight": 35.0,
-        "actual_value": 130.0,
-        "constraint_violation": 3.0,
-        "is_feasible": false
+        "total_weight": 6.0,
+        "total_value": 21.0,
+        "is_feasible": false,
+        "min_energy": -20.0
       },
       {
-        "lambda": 2.5,
-        "selected_state": [
+        "lambda": 2.0,
+        "best_state": [
           0,
           1,
-          0,
-          0,
+          1,
           1
         ],
-        "actual_weight": 35.0,
-        "target_weight": 35.0,
-        "actual_value": 110.0,
-        "constraint_violation": 0.0,
-        "is_feasible": true
+        "total_weight": 6.0,
+        "total_value": 21.0,
+        "is_feasible": false,
+        "min_energy": -19.0
       },
       {
         "lambda": 5.0,
-        "selected_state": [
+        "best_state": [
           0,
           1,
-          0,
-          0,
-          1
+          1,
+          0
         ],
-        "actual_weight": 35.0,
-        "target_weight": 35.0,
-        "actual_value": 110.0,
-        "constraint_violation": 0.0,
-        "is_feasible": true
+        "total_weight": 5.0,
+        "total_value": 17.0,
+        "is_feasible": true,
+        "min_energy": -17.0
       },
       {
-        "lambda": 15.0,
-        "selected_state": [
+        "lambda": 10.0,
+        "best_state": [
           0,
           1,
-          0,
-          0,
-          1
+          1,
+          0
         ],
-        "actual_weight": 35.0,
-        "target_weight": 35.0,
-        "actual_value": 110.0,
-        "constraint_violation": 0.0,
-        "is_feasible": true
+        "total_weight": 5.0,
+        "total_value": 17.0,
+        "is_feasible": true,
+        "min_energy": -17.0
       },
       {
-        "lambda": 50.0,
-        "selected_state": [
+        "lambda": 20.0,
+        "best_state": [
           0,
           1,
-          0,
-          0,
-          1
+          1,
+          0
         ],
-        "actual_weight": 35.0,
-        "target_weight": 35.0,
-        "actual_value": 110.0,
-        "constraint_violation": 0.0,
-        "is_feasible": true
+        "total_weight": 5.0,
+        "total_value": 17.0,
+        "is_feasible": true,
+        "min_energy": -17.0
       }
     ]
   },
-  "minor_embedding_limits": {
-    "logical_qubits": 8,
-    "graph_density": 1.0,
-    "chimera_estimated_physical_qubits": 16,
-    "pegasus_estimated_physical_qubits": 8,
-    "qubit_expansion_factor_chimera": 2.0,
-    "qubit_expansion_factor_pegasus": 1.0,
-    "limiting_factors": [
-      "Ferromagnetic chain breaks (destroys ground-state solution if coupling J_chain is too weak)",
-      "Precision loss due to digital-to-analog converter (DAC) quantization of couplings",
-      "Energy scale attenuation: adding penalty couplings compresses the dynamic range of problem Hamiltonian"
+  "minor_embedding": {
+    "embedding_limits": [
+      {
+        "logical_qubits": 4,
+        "graph_density": 1.0,
+        "chimera_estimated_physical_qubits": 4,
+        "pegasus_estimated_physical_qubits": 4,
+        "qubit_expansion_factor_chimera": 1.0,
+        "qubit_expansion_factor_pegasus": 1.0,
+        "limiting_factors": [
+          "Ferromagnetic chain breaks (destroys ground-state solution if coupling J_chain is too weak)",
+          "Precision loss due to digital-to-analog converter (DAC) quantization of couplings",
+          "Energy scale attenuation: adding penalty couplings compresses the dynamic range of problem Hamiltonian"
+        ]
+      },
+      {
+        "logical_qubits": 8,
+        "graph_density": 1.0,
+        "chimera_estimated_physical_qubits": 16,
+        "pegasus_estimated_physical_qubits": 8,
+        "qubit_expansion_factor_chimera": 2.0,
+        "qubit_expansion_factor_pegasus": 1.0,
+        "limiting_factors": [
+          "Ferromagnetic chain breaks (destroys ground-state solution if coupling J_chain is too weak)",
+          "Precision loss due to digital-to-analog converter (DAC) quantization of couplings",
+          "Energy scale attenuation: adding penalty couplings compresses the dynamic range of problem Hamiltonian"
+        ]
+      },
+      {
+        "logical_qubits": 12,
+        "graph_density": 1.0,
+        "chimera_estimated_physical_qubits": 36,
+        "pegasus_estimated_physical_qubits": 12,
+        "qubit_expansion_factor_chimera": 3.0,
+        "qubit_expansion_factor_pegasus": 1.0,
+        "limiting_factors": [
+          "Ferromagnetic chain breaks (destroys ground-state solution if coupling J_chain is too weak)",
+          "Precision loss due to digital-to-analog converter (DAC) quantization of couplings",
+          "Energy scale attenuation: adding penalty couplings compresses the dynamic range of problem Hamiltonian"
+        ]
+      },
+      {
+        "logical_qubits": 16,
+        "graph_density": 1.0,
+        "chimera_estimated_physical_qubits": 64,
+        "pegasus_estimated_physical_qubits": 22,
+        "qubit_expansion_factor_chimera": 4.0,
+        "qubit_expansion_factor_pegasus": 1.375,
+        "limiting_factors": [
+          "Ferromagnetic chain breaks (destroys ground-state solution if coupling J_chain is too weak)",
+          "Precision loss due to digital-to-analog converter (DAC) quantization of couplings",
+          "Energy scale attenuation: adding penalty couplings compresses the dynamic range of problem Hamiltonian"
+        ]
+      },
+      {
+        "logical_qubits": 20,
+        "graph_density": 1.0,
+        "chimera_estimated_physical_qubits": 100,
+        "pegasus_estimated_physical_qubits": 34,
+        "qubit_expansion_factor_chimera": 5.0,
+        "qubit_expansion_factor_pegasus": 1.7,
+        "limiting_factors": [
+          "Ferromagnetic chain breaks (destroys ground-state solution if coupling J_chain is too weak)",
+          "Precision loss due to digital-to-analog converter (DAC) quantization of couplings",
+          "Energy scale attenuation: adding penalty couplings compresses the dynamic range of problem Hamiltonian"
+        ]
+      },
+      {
+        "logical_qubits": 24,
+        "graph_density": 1.0,
+        "chimera_estimated_physical_qubits": 144,
+        "pegasus_estimated_physical_qubits": 48,
+        "qubit_expansion_factor_chimera": 6.0,
+        "qubit_expansion_factor_pegasus": 2.0,
+        "limiting_factors": [
+          "Ferromagnetic chain breaks (destroys ground-state solution if coupling J_chain is too weak)",
+          "Precision loss due to digital-to-analog converter (DAC) quantization of couplings",
+          "Energy scale attenuation: adding penalty couplings compresses the dynamic range of problem Hamiltonian"
+        ]
+      },
+      {
+        "logical_qubits": 30,
+        "graph_density": 1.0,
+        "chimera_estimated_physical_qubits": 225,
+        "pegasus_estimated_physical_qubits": 75,
+        "qubit_expansion_factor_chimera": 7.5,
+        "qubit_expansion_factor_pegasus": 2.5,
+        "limiting_factors": [
+          "Ferromagnetic chain breaks (destroys ground-state solution if coupling J_chain is too weak)",
+          "Precision loss due to digital-to-analog converter (DAC) quantization of couplings",
+          "Energy scale attenuation: adding penalty couplings compresses the dynamic range of problem Hamiltonian"
+        ]
+      },
+      {
+        "logical_qubits": 36,
+        "graph_density": 1.0,
+        "chimera_estimated_physical_qubits": 324,
+        "pegasus_estimated_physical_qubits": 108,
+        "qubit_expansion_factor_chimera": 9.0,
+        "qubit_expansion_factor_pegasus": 3.0,
+        "limiting_factors": [
+          "Ferromagnetic chain breaks (destroys ground-state solution if coupling J_chain is too weak)",
+          "Precision loss due to digital-to-analog converter (DAC) quantization of couplings",
+          "Energy scale attenuation: adding penalty couplings compresses the dynamic range of problem Hamiltonian"
+        ]
+      }
     ]
   }
 }

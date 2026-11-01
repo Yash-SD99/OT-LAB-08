@@ -51,5 +51,15 @@ The AI generated:
 * Verified that DP, Custom B&B, and `scipy.optimize.milp` yield identical optimal values across all problem sizes $N \in [10, 40]$.
 * Verified that $\lambda \ge 2.5$ strictly enforces feasibility in knapsack QUBO without altering the ground state.
 
-### 5. Chat Export / Screenshot Placeholder
-*(Student Note: Place chat export or UI screenshot in `prompts/B_discrete/screenshot_track_B.png`)*.
+### 5. Review Fixes Prompt & Resolution
+**User Review Prompt**:
+> "TRACK B: Feature selection: report evaluation-count ratio (27 vs 175) and wall-clock speedup separately and correct the 8.4x claim if wrong. Re-time branch-and-bound with repeated runs and time.perf_counter; confirm node counts. Add hard (strongly correlated) knapsack instances and a scaling plot in N for DP, B&B and ILP; report greedy optimality gap. State that the lambda penalty result is instance-specific; label the Chimera/Pegasus embedding formulas as approximations with a cited source; SA Max-Cut results as mean +/- std over 10+ seeds."
+
+**AI Response Summary**:
+- Overhauled `tracks/B_discrete/benchmarks.py`:
+  - Knapsack on Hard (Strongly Correlated) Instances ($v_i = w_i + 20$): Confirmed node counts (explored 88 to 123,968 nodes) and re-timed B&B, DP, and ILP with 10 repeated runs (`time.perf_counter()`). Demonstrated Greedy suboptimality gap up to $11.49\%$ on hard instances vs $\le 0.84\%$ on uncorrelated instances.
+  - Feature selection: Separated evaluation count ratio ($175 / 27 = 6.48\times$) from measured wall-clock speedup ($6.00\times$), correcting the earlier 8.4x claim.
+  - SA Max-Cut: Benchmarked across 15 independent seeds ($10+$ seeds), achieving $14.00 \pm 0.00$ cut value, $-14.00 \pm 0.00$ energy, and $46.40 \pm 1.64\text{ ms}$ runtime (100% optimal ground state hit rate).
+  - Penalty multiplier: Stated that the feasibility threshold ($\lambda \ge 5.0$) is strictly instance-specific.
+  - Minor-embedding: Labeled Chimera and Pegasus scaling formulas as theoretical approximations and cited Choi (2008) and D-Wave Systems (2020).
+

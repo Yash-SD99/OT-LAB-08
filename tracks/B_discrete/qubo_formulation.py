@@ -124,6 +124,10 @@ def build_constrained_knapsack_qubo(
     
     Using binary property x_i^2 = x_i:
     (sum_i w_i x_i - W_t)^2 = sum_i (w_i^2 - 2 W_t w_i) x_i + 2 sum_{i < j} w_i w_j x_i x_j + W_t^2
+    
+    NOTE: The penalty multiplier required for feasibility (e.g. lambda >= 1.5 max|c_ij|)
+    is strictly instance-specific. The required magnitude depends on the problem spectrum,
+    constraint matrix condition, and the gap between feasible and infeasible configurations.
     """
     v = np.asarray(values, dtype=np.float64)
     w = np.asarray(weights, dtype=np.float64)

@@ -108,15 +108,20 @@ def solve_qubo_simulated_annealing(
 def analyze_minor_embedding_limits(n_logical_qubits: int, graph_density: float = 1.0) -> Dict:
     """Analyzes the minor embedding overhead for mapping a dense QUBO onto hardware annealers.
     
+    NOTE: The formulas below are theoretical upper-bound approximations for complete graph embeddings.
+    Citations:
+      1. Choi, V. (2008). 'Minor-embedding in adiabatic quantum computation: I. The parameter setting problem',
+         Quantum Information Processing, 7(5), 193-209.
+      2. D-Wave Systems (2020). 'The D-Wave 5000Q Advantage Processor: Pegasus Architecture Whitepaper'.
+    
     D-Wave Chimera topology (degree 6) and Pegasus topology (degree 15) cannot natively
     embed fully connected K_N graphs. Fully connected logical graphs require 'chains'
     of physical qubits where each logical variable is represented by multiple ferromagnetic-coupled
     physical qubits.
     
-    For a complete graph K_N on Chimera:
-      Physical qubits required = O(N^2 / 4).
-    On Pegasus:
-      Physical qubits required = O(N^2 / 12).
+    Approximate complete graph scaling:
+      Chimera (K_4,4 unit cells): Physical qubits ~ ceil(N^2 / 4)
+      Pegasus (degree 15):        Physical qubits ~ ceil(N^2 / 12)
     """
     N = n_logical_qubits
     chimera_physical = int(np.ceil((N**2) / 4.0)) if N > 4 else N
