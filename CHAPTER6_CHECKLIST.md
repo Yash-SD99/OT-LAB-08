@@ -40,15 +40,15 @@ This checklist tracks the implementation, experimental demonstration, and verifi
 | | Finite-shot measurement cost & hardware noise | Track C | `tracks/C_quantum_opt/noise_and_barren.py` | Noise model variance test | Error vs shot count ($10^2 - 10^4$) | Verified & Completed |
 | | Barren Plateaus analysis | Track C | `tracks/C_quantum_opt/noise_and_barren.py` | Variance decay over qubits $n \in [2, 8]$ | Gradient variance curve $\mathrm{Var}(\partial E)$ | Verified & Completed |
 | | Quantum Annealing embedding limits | Track C | `tracks/B_discrete/classical_qubo_solver.py` | Chimera/Pegasus graph mapping | Minor embedding overhead | Verified & Completed |
-| **Submodular & Parallel Optimization** | Submodular diminishing returns verification | Track D | `tracks/D_submodular_parallel_distributed/submodular_greedy.py` | Marginal gain monotonicity test | Diminishing returns curve | Planned |
-| | Greedy selection approximation guarantee ($1 - 1/e$) | Track D | `tracks/D_submodular_parallel_distributed/submodular_greedy.py` | Optimal exhaustive comparison | Empirical vs $(1 - 1/e)$ bound | Planned |
-| | Makespan & Load balancing | Track D | `tracks/D_submodular_parallel_distributed/parallel_work_stealing.py` | Worker load variance test | Workload distribution chart | Planned |
-| | Work stealing scheduler | Track D | `tracks/D_submodular_parallel_distributed/parallel_work_stealing.py` | Task completion queue audit | Stolen task count log | Planned |
-| | Parallelism types (Data, Model, Pipeline) | Track D | `tracks/D_submodular_parallel_distributed/parallel_work_stealing.py` | Execution timeline breakdown | Throughput vs core count | Planned |
-| | Speedup, Parallel Efficiency, Amdahl & Gustafson | Track D | `tracks/D_submodular_parallel_distributed/parallel_work_stealing.py` | Multi-core scaling ($P=1, 2, 4$) | Amdahl vs Measured fit | Planned |
-| **Distributed & Multi-Task** | Federated Learning (FedAvg) | Track D | `tracks/D_submodular_parallel_distributed/federated_fedavg.py` | Local epochs $E \in \{1, 5, 10\}$ test | Non-IID accuracy curves | Planned |
-| | MGDA (Multiple Gradient Descent Algorithm) | Track D | `tracks/D_submodular_parallel_distributed/multi_task_mgda.py` | Pareto-optimality / stationary test | Pareto front vs Equal weights | Planned |
-| | GradNorm | Track D | `tracks/D_submodular_parallel_distributed/multi_task_mgda.py` | Gradient norm balance test | Dynamic task weight balance | Planned |
+| **Submodular & Parallel Optimization** | Submodular diminishing returns verification | Track D | `tracks/D_submodular_parallel_distributed/submodular_opt.py` | Marginal gain monotonicity test | Diminishing returns curve | Verified & Completed |
+| | Greedy selection approximation guarantee ($1 - 1/e$) | Track D | `tracks/D_submodular_parallel_distributed/submodular_opt.py` | Optimal exhaustive comparison | Empirical vs $(1 - 1/e)$ bound | Verified & Completed |
+| | Makespan & Load balancing | Track D | `tracks/D_submodular_parallel_distributed/parallel_scheduling.py` | Worker load variance test | Workload distribution chart | Verified & Completed |
+| | Work stealing scheduler | Track D | `tracks/D_submodular_parallel_distributed/parallel_scheduling.py` | Task completion queue audit | Stolen task count log | Verified & Completed |
+| | Parallelism types (Data, Model, Pipeline) | Track D | `tracks/D_submodular_parallel_distributed/parallel_scheduling.py` | Execution timeline breakdown | Throughput vs core count | Verified & Completed |
+| | Speedup, Parallel Efficiency, Amdahl & Gustafson | Track D | `tracks/D_submodular_parallel_distributed/parallel_scheduling.py` | Multi-core scaling ($P=1, 2, 4$) | Amdahl vs Measured fit | Verified & Completed |
+| **Distributed & Multi-Task** | Federated Learning (FedAvg) | Track D | `tracks/D_submodular_parallel_distributed/federated_fedavg.py` | Local epochs $E \in \{1, 5, 10\}$ test | Non-IID accuracy curves | Verified & Completed |
+| | MGDA (Multiple Gradient Descent Algorithm) | Track D | `tracks/D_submodular_parallel_distributed/multitask_mgda_gradnorm.py` | Pareto-optimality / stationary test | Pareto front vs Equal weights | Verified & Completed |
+| | GradNorm | Track D | `tracks/D_submodular_parallel_distributed/multitask_mgda_gradnorm.py` | Gradient norm balance test | Dynamic task weight balance | Verified & Completed |
 | **Domain-Specific Tracks** | Track E: Non-Convex Portfolio Optimization | Track E | `tracks/E_case_study/solvers.py` | Constraint feasibility check | Efficient frontier comparison | Planned |
 | | Track F: Toy TAC Compiler (4 passes + optimization) | Track F | `tracks/F_compiler/passes.py` | Bytecode output equivalence | Code size & instruction delta | Planned |
 | | Track G: xv6 OS Scheduler Optimization | Track G | `tracks/G_xv6/patches/` | Codespaces build & usertests plan | Marked "NOT YET MEASURED" | Planned |
