@@ -1,155 +1,301 @@
 {
-  "optimization_levels": {
-    "ArithmeticPipeline": {
-      "O0": {
-        "code_size": 11,
-        "instructions_executed": 11,
-        "compile_time_us": 0.0,
-        "runtime_us": 15.800000255694613,
-        "output": [
-          160,
-          160
-        ]
-      },
-      "O1": {
-        "code_size": 2,
-        "instructions_executed": 2,
-        "compile_time_us": 31.70000036334386,
-        "runtime_us": 1.99999976757681,
-        "output": [
-          160,
-          160
-        ]
-      },
-      "O2": {
-        "code_size": 2,
-        "instructions_executed": 2,
-        "compile_time_us": 23.400000827678014,
-        "runtime_us": 1.2000000424450263,
-        "output": [
-          160,
-          160
-        ]
-      },
-      "O3": {
-        "code_size": 2,
-        "instructions_executed": 2,
-        "compile_time_us": 8112.49999969732,
-        "runtime_us": 5.800000508315861,
-        "optimal_pass_sequence": [
-          "ConstFold",
-          "DCE"
-        ],
-        "output": [
-          160,
-          160
-        ]
-      }
-    },
-    "LoopAccumulator": {
-      "O0": {
-        "code_size": 15,
-        "instructions_executed": 310,
-        "compile_time_us": 0.0,
-        "runtime_us": 235.99999985890463,
-        "output": [
-          1625,
-          1625
-        ]
-      },
-      "O1": {
-        "code_size": 14,
-        "instructions_executed": 309,
-        "compile_time_us": 45.900000259280205,
-        "runtime_us": 101.39999994862592,
-        "output": [
-          1625,
-          1625
-        ]
-      },
-      "O2": {
-        "code_size": 14,
-        "instructions_executed": 309,
-        "compile_time_us": 36.89999994094251,
-        "runtime_us": 146.7000001866836,
-        "output": [
-          1625,
-          1625
-        ]
-      },
-      "O3": {
-        "code_size": 14,
-        "instructions_executed": 309,
-        "compile_time_us": 7568.09999984398,
-        "runtime_us": 97.79999982129084,
-        "optimal_pass_sequence": [
-          "ConstFold",
-          "DCE"
-        ],
-        "output": [
-          1625,
-          1625
-        ]
-      }
-    }
-  },
-  "formulations": {
-    "loop_unroll_optimization": {
-      "formulation": "Loop Unroll Optimization",
-      "optimal_unroll_factor": 16,
-      "min_cost": 57.0,
-      "candidate_evaluations": [
-        {
-          "unroll_factor": 1,
-          "code_size": 5,
-          "branch_overhead": 400.0,
-          "cache_penalty": 2.0,
-          "total_cost": 402.0
-        },
-        {
-          "unroll_factor": 2,
-          "code_size": 10,
-          "branch_overhead": 200.0,
-          "cache_penalty": 4.0,
-          "total_cost": 204.0
-        },
-        {
-          "unroll_factor": 4,
-          "code_size": 20,
-          "branch_overhead": 100.0,
-          "cache_penalty": 8.0,
-          "total_cost": 108.0
-        },
-        {
-          "unroll_factor": 8,
-          "code_size": 40,
-          "branch_overhead": 50.0,
-          "cache_penalty": 16.0,
-          "total_cost": 66.0
-        },
-        {
-          "unroll_factor": 16,
-          "code_size": 80,
-          "branch_overhead": 25.0,
-          "cache_penalty": 32.0,
-          "total_cost": 57.0
-        }
+  "benchmarks": {
+    "MatrixVectorDotProduct": {
+      "o0_code_size": 35,
+      "o3_code_size": 48,
+      "code_reduction_pct": -37.142857142857146,
+      "o0_instructions_executed": 187,
+      "o3_instructions_executed": 175,
+      "o0_cycles": 245,
+      "o3_cycles": 197,
+      "cycle_speedup": 1.2436548223350254,
+      "o0_wall_time_us": 77.50799999485025,
+      "o3_wall_time_us": 73.4559999909834,
+      "wall_speedup": 1.0551622740737887,
+      "compile_time_us": 813.6764999926527,
+      "output_verified": true,
+      "output_value": [
+        162
       ]
     },
-    "register_allocation": {
-      "method": "Chaitin-Briggs Register Allocation",
-      "num_physical_registers": 3,
-      "register_assignment": {
-        "v1": 0,
-        "v2": 1,
-        "v4": 1,
-        "v5": 0,
-        "v3": 0,
-        "v6": 1
+    "PolynomialEvaluation": {
+      "o0_code_size": 35,
+      "o3_code_size": 57,
+      "code_reduction_pct": -62.857142857142854,
+      "o0_instructions_executed": 238,
+      "o3_instructions_executed": 210,
+      "o0_cycles": 383,
+      "o3_cycles": 271,
+      "cycle_speedup": 1.4132841328413284,
+      "o0_wall_time_us": 94.6979999935138,
+      "o3_wall_time_us": 115.84199997741962,
+      "wall_speedup": 0.8174755271142825,
+      "compile_time_us": 972.6489999957266,
+      "output_verified": true,
+      "output_value": [
+        303256
+      ]
+    },
+    "BoxFilterStencil": {
+      "o0_code_size": 35,
+      "o3_code_size": 33,
+      "code_reduction_pct": 5.714285714285716,
+      "o0_instructions_executed": 271,
+      "o3_instructions_executed": 249,
+      "o0_cycles": 492,
+      "o3_cycles": 404,
+      "cycle_speedup": 1.2178217821782178,
+      "o0_wall_time_us": 108.07599999679951,
+      "o3_wall_time_us": 103.49000000132946,
+      "wall_speedup": 1.044313460193363,
+      "compile_time_us": 423.58149999927264,
+      "output_verified": true,
+      "output_value": [
+        264
+      ]
+    },
+    "PrimeFactorSearch": {
+      "o0_code_size": 31,
+      "o3_code_size": 31,
+      "code_reduction_pct": 0.0,
+      "o0_instructions_executed": 562,
+      "o3_instructions_executed": 562,
+      "o0_cycles": 1130,
+      "o3_cycles": 1130,
+      "cycle_speedup": 1.0,
+      "o0_wall_time_us": 259.59800001146505,
+      "o3_wall_time_us": 304.997999992338,
+      "wall_speedup": 0.8511465649544802,
+      "compile_time_us": 295.81049999251263,
+      "output_verified": true,
+      "output_value": [
+        17
+      ]
+    }
+  },
+  "phase_ordering_comparison": {
+    "DP_Branch_and_Bound": {
+      "method": "Branch-and-Bound & DP Memoization",
+      "chapter6_category": "Chapter 6: Dynamic Programming & Branch-and-Bound",
+      "optimal_sequence": [
+        "ConstFold",
+        "CSE",
+        "DCE"
+      ],
+      "initial_code_size": 35,
+      "final_code_size": 33,
+      "reduction_ratio": 0.9428571428571428,
+      "nodes_evaluated": 37,
+      "pruned_subtrees": 15,
+      "compile_time_us": 6738.30000050657,
+      "optimized_tac": [
+        "  num_rows = 3",
+        "  num_cols = 3",
+        "  r = 0",
+        "  total_dot = 0",
+        "while_start_1:",
+        "  t_1 = r < num_rows",
+        "  if t_1 == 0 goto while_end_2",
+        "  c = 0",
+        "  t_2 = r * 4",
+        "  row_base = t_2",
+        "while_start_3:",
+        "  t_4 = c < num_cols",
+        "  if t_4 == 0 goto while_end_4",
+        "  t_5 = row_base + c",
+        "  idx = t_5",
+        "  t_6 = c * 4",
+        "  weight = t_6",
+        "  t_7 = idx + weight",
+        "  term1 = t_7",
+        "  t_8 = t_7",
+        "  term2 = t_8",
+        "  t_9 = total_dot + term1",
+        "  t_10 = t_9 + term2",
+        "  total_dot = t_10",
+        "  t_11 = c + 1",
+        "  c = t_11",
+        "  goto while_start_3",
+        "while_end_4:",
+        "  t_12 = r + 1",
+        "  r = t_12",
+        "  goto while_start_1",
+        "while_end_2:",
+        "  return total_dot"
+      ]
+    },
+    "Exhaustive_Search": {
+      "method": "Exhaustive Permutation Search",
+      "chapter6_category": "Brute-Force Enumeration",
+      "optimal_sequence": [
+        "DCE"
+      ],
+      "initial_code_size": 35,
+      "final_code_size": 33,
+      "reduction_ratio": 0.9428571428571428,
+      "sequences_evaluated": 155,
+      "compile_time_us": 38270.299999567214,
+      "optimized_tac": [
+        "  num_rows = 3",
+        "  num_cols = 3",
+        "  r = 0",
+        "  total_dot = 0",
+        "while_start_1:",
+        "  t_1 = r < num_rows",
+        "  if t_1 == 0 goto while_end_2",
+        "  c = 0",
+        "  t_2 = r * 4",
+        "  row_base = t_2",
+        "while_start_3:",
+        "  t_4 = c < num_cols",
+        "  if t_4 == 0 goto while_end_4",
+        "  t_5 = row_base + c",
+        "  idx = t_5",
+        "  t_6 = c * 4",
+        "  weight = t_6",
+        "  t_7 = idx + weight",
+        "  term1 = t_7",
+        "  t_8 = idx + weight",
+        "  term2 = t_8",
+        "  t_9 = total_dot + term1",
+        "  t_10 = t_9 + term2",
+        "  total_dot = t_10",
+        "  t_11 = c + 1",
+        "  c = t_11",
+        "  goto while_start_3",
+        "while_end_4:",
+        "  t_12 = r + 1",
+        "  r = t_12",
+        "  goto while_start_1",
+        "while_end_2:",
+        "  return total_dot"
+      ]
+    },
+    "Greedy_Selection": {
+      "method": "Greedy Step-wise Selection",
+      "chapter6_category": "Greedy Baseline",
+      "optimal_sequence": [
+        "DCE"
+      ],
+      "initial_code_size": 35,
+      "final_code_size": 33,
+      "reduction_ratio": 0.9428571428571428,
+      "compile_time_us": 1747.2999988967786,
+      "optimized_tac": [
+        "  num_rows = 3",
+        "  num_cols = 3",
+        "  r = 0",
+        "  total_dot = 0",
+        "while_start_1:",
+        "  t_1 = r < num_rows",
+        "  if t_1 == 0 goto while_end_2",
+        "  c = 0",
+        "  t_2 = r * 4",
+        "  row_base = t_2",
+        "while_start_3:",
+        "  t_4 = c < num_cols",
+        "  if t_4 == 0 goto while_end_4",
+        "  t_5 = row_base + c",
+        "  idx = t_5",
+        "  t_6 = c * 4",
+        "  weight = t_6",
+        "  t_7 = idx + weight",
+        "  term1 = t_7",
+        "  t_8 = idx + weight",
+        "  term2 = t_8",
+        "  t_9 = total_dot + term1",
+        "  t_10 = t_9 + term2",
+        "  total_dot = t_10",
+        "  t_11 = c + 1",
+        "  c = t_11",
+        "  goto while_start_3",
+        "while_end_4:",
+        "  t_12 = r + 1",
+        "  r = t_12",
+        "  goto while_start_1",
+        "while_end_2:",
+        "  return total_dot"
+      ]
+    }
+  },
+  "loop_unroll_comparison": {
+    "Knapsack_ILP": {
+      "method": "0/1 Knapsack ILP",
+      "chapter6_category": "Chapter 6: Integer Linear Programming (ILP) & Knapsack",
+      "optimal_unroll_factor": 8,
+      "cycles_saved": 350.0,
+      "code_size": 48,
+      "cache_budget": 48,
+      "solve_time_us": 4.799998350790702
+    },
+    "Exhaustive": {
+      "method": "Exhaustive Unroll Search",
+      "chapter6_category": "Brute-Force Enumeration",
+      "optimal_unroll_factor": 8,
+      "cycles_saved": 350.0,
+      "code_size": 48,
+      "solve_time_us": 2.0000006770715117
+    },
+    "Greedy": {
+      "method": "Greedy Maximum-Fit",
+      "chapter6_category": "Greedy Heuristic",
+      "optimal_unroll_factor": 8,
+      "cycles_saved": 350.0,
+      "code_size": 48,
+      "solve_time_us": 1.4999986888142303
+    }
+  },
+  "register_allocation_spill_demo": {
+    "graph_type": "K_4 Complete Interference Graph",
+    "variables": [
+      "v0",
+      "v1",
+      "v2",
+      "v3"
+    ],
+    "edge_count": 6,
+    "chromatic_number": 4,
+    "evaluations": {
+      "2": {
+        "registers_available": 2,
+        "chromatic_number": 4,
+        "spills_mandatory": true,
+        "kempe_spills": 2,
+        "exact_spills": 2,
+        "greedy_spills": 2,
+        "kempe_colorable": false,
+        "exact_colorable": false
       },
-      "spills": [],
-      "spill_count": 0,
-      "is_colorable_without_spills": true
+      "3": {
+        "registers_available": 3,
+        "chromatic_number": 4,
+        "spills_mandatory": true,
+        "kempe_spills": 1,
+        "exact_spills": 1,
+        "greedy_spills": 1,
+        "kempe_colorable": false,
+        "exact_colorable": false
+      },
+      "4": {
+        "registers_available": 4,
+        "chromatic_number": 4,
+        "spills_mandatory": false,
+        "kempe_spills": 0,
+        "exact_spills": 0,
+        "greedy_spills": 0,
+        "kempe_colorable": true,
+        "exact_colorable": true
+      },
+      "5": {
+        "registers_available": 5,
+        "chromatic_number": 4,
+        "spills_mandatory": false,
+        "kempe_spills": 0,
+        "exact_spills": 0,
+        "greedy_spills": 0,
+        "kempe_colorable": true,
+        "exact_colorable": true
+      }
     }
   }
 }

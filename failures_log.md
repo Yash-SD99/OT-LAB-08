@@ -15,6 +15,8 @@ Every case documented below was caught by automated unit tests or mathematical i
 | **FAIL-03** | Track B (Discrete / B&B) | Algorithmic Bounding Logic Error | In custom Branch-and-Bound, `fractional_bound` returned `0.0` when `curr_wt >= capacity`. When an item combination exactly filled capacity (`curr_wt == capacity`), the upper bound was returned as 0.0 instead of `curr_val`, causing the optimal incumbent to be pruned prematurely. | Known-instance test failure: B&B returned 240.0 while DP and `scipy.optimize.milp` found 270.0. | Corrected boundary logic to return `curr_val` when `curr_wt == capacity` and prune only when strictly exceeding capacity. |
 | **FAIL-04** | Track C (Quantum Opt) | Random Number Generator State Reset | In `apply_depolarizing_noise`, a local `rng = np.random.default_rng(seed)` was instantiated on every gate call. Since the seed was identical each gate, the random draw was always the same value (0.7739), meaning noise was never applied when error rate $p < 0.77$. | Test failure in `test_depolarizing_noise_fidelity_decay`: fidelity under noise $p=0.1$ remained identical to $1.0$. | Moved `rng` to persistent state on `QuantumCircuitSimulator` instance (`self.rng`), advancing the PRNG sequence across gates. |
 | **FAIL-05** | Track F (Compiler Opt) | Over-conservative Liveness in Dead Code Elimination | In `DeadCodeEliminationPass`, instruction removal was restricted via `if instr.dest in used_vars or not instr.dest.startswith("t_"):`, which prevented non-temporary user variables from ever being pruned even when unread. | Unit test failure: Dead assignment elimination failed to eliminate unused store variables, leaving instruction count unoptimized. | Redefined liveness strictly through backward def-use graph analysis over active variable references. |
+| **FAIL-06** | Track F (Compiler Opt) | Loop Back-Edge Liveness Blindness in DCE | Single backward liveness pass failed to propagate variable usage across loop back-edges (`goto start_lbl`), causing induction variable updates (`iter = iter - 1`) to be mistakenly pruned as dead code. | Differential testing failure: 100% divergence in while-loop execution between -O0 and -O3. | Implemented multi-pass backward fixed-point iteration until the live set reaches convergence. |
+| **FAIL-07** | Track F (Compiler Opt) | Premature Invalidation of Available Expressions in CSE | In `CommonSubexpressionEliminationPass`, invalidation filtered expressions where `v != d_str` after recording, deleting the newly recorded result temporary immediately upon definition. | Unit test failure: `test_common_subexpression_elimination` showed `ADD` remained instead of reusing previous temporary via `ASSIGN`. | Restructured invalidation to run prior to adding the new expression to the available cache. |
 
 ---
 
@@ -129,6 +131,58 @@ Every case documented below was caught by automated unit tests or mathematical i
   Formalized backward liveness analysis: only the designated return variable and variables referenced in downstream expressions remain in the live set.
 * **Lesson Learned & Takeaway for Viva**:
   Heuristic shortcuts (like checking string prefixes) fail compiler invariants. Compilers require formal dataflow analysis (like backward reaching definitions and live-variable analysis) rather than naming conventions.
+
+---
+
+### Case FAIL-06: Loop Back-Edge Blindness in Dead Code Elimination (Track F)
+* **Track Affected**: Track F (Compiler Optimization / Liveness Analysis)
+* **Initial Prompt**: "Implement a backward liveness analysis pass to remove dead code in DeadCodeEliminationPass."
+* **Flawed Code Excerpt**:
+  ```python
+  used_vars = set()
+  # Single backward pass:
+  for instr in reversed(instructions):
+      if instr.op in ("PRINT", "RETURN", "JUMP_IF_ZERO"):
+          used_vars.add(instr.src1)
+      elif instr.dest in used_vars:
+          used_vars.add(instr.src1)
+  ```
+* **Failure Description & Invariant Violated**:
+  In a program with a `while` loop, the induction variable increment (`iter = iter - 1`) appears near the bottom of the loop body, while its usage (`t_cond = iter > 0`) appears earlier at the top of the loop. In a single backward sweep starting from `return res`, `iter` is not yet live when the sweep passes `iter = iter - 1`. Because the backward jump `goto while_start` was not treated as a control-flow cycle propagating liveness backwards, `iter = iter - 1` was classified as dead code and completely stripped, freezing loop counters in infinite or divergent states.
+* **How It Was Detected**:
+  Differential testing against 50 randomized programs resulted in immediate divergence between `-O0` and `-O3` outputs (`O0=[92], O3=[82]`), with inspection revealing `iter = t_14` missing from the optimized TAC.
+* **Corrective Fix**:
+  Implemented fixed-point liveness iteration: the backward sweep repeats over the instruction sequence until `len(used_vars)` converges to a fixed point, correctly capturing dependencies across loop back-edges.
+* **Lesson Learned & Takeaway for Viva**:
+  Control-flow loops introduce cyclic dataflow dependencies. A single linear pass across basic blocks can never correctly determine liveness; compiler dataflow analyses must iterate to a fixed point across all back-edges.
+
+---
+
+### Case FAIL-07: Premature Available Expression Invalidation in CSE (Track F)
+* **Track Affected**: Track F (Compiler Optimization / CSE Pass)
+* **Initial Prompt**: "Implement CommonSubexpressionEliminationPass with basic block cache invalidation."
+* **Flawed Code Excerpt**:
+  ```python
+  # Add new expression:
+  available_expressions[expr_key] = str(instr.dest)
+  optimized.append(instr)
+
+  # FLAWED: Invalidated immediately after adding!
+  if instr.dest:
+      d_str = str(instr.dest)
+      available_expressions = {
+          k: v for k, v in available_expressions.items()
+          if k[1] != d_str and k[2] != d_str and v != d_str # 'v != d_str' killed newly inserted entry!
+      }
+  ```
+* **Failure Description & Invariant Violated**:
+  When an instruction like `t1 = x + y` was evaluated, `expr_key = ('ADD', 'x', 'y')` was stored in `available_expressions` with value `v = "t1"`. Immediately afterward, the destination invalidator ran with `d_str = "t1"`. The predicate `v != d_str` evaluated to `False` for the freshly added entry, instantly purging it from the dictionary. Consequently, subsequent identical expressions like `t2 = x + y` could never find the cached value.
+* **How It Was Detected**:
+  Unit test `test_common_subexpression_elimination` failed with `AssertionError: 'ADD' != 'ASSIGN'`.
+* **Corrective Fix**:
+  Moved the operand invalidation step to run *prior* to inserting the new expression, ensuring previous obsolete values are pruned while newly computed expressions remain cached.
+* **Lesson Learned & Takeaway for Viva**:
+  Ordering of cache invalidation vs insertion in stateful optimization passes is critical. Invalidating after insertion risks evicting the newly computed state.
 
 ---
 
